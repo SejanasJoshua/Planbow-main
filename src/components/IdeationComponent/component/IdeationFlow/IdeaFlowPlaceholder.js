@@ -8,14 +8,19 @@ import IdeaValidate from './IdeaValidate';
 import IdeaFinalize from './IdeaFinalize';
 import IdeaRefine from './IdeaRefine';
 
-export default function IdeaFlowPlaceholder({ SetideaNav, currentselect }) {
+export default function IdeaFlowPlaceholder({
+	SetideaNav,
+	currentselect,
+	deleteIdea,
+}) {
 	const [ideaNavTab, SetideaNavTab] = React.useState('capture');
 	return (
 		<>
 			<Box>
 				<Grid onClick={() => SetideaNav('youridea')}>
-					back {currentselect.name}
+					back {currentselect.idea}
 				</Grid>
+				<Grid onClick={deleteIdea}>Delete</Grid>
 				<Grid>
 					<IdeaTabsNav SetideaNavTab={SetideaNavTab} ideaNavTab={ideaNavTab} />
 				</Grid>
@@ -42,4 +47,5 @@ export default function IdeaFlowPlaceholder({ SetideaNav, currentselect }) {
 IdeaFlowPlaceholder.propTypes = {
 	SetideaNav: PropTypes.func,
 	currentselect: PropTypes.string,
+	deleteIdea: PropTypes.func,
 };

@@ -16,6 +16,7 @@ import { mdiFullscreen } from '@mdi/js';
 import YourIdea from './YourIdea';
 import IdeaFlowPlaceholder from './IdeaFlowPlaceholder';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const drawerWidth = {
 	'& .MuiDrawer-paper': {
@@ -30,6 +31,34 @@ export default function IdeationFlow(props) {
 	const [ideaNav, SetideaNav] = React.useState('youridea');
 	const [currentselect, Setcurrentselect] = React.useState();
 	let { ideaDrawer, toggleDrawerClose } = props;
+	const [ideas, setIdeas] = React.useState([]);
+
+	const deleteIdea = async () => {
+		try {
+			const response = await axios.delete(
+				`${process.env.REACT_APP_URL}/componentIdeas/delete`,
+				{
+					data: {
+						idea_id: currentselect.id,
+					},
+				}
+			);
+			if (response.data.message === 'success') {
+				const newIdeas = [...ideas];
+				newIdeas.splice(
+					newIdeas.findIndex((value) => value.id === currentselect.id),
+					1
+				);
+				setIdeas(newIdeas);
+				SetideaNav('youridea');
+			} else {
+				console.log('error');
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
 	return (
 		<div>
 			<Drawer
@@ -78,12 +107,15 @@ export default function IdeationFlow(props) {
 							<YourIdea
 								SetideaNav={SetideaNav}
 								Setcurrentselect={Setcurrentselect}
+								ideas={ideas}
+								setIdeas={setIdeas}
 							/>
 						) : ideaNav == 'ideaplaceholder' ? (
 							<IdeaFlowPlaceholder
 								SetideaNav={SetideaNav}
 								currentselect={currentselect}
 								ideaNav={ideaNav}
+								deleteIdea={deleteIdea}
 							/>
 						) : null}
 						{/* {ideaNav == 'youridea' ? (

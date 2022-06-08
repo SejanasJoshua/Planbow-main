@@ -18,22 +18,12 @@ const Item = styled(Paper)(({ theme }) => ({
 	color: theme.palette.text.secondary,
 }));
 
-export default function YourIdea({ SetideaNav, Setcurrentselect }) {
-	// const ideas = [
-	// 	{
-	// 		id: 1,
-	// 		name: 'The CIRCLES Method is a product design framework based on following a specific path and answering',
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		name: 'The CIRCLES Method is a product design framework based on following a specific path and answering',
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		name: 'The CIRCLES Method is a product design framework based on following a specific path and answering',
-	// 	},
-	// ];
-
+export default function YourIdea({
+	SetideaNav,
+	Setcurrentselect,
+	ideas,
+	setIdeas,
+}) {
 	const planboard = useSelector((state) => state.planboard);
 	const activeComponent = useSelector(
 		(state) => state.settings.planboardComponent
@@ -42,7 +32,6 @@ export default function YourIdea({ SetideaNav, Setcurrentselect }) {
 	const { componentID } = activeComponent.data;
 
 	// const [questions, setQuestions] = React.useState([]);
-	const [ideas, setIdeas] = React.useState([]);
 	// const [question, setQuestion] = React.useState({});
 	const [newIdea, setNewIdea] = React.useState('');
 	const [open, setOpen] = React.useState(false);
@@ -69,6 +58,7 @@ export default function YourIdea({ SetideaNav, Setcurrentselect }) {
 					{
 						componentID,
 						planboardID,
+						idea: newIdea,
 					}
 				);
 				if (response.data?.message === 'success') {
@@ -81,6 +71,7 @@ export default function YourIdea({ SetideaNav, Setcurrentselect }) {
 							date: new Date(newData.createdAt).toDateString(),
 						},
 					]);
+					setNewIdea('');
 				} else {
 					console.log('Unsuccessfull');
 				}
@@ -132,7 +123,7 @@ export default function YourIdea({ SetideaNav, Setcurrentselect }) {
 						}}
 						item
 						xs={12}
-						key={data._id}
+						key={data.id}
 					>
 						<Item>{data.idea}</Item>
 					</Grid>
@@ -177,5 +168,7 @@ export default function YourIdea({ SetideaNav, Setcurrentselect }) {
 YourIdea.propTypes = {
 	SetideaNav: PropTypes.func,
 	Setcurrentselect: PropTypes.func,
+	ideas: PropTypes.array,
+	setIdeas: PropTypes.func,
 	// selectedNav: PropTypes.string,
 };
