@@ -77,7 +77,7 @@ export default function IdeationFlow(props) {
 							>
 								<Avatar alt='Ideation' sx={{ width: 24, height: 24 }} />
 								<Typography variant='h6' component='div'>
-									{selectedComponent.data.label}
+									{selectedComponent?.data?.label?? ''}
 								</Typography>
 								<Typography variant='body' component='div'>
 									Due on : 10th May, 2022

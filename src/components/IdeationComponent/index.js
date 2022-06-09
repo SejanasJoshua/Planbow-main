@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import IdeationHeader from './component/IdeationHeader';
 import IdeationTab from './component/IdeationTab';
 import IdeationCanvas from './component/IdeationCanvas';
+import { useSelector } from 'react-redux';
 import IdeationSummary from './component/IdeationSummary';
 import IdeationEvents from './component/IdeationEvents';
 import IdeationActionItems from './component/IdeationActionItems';
@@ -12,9 +13,10 @@ import IdeaContent from './component/IdeaContent';
 import IdeaActivity from './component/IdeaActivity';
 import IdeaAIInsights from './component/IdeaAIInsights';
 
-export default function Ideation() {
+export default  function Ideation() {
 	// const theme = useTheme();
 	const [selectedNav, setselectedNav] = React.useState('ideasummary');
+	const User =  useSelector((state) => state.user);
 	return (
 		<Container maxWidth='xl'>
 			<Box sx={{ margin: '0 -24px' }}>
@@ -40,7 +42,7 @@ export default function Ideation() {
 				}}
 			>
 				{selectedNav == 'ideasummary' ? (
-					<IdeationSummary />
+					<IdeationSummary creator={{...User}} />
 				) : selectedNav == 'ideacanvas' ? (
 					<IdeationCanvas />
 				) : selectedNav == 'ideaactionitem' ? (
