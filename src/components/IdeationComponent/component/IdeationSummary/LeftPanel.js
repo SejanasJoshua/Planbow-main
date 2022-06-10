@@ -32,8 +32,13 @@ export default function LeftPanel(props) {
 		startDate: new Date(),
 		endDate: defaultEndDate()
 	});
+	const removeUserFromCoCreators =(newUser)=>{
+		setState({ ...state, coCreators: [ ...state.coCreators.filter((user) => user != newUser)] });
+	};
 	const checkIfUserExists = (newUser) => {
-		return !state.coCreators.filter((user) => user == newUser).length;
+		 const userExist= state.coCreators.filter((user) => user == newUser).length;
+		 if(userExist) removeUserFromCoCreators(newUser);
+		 return !userExist;
 	};
 	const addUser = (selected, { props: { value } }) => {
 		if (state.coCreators.length == 0 || checkIfUserExists(value)) {
