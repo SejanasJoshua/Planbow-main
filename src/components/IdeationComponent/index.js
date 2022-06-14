@@ -16,7 +16,7 @@ import IdeaAIInsights from './component/IdeaAIInsights';
 export default  function Ideation() {
 	// const theme = useTheme();
 	const [selectedNav, setselectedNav] = React.useState('ideasummary');
-	const User =  useSelector((state) => state.user);
+	const {user:User,planboard:Planboard} =  useSelector((state) => state);
 	return (
 		<Container maxWidth='xl'>
 			<Box sx={{ margin: '0 -24px' }}>
@@ -42,7 +42,7 @@ export default  function Ideation() {
 				}}
 			>
 				{selectedNav == 'ideasummary' ? (
-					<IdeationSummary creator={{...User}} />
+					<IdeationSummary creator={{...User}} Planboard={Planboard} />
 				) : selectedNav == 'ideacanvas' ? (
 					<IdeationCanvas />
 				) : selectedNav == 'ideaactionitem' ? (
