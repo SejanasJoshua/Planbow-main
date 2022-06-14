@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 // import Typography from '@mui/material/Typography';
 import Icon from '@mdi/react';
-import { mdiRectangleOutline, mdiRectangle  } from '@mdi/js';
+import { mdiRectangleOutline, mdiRectangle } from '@mdi/js';
 
 const StyledRating = styled(Rating)({
 	'& .MuiRating-iconFilled': {
@@ -15,14 +15,16 @@ const StyledRating = styled(Rating)({
 	},
 });
 
-export default function IdeaImapct() {
+export default function Imapct() {
 	return (
-		<Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+		<Box
+			sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		>
 			{/* <Typography component='legend'>Custom icon and color</Typography> */}
 			<StyledRating
 				name='customized-color'
 				defaultValue={2}
-				icon={<Icon path={mdiRectangle } title='Impact' size={1} />}
+				icon={<Icon path={mdiRectangle} title='Impact' size={1} />}
 				emptyIcon={<Icon path={mdiRectangleOutline} title='Impact' size={1} />}
 			/>
 		</Box>

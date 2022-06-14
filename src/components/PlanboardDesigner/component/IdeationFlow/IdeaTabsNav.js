@@ -8,8 +8,7 @@ const ideationTab = {
 	height: '100%',
 };
 
-
-export default function IdeaTabsNav({SetideaNavTab, ideaNavTab}) {
+export default function IdeaTabsNav({ SetideaNavTab, ideaNavTab }) {
 	const ideaTabNav = [
 		{
 			text: 'Capture',
@@ -34,8 +33,20 @@ export default function IdeaTabsNav({SetideaNavTab, ideaNavTab}) {
 				<Grid
 					sx={
 						ideaNavTab == data.route
-							? { mx: '10px', ml: 0, fontSize: '14px', border: '2px solid' }
-							: { mx: '10px', ml: 0, fontSize: '14px' }
+							? {
+								mx: '10px',
+								ml: 0,
+								fontSize: '14px',
+								borderBottom: '3px solid',
+								cursor: 'pointer',
+							  }
+							: {
+								mx: '10px',
+								ml: 0,
+								fontSize: '14px',
+								pb: '3px',
+								cursor: 'pointer',
+							  }
 					}
 					key={index}
 					item

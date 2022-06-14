@@ -16,7 +16,7 @@ const EVENTS = [
 	},
 ];
 
-export default function IdeationEvents() {
+export default function Events() {
 	const fetchRemote = async (query) => {
 		console.log('Query: ', query);
 		/**Simulate fetchin remote data */

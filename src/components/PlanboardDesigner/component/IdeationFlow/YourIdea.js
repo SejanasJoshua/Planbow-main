@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
-import axios from 'axios';
+import axiosRequests from '@utils/axiosRequests';
 import { useSelector } from 'react-redux';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -21,6 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function YourIdea({
 	SetideaNav,
 	Setcurrentselect,
+	setSelectedIdea,
 	ideas,
 	setIdeas,
 }) {
@@ -53,8 +54,8 @@ export default function YourIdea({
 		// console.log(planboardID, componentID);
 		if (newIdea?.length) {
 			try {
-				const response = await axios.post(
-					`${process.env.REACT_APP_URL}/componentIdeas/create`,
+				const response = await axiosRequests.postData(
+					'/componentIdeas/create',
 					{
 						componentID,
 						planboardID,
@@ -85,8 +86,8 @@ export default function YourIdea({
 	};
 	const getComponentIdeas = async () => {
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_URL}/componentIdeas/get?planboardID=${planboardID}&componentID=${componentID}`
+			const response = await axiosRequests.getData(
+				`/componentIdeas/get?planboardID=${planboardID}&componentID=${componentID}`
 			);
 			if (response.data.message === 'success') {
 				const ideass = [];
@@ -120,6 +121,7 @@ export default function YourIdea({
 						onClick={() => {
 							SetideaNav('ideaplaceholder');
 							Setcurrentselect(data);
+							setSelectedIdea(data);
 						}}
 						item
 						xs={12}
@@ -168,6 +170,7 @@ export default function YourIdea({
 YourIdea.propTypes = {
 	SetideaNav: PropTypes.func,
 	Setcurrentselect: PropTypes.func,
+	setSelectedIdea: PropTypes.func,
 	ideas: PropTypes.array,
 	setIdeas: PropTypes.func,
 	// selectedNav: PropTypes.string,

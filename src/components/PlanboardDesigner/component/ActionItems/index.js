@@ -4,10 +4,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
 import { Grid } from '@mui/material';
-import IdeaActionSlider from './IdeaActionSlider';
-import IdeaImapct from './IdeaImapct';
+import ActionSlider from './ActionSlider';
+import Imapct from './Imapct';
 
-export default function IdeationActionItems() {
+export default function ActionItems() {
 	return (
 		<TreeView
 			aria-label='file system navigator'
@@ -24,13 +24,13 @@ export default function IdeationActionItems() {
 								variable width content
 							</Grid>
 							<Grid item xs={12} sm={3} md={2}>
-								<IdeaActionSlider />
+								<ActionSlider />
 							</Grid>
 							<Grid item xs={6} sm={3} md={2}>
-								<IdeaImapct />
+								<Imapct />
 							</Grid>
 							<Grid item xs={6} sm={3} md={2}>
-								<IdeaImapct />
+								<Imapct />
 							</Grid>
 						</Grid>
 					}
@@ -45,13 +45,13 @@ export default function IdeationActionItems() {
 								variable width content
 							</Grid>
 							<Grid item xs={12} sm={3} md={2}>
-								<IdeaActionSlider />
+								<ActionSlider />
 							</Grid>
 							<Grid item xs={6} sm={3} md={2}>
-								<IdeaImapct />
+								<Imapct />
 							</Grid>
 							<Grid item xs={6} sm={3} md={2}>
-								<IdeaImapct />
+								<Imapct />
 							</Grid>
 						</Grid>
 					}
@@ -65,13 +65,13 @@ export default function IdeationActionItems() {
 									variable width content
 								</Grid>
 								<Grid item xs={12} sm={3} md={2}>
-									<IdeaActionSlider />
+									<ActionSlider />
 								</Grid>
 								<Grid item xs={6} sm={3} md={2}>
-									<IdeaImapct />
+									<Imapct />
 								</Grid>
 								<Grid item xs={6} sm={3} md={2}>
-									<IdeaImapct />
+									<Imapct />
 								</Grid>
 							</Grid>
 						}

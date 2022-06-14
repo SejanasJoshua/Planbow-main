@@ -9,7 +9,7 @@ import Icon from '@mdi/react';
 import { mdiBellOutline, mdiHelpCircleOutline, mdiArrowLeft } from '@mdi/js';
 import { useSelector } from 'react-redux';
 
-export default function IdeationHeader() {
+export default function PlanboardDesignerHeader() {
 	const navigate = useNavigate();
 
 	const toComponentB = () => {

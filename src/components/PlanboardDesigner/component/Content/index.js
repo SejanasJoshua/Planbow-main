@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function IdeaContent() {
+export default function Content() {
 	return (
 		<div>
 			<h1>IdeaContent</h1>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import ReactFlow, {
 	ReactFlowProvider,
 	MiniMap,
@@ -8,16 +8,16 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import Grid from '@mui/material/Grid';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import {
 	updatePlanboardCanvas,
 	updatePlanboardComponent,
 } from '@redux/actions';
+import axiosRequests from '@utils/axiosRequests';
 
 import StartNode from './StartNode';
 import CustomNode from './CustomNode';
 import AllComponentsList from './AllComponentsList';
-// import { planboardAttributes } from '../../../../data/planboardAttributes';
+import PlanboardDesignerContext from '@contexts/planboardDesigner';
 
 const bg = {
 	backgroundSize: '8px 8px',
@@ -67,11 +67,16 @@ let nodeData;
 let clickedNode = null;
 let clickedEdge = null;
 
-export default function IdeationCanvas() {
+export default function Canvas() {
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 	const [flowInstance, setFlowInstance] = useState(null);
 	const planboard = useSelector((state) => state.planboard);
+	const user = useSelector((state) => state.user._id);
+
+	const { setSelectedPlanboardComponent } = useContext(
+		PlanboardDesignerContext
+	);
 
 	const dispatch = useDispatch();
 
@@ -80,7 +85,8 @@ export default function IdeationCanvas() {
 	const onClickNode = useCallback((event, element) => {
 		clickedNode = element;
 		dispatch(updatePlanboardComponent(element));
-		console.log(element);
+		// console.log(element);
+		setSelectedPlanboardComponent(element);
 	}, []);
 	const onClickEdge = useCallback((event, element) => {
 		clickedEdge = element;
@@ -95,13 +101,10 @@ export default function IdeationCanvas() {
 	const onSave = useCallback(async () => {
 		// const saveFlow = async () => {
 		try {
-			const response = await axios.put(
-				`${process.env.REACT_APP_URL}/planboard/update`,
-				{
-					planboardID: planboard._id,
-					canvas: nodeData,
-				}
-			);
+			const response = await axiosRequests.putData('/planboard/update', {
+				planboardID: planboard._id,
+				canvas: nodeData,
+			});
 			if (response.data.message === 'success') {
 				dispatch(updatePlanboardCanvas(nodeData));
 				// alertMessage('Saved', 'info');
@@ -186,13 +189,14 @@ export default function IdeationCanvas() {
 
 	const saveComponent = async (nodeDetails) => {
 		try {
-			const response = await axios.post(
-				`${process.env.REACT_APP_URL}/planboardComponent/create`,
+			const response = await axiosRequests.postData(
+				'/planboardComponent/create',
 				{
 					id: nodeDetails._id,
 					name: nodeDetails.name,
 					componentID: nodeDetails.componentID,
 					planboardID: planboard._id,
+					createdBy: user,
 				}
 			);
 			if (response.data.message === 'success') {

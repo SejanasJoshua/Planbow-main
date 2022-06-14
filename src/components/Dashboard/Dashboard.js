@@ -30,7 +30,8 @@ import // updateURLHistory,
 // updatePlanboard,
 // planboardComponentsModal,
 '@redux/actions';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosRequests from '@utils/axiosRequests';
 
 function Copyright(props) {
 	return (
@@ -115,8 +116,8 @@ function DashboardContent() {
 		console.log('Fetching Notifications...');
 
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_URL}/notification/get?userID=${user._id}&email=${user.email}`
+			const response = await axiosRequests.getData(
+				`/notification/get?userID=${user._id}&email=${user.email}`
 			);
 			if (response.data.message === 'error') {
 				console.log('no notifications');
@@ -132,8 +133,8 @@ function DashboardContent() {
 		console.log('Fetching Planboards...');
 
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_URL}/planboard/get?workspace=${workspace._id}`
+			const response = await axiosRequests.getData(
+				`/planboard/get?workspace=${workspace._id}`
 			);
 			if (response.data.data === 'No-Data') {
 				// alertMessage('No Planboards!', 'warning');

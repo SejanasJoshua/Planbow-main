@@ -31,6 +31,7 @@ import { ICONS } from '@shared/assets';
 import IdeationFlow from '../IdeationFlow';
 // import AllComponentsList from './AllComponentsList';
 import { useDispatch } from 'react-redux';
+import TaskDelegation from './components/TaskDelegation.js';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 	height: 10,
@@ -49,7 +50,9 @@ export default function CustomNode(props) {
 	const [states, setStates] = useState({
 		lock: true,
 	});
-	const [ideaDrawer, setideaDrawer] = React.useState(false);
+	const [ideaDrawer, setideaDrawer] = useState(false);
+	const [delegateDialog, setDelegateDialog] = useState(false);
+
 	const dispatch = useDispatch();
 	// const [components, setComponents] = React.useState(false);
 	const componentsClickOpen = () => {
@@ -81,6 +84,13 @@ export default function CustomNode(props) {
 
 	const toggleDrawerClose = () => {
 		setideaDrawer(false);
+	};
+
+	const toggleDialogOpen = () => {
+		setDelegateDialog(true);
+	};
+	const toggleDialogClose = () => {
+		setDelegateDialog(false);
 	};
 	return (
 		<>
@@ -166,7 +176,7 @@ export default function CustomNode(props) {
 						<IconButton aria-label='lock' onClick={toggleDrawerOpen}>
 							<Icon path={mdiEyeOutline} title='lock close' size={1} />
 						</IconButton>
-						<IconButton aria-label='chat'>
+						<IconButton aria-label='chat' onClick={toggleDialogOpen}>
 							<Icon path={mdiAccountMultiplePlus} title='Account' size={1} />
 						</IconButton>
 					</CardActions>
@@ -181,6 +191,10 @@ export default function CustomNode(props) {
 			<IdeationFlow
 				ideaDrawer={ideaDrawer}
 				toggleDrawerClose={toggleDrawerClose}
+			/>
+			<TaskDelegation
+				delegateDialog={delegateDialog}
+				toggleDialogClose={toggleDialogClose}
 			/>
 			<Menu
 				id='demo-positioned-menu'

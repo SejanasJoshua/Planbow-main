@@ -12,7 +12,7 @@ import HotelIcon from '@mui/icons-material/Hotel';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import Typography from '@mui/material/Typography';
 
-export default function IdeaActivity() {
+export default function Activity() {
 	return (
 		<Timeline position='alternate'>
 			<TimelineItem>

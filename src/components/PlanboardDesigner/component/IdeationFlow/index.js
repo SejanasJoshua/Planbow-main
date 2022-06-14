@@ -16,7 +16,8 @@ import { mdiFullscreen } from '@mdi/js';
 import YourIdea from './YourIdea';
 import IdeaFlowPlaceholder from './IdeaFlowPlaceholder';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosRequests from '@utils/axiosRequests';
 
 const drawerWidth = {
 	'& .MuiDrawer-paper': {
@@ -30,13 +31,14 @@ export default function IdeationFlow(props) {
 	);
 	const [ideaNav, SetideaNav] = React.useState('youridea');
 	const [currentselect, Setcurrentselect] = React.useState();
+	const [selectedIdea, setSelectedIdea] = React.useState();
 	let { ideaDrawer, toggleDrawerClose } = props;
 	const [ideas, setIdeas] = React.useState([]);
 
 	const deleteIdea = async () => {
 		try {
-			const response = await axios.delete(
-				`${process.env.REACT_APP_URL}/componentIdeas/delete`,
+			const response = await axiosRequests.deleteData(
+				'/componentIdeas/delete',
 				{
 					data: {
 						idea_id: currentselect.id,
@@ -77,7 +79,7 @@ export default function IdeationFlow(props) {
 							>
 								<Avatar alt='Ideation' sx={{ width: 24, height: 24 }} />
 								<Typography variant='h6' component='div'>
-									{selectedComponent?.data?.label?? ''}
+									{selectedComponent?.data?.label ?? ''}
 								</Typography>
 								<Typography variant='body' component='div'>
 									Due on : 10th May, 2022
@@ -107,6 +109,7 @@ export default function IdeationFlow(props) {
 							<YourIdea
 								SetideaNav={SetideaNav}
 								Setcurrentselect={Setcurrentselect}
+								setSelectedIdea={setSelectedIdea}
 								ideas={ideas}
 								setIdeas={setIdeas}
 							/>
@@ -114,6 +117,7 @@ export default function IdeationFlow(props) {
 							<IdeaFlowPlaceholder
 								SetideaNav={SetideaNav}
 								currentselect={currentselect}
+								selectedIdea={selectedIdea}
 								ideaNav={ideaNav}
 								deleteIdea={deleteIdea}
 							/>
@@ -137,7 +141,7 @@ export default function IdeationFlow(props) {
 }
 
 IdeationFlow.propTypes = {
-	toggleDrawerOpen: PropTypes.func,
+	// toggleDrawerOpen: PropTypes.func,
 	toggleDrawerClose: PropTypes.func,
 	ideaDrawer: PropTypes.bool,
 };

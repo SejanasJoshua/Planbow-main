@@ -33,21 +33,17 @@ const tabData = [
 		text: 'Activity',
 		route: 'ideaactivity',
 	},
-	{
-		text: 'AI Insights',
-		route: 'ideainsights',
-	},
 ];
 
-export default function IdeationTab({ setselectedNav, selectedNav }) {
+export default function PlanboardDesignerTab({ setselectedNav, selectedNav }) {
 	return (
 		<Grid container sx={{ ...ideationTab }}>
 			{tabData.map((data, index) => (
 				<Grid
 					sx={
 						selectedNav == data.route
-							? { mx: '10px', ml: 0, fontSize: '14px', border: '2px solid' }
-							: { mx: '10px', ml: 0, fontSize: '14px' }
+							? { mx: '10px', ml: 0, fontSize: '14px', borderBottom: '3px solid', cursor:'pointer' }
+							: { mx: '10px', ml: 0, fontSize: '14px', pb:'3px',cursor:'pointer' }
 					}
 					key={index}
 					item
@@ -60,7 +56,7 @@ export default function IdeationTab({ setselectedNav, selectedNav }) {
 	);
 }
 
-IdeationTab.propTypes = {
+PlanboardDesignerTab.propTypes = {
 	setselectedNav: PropTypes.func,
 	selectedNav: PropTypes.string,
 };
