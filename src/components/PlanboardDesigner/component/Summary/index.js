@@ -1,47 +1,20 @@
 import React from 'react';
-import { incNumber } from '@redux/actions';
-import { decNumber } from '@redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
 import IdeationFlow from '../IdeationFlow';
-
-export default function IdeationSummary() {
-	const changeTheNumber = useSelector((state) => state.updown);
-	console.log(changeTheNumber);
-
-	const dispatch = useDispatch();
+import PropTypes from 'prop-types';
+import LeftPanel from './LeftPanel';
+export default function IdeationSummary(props) {
 	return (
 		<>
 			<IdeationFlow />
-			<div className='main-div'>
-				<div className='container'>
-					<h1>Increment/Decrement counter</h1>
-					<h4>using React and Redux</h4>
-
-					<div className='quantity'>
-						<a
-							className='quantity__minus'
-							title='Decrement'
-							onClick={() => dispatch(decNumber())}
-						>
-							<span>-</span>
-						</a>
-						<input
-							name='quantity'
-							type='text'
-							className='quantity__input'
-							readOnly
-							value={changeTheNumber}
-						/>
-						<a
-							className='quantity__plus'
-							title='Increment'
-							onClick={() => dispatch(incNumber(1))}
-						>
-							<span>+</span>
-						</a>
-					</div>
-				</div>
+			<div
+				className='main-div'
+				style={{ padding: '20px', margin: '50px 25px' }}
+			>
+				<LeftPanel {...props} />
 			</div>
 		</>
 	);
 }
+IdeationSummary.propTypes = {
+	creator: PropTypes.object,
+};
