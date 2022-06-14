@@ -9,6 +9,7 @@ import {
 	DialogContent,
 	DialogTitle,
 	IconButton,
+	Stack,
 	Table,
 	TableBody,
 	TableCell,
@@ -70,6 +71,9 @@ export default function TaskDelegation({ delegateDialog, toggleDialogClose }) {
 		updateAssignedUser;
 		console.log(assignedUsers);
 	}, [assignedUsers]);
+	// useEffect(() => {
+	// 	console.log('TaskDelegation');
+	// }, []);
 	return (
 		<div>
 			<Dialog
@@ -140,19 +144,12 @@ export default function TaskDelegation({ delegateDialog, toggleDialogClose }) {
 													<Button
 														variant='text'
 														startIcon={<EditIcon />}
-														onClick={() => handleEdit(row)}
+														onClick={() => adduser(row)}
 													>
 														Edit
 													</Button>
-													<Button
-														variant='text'
-														onClick={() => handleClickOpen(row._id)}
-														endIcon={<DeleteIcon />}
-													>
-														Delete
-													</Button>
+													<Button onClick={adduser}>Assign</Button>
 												</Stack>
-												<Button onClick={adduser}>Assign</Button>
 											</TableCell>
 										</TableRow>
 									))}
@@ -165,23 +162,6 @@ export default function TaskDelegation({ delegateDialog, toggleDialogClose }) {
 		</div>
 	);
 }
-
-// "assignedBy":{
-//     "email":"sejanas1@gmail.com",
-//     "fullName":"Joshua Sejanas"
-// },
-// "assignedTo":{
-//     "email":"sejanas@gmail.com",
-//     "fullName":"Sejanas"
-// }
-// "assignedTo":{
-//     "email":"sejanas1@gmail.com",
-//     "fullName":"Joshua Sejanas"
-// },
-// "assignedBy":{
-//     "email":"sejanas@gmail.com",
-//     "fullName":"Sejanas"
-// }
 
 TaskDelegation.propTypes = {
 	toggleDialogClose: PropTypes.func,
