@@ -12,6 +12,7 @@ export default function IdeationSummary(props) {
 				<Grid sx={{ flexGrow: 1 }} container spacing={3}
 				direction='column'
 				justifyContent='space-around'
+				style={{marginTop:20}}
 				>
 					<Grid item md={12}>
 						<LeftPanel {...props} />
