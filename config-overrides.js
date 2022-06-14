@@ -8,6 +8,8 @@ module.exports = function override(config) {
 			'@shared': path.resolve(__dirname, 'src/shared'),
 			'@utils': path.resolve(__dirname, 'src/utils'),
 			'@redux': path.resolve(__dirname, 'src/redux'),
+			'@data': path.resolve(__dirname, 'src/data'),
+			'@contexts': path.resolve(__dirname, 'src/contexts'),
 		},
 	};
 	return config;

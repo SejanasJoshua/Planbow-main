@@ -12,10 +12,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import { updateUser, updateWorkspace } from '@redux/actions';
 import { useDispatch } from 'react-redux';
 import { createSocket } from '../functions';
+// import getRequests from '@utils/getRequests';
+// import postRequests from '@utils/postRequests';
+import axiosRequests from '@utils/axiosRequests';
 
 import labels from '@shared/labels';
 // import gotoRouter from '@utils/GlobelFunction';
@@ -55,14 +58,10 @@ export default function Login() {
 
 	const fetchWorkspace = async (id) => {
 		console.log('fetch workspace');
-		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_URL}/workspace/get?workspaceID=${id}`
-			);
-			if (response) dispatch(updateWorkspace(response.data.data));
-		} catch (err) {
-			console.log(err);
-		}
+		const response = await axiosRequests.getData(
+			`/workspace/get?workspaceID=${id}`
+		);
+		if (response) dispatch(updateWorkspace(response.data.data));
 	};
 
 	const newSocketConnection = (userData) => {
@@ -74,23 +73,18 @@ export default function Login() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		try {
-			const URL = `${process.env.REACT_APP_URL}/auth/local/login`;
-			const response = await axios.post(URL, {
-				username: data.get('email'),
-				password: data.get('password'),
-			});
-			if (response.data.message === 'success') {
-				if (response.data.data.defaultWorkspace)
-					fetchWorkspace(response.data.data.defaultWorkspace);
-				dispatch(updateUser(response.data.data));
-				newSocketConnection(response.data.data);
+		const response = await axiosRequests.postData('/auth/local/login', {
+			username: data.get('email'),
+			password: data.get('password'),
+		});
+		if (response.data.message === 'success') {
+			if (response.data.data.defaultWorkspace)
+				fetchWorkspace(response.data.data.defaultWorkspace);
+			dispatch(updateUser(response.data.data));
+			newSocketConnection(response.data.data);
 
-				if (response.data.data.defaultWorkspace) navigate('/dashboard');
-				else navigate('/dashboard');
-			}
-		} catch (err) {
-			console.log(err);
+			if (response.data.data.defaultWorkspace) navigate('/dashboard');
+			else navigate('/dashboard');
 		}
 	};
 

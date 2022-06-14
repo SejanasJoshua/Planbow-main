@@ -3,9 +3,9 @@ import { Routes, Route, Outlet, Link } from 'react-router-dom';
 
 import Login from '@components/Login/Login';
 import Dashboard from '@components/Dashboard/Dashboard.js';
-import Ideation from '../components/IdeationComponent';
+import PlanboardDesigner from '../components/PlanboardDesigner';
 import PlanboardComponents from '../components/PlanboardComponents';
-
+import { PlanboardDesignerProvider } from '../contexts/planboardDesigner';
 
 export default function App() {
 	return (
@@ -13,7 +13,14 @@ export default function App() {
 			<Routes>
 				<Route path='/' element={<Layout />}>
 					<Route index element={<Login />} />
-					<Route path='ideation' element={<Ideation />} />
+					<Route
+						path='planboard-designer'
+						element={
+							<PlanboardDesignerProvider>
+								<PlanboardDesigner />
+							</PlanboardDesignerProvider>
+						}
+					/>
 					<Route path='login' element={<Login />} />
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='planboard' element={<PlanboardComponents />} />
@@ -29,9 +36,7 @@ export default function App() {
 }
 
 function Layout() {
-	return (
-		<Outlet />
-	);
+	return <Outlet />;
 }
 
 // function Home() {

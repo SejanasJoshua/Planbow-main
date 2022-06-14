@@ -74,7 +74,7 @@ export default function PlanboardComponents({ planboards }) {
 	const handleEdit = (planboard) => {
 		dispatch(updateURLHistory('/dashboard'));
 		dispatch(updatePlanboard(planboard));
-		navigate('/ideation');
+		navigate('/planboard-designer');
 	};
 
 	const handleDeleteOpen = (id) => {
@@ -88,7 +88,7 @@ export default function PlanboardComponents({ planboards }) {
 	};
 
 	const ideation = () => {
-		navigate('/ideation', { state: { id: 1, name: 'sabaoon' } });
+		navigate('/planboard-designer', { state: { id: 1, name: 'sabaoon' } });
 	};
 
 	// const ideationhandleClose = () => {

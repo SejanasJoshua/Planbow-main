@@ -15,7 +15,7 @@ export default function ListItems({ setselectedNav }) {
 	const navigate = useNavigate();
 
 	const toComponentB = () => {
-		navigate('/ideation');
+		navigate('/planboard-designer');
 	};
 	return (
 		<React.Fragment>
@@ -45,7 +45,7 @@ export default function ListItems({ setselectedNav }) {
 				<ListItemIcon>
 					<BarChartIcon />
 				</ListItemIcon>
-				<ListItemText primary='Ideation' />
+				<ListItemText primary='Planboard Designer' />
 			</ListItemButton>
 			<ListItemButton>
 				<ListItemIcon>
