@@ -18,14 +18,14 @@ import {
 	TableRow,
 } from '@mui/material';
 import axiosRequests from '@utils/axiosRequests';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function TaskDelegation({ delegateDialog, toggleDialogClose }) {
 	const { planboard, selectedPlanboardComponent } = useContext(
 		PlanboardDesignerContext
 	);
-	const userRedux = useSelector((state) => state.user);
+	// const userRedux = useSelector((state) => state.user);
 	const [assignedUsers, setAssignedUsers] = useState([]);
 
 	// const addAssignUsers = (user) => {
@@ -50,7 +50,7 @@ export default function TaskDelegation({ delegateDialog, toggleDialogClose }) {
 		console.log('first');
 	};
 
-	const removeAssignUsers = () => {};
+	// const removeAssignUsers = () => {};
 	const updateAssignedUser = async () => {
 		await axiosRequests.putData('/planboardComponent/update', {
 			_id: selectedPlanboardComponent.data.componentID,

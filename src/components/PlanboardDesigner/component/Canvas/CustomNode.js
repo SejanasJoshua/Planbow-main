@@ -27,7 +27,7 @@ import {
 } from '@mdi/js';
 import { planboardComponentsModal } from '@redux/actions';
 
-import { ICONS } from '@shared/assets';
+// import { ICONS } from '@shared/assets';
 import IdeationFlow from '../IdeationFlow';
 // import AllComponentsList from './AllComponentsList';
 import { useDispatch } from 'react-redux';

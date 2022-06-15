@@ -65,7 +65,7 @@ const nodeTypes = {
 
 let nodeData;
 let clickedNode = null;
-let clickedEdge = null;
+// let clickedEdge = null;
 
 export default function Canvas() {
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);

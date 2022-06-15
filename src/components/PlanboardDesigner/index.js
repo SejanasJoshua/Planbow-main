@@ -16,10 +16,13 @@ import { useSelector } from 'react-redux';
 export default function PlanboardDesigner() {
 	// const theme = useTheme();
 	// const [selectedNav, setselectedNav] = React.useState('ideasummary');
-	const { selectedNav, setselectedNav, setPlanboard } = useContext(
+	const { selectedNav, setselectedNav, setPlanboard,actionItem:actionItemData } = useContext(
 		PlanboardDesignerContext
 	);
-	const planboardRedux = useSelector((state) => state.planboard);
+	const { planboard: planboardRedux, user: User } = useSelector(
+		(state) => state
+	);
+	
 	useEffect(() => {
 		planboardRedux && setPlanboard(planboardRedux);
 	}, []);
@@ -52,11 +55,11 @@ export default function PlanboardDesigner() {
 				}}
 			>
 				{selectedNav == 'ideasummary' ? (
-					<Summary />
+					<Summary creator={User} Planboard={planboardRedux} />
 				) : selectedNav == 'ideacanvas' ? (
 					<Canvas />
 				) : selectedNav == 'ideaactionitem' ? (
-					<ActionItems />
+					<ActionItems  actionItemData={actionItemData}/>
 				) : selectedNav == 'ideaevent' ? (
 					<Events />
 				) : selectedNav == 'ideacontent' ? (
