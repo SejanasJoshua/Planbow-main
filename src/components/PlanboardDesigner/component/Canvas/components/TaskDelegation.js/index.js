@@ -2,161 +2,134 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import PlanboardDesignerContext from '@contexts/planboardDesigner';
-import { v4 as uuidv4 } from 'uuid';
 import {
-	Button,
+	Autocomplete,
+	Box,
 	Dialog,
 	DialogContent,
 	DialogTitle,
 	IconButton,
-	Stack,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
+	TextField,
 } from '@mui/material';
 import axiosRequests from '@utils/axiosRequests';
 import { useSelector } from 'react-redux';
-import EditIcon from '@mui/icons-material/Edit';
+let fetchedAssignedValues;
 
-export default function TaskDelegation({ delegateDialog, toggleDialogClose }) {
+export default function TaskDelegation({
+	delegateDialog,
+	toggleDialogClose,
+	a,
+	setA,
+}) {
 	const { planboard, selectedPlanboardComponent } = useContext(
 		PlanboardDesignerContext
 	);
-	const userRedux = useSelector((state) => state.user);
+	const user = useSelector((state) => state.user);
+
 	const [assignedUsers, setAssignedUsers] = useState([]);
 
-	// const addAssignUsers = (user) => {
-	// 	console.log(user);
-	// 	console.log('addAssignUser');
-	// 	setAssignedUsers([
-	// 		...assignedUsers,
-	// 		{
-	// 			type: user.type,
-	// 			assignedBy: {
-	// 				email: userRedux?.email ?? 'abcd',
-	// 				fullName: userRedux?.fullName ?? 'efgh',
-	// 			},
-	// 			assignedTo: {
-	// 				email: user.email,
-	// 				fullName: user.fullName,
-	// 			},
-	// 		},
-	// 	]);
-	// };
-	const adduser = () => {
-		console.log('first');
-	};
-
-	const removeAssignUsers = () => {};
 	const updateAssignedUser = async () => {
-		await axiosRequests.putData('/planboardComponent/update', {
-			_id: selectedPlanboardComponent.data.componentID,
-			tasksAssigned: assignedUsers,
-		});
+		console.log('updated');
+		if (selectedPlanboardComponent?.data?.componentID)
+			await axiosRequests.putData('/planboardComponent/update', {
+				planboardComponentID: selectedPlanboardComponent.data.componentID,
+				tasksAssigned: assignedUsers,
+			});
+		// console.log(selectedPlanboardComponent);
 	};
 	const getAssignedUsers = async () => {
 		const response = await axiosRequests.getData(
 			`/planboardComponent/get?planboardComponentID=${selectedPlanboardComponent.data.componentID}`
 		);
-		if (response?.data?.data?.tasksAssigned)
-			setAssignedUsers(response.data.data.tasksAssigned);
+		console.log('fetched');
+		fetchedAssignedValues = response.data.data?.tasksAssigned ?? [];
+		setAssignedUsers(response.data.data?.tasksAssigned ?? []);
+		setA(10);
 	};
+	const closeDialog = async () => {
+		updateAssignedUser();
+		toggleDialogClose();
+		const removed = fetchedAssignedValues?.map((x) => {
+			if (!assignedUsers.includes(x)) return x;
+		});
+		const added = assignedUsers.filter(
+			(x) => !fetchedAssignedValues.includes(x)
+		);
+		console.log(removed);
+		console.log(added);
+		const removedEmailLists = removed.map((item) => {
+			if (item) return item.email;
+		});
+		const addedEmailLists = added.map((item) => {
+			if (item) return item.email;
+		});
+
+		await axiosRequests.postData('/notification/create', {
+			emailLists: removedEmailLists,
+			senderID: user._id,
+			content: `Your assigned task on ${selectedPlanboardComponent?.data?.label} component on the ${planboard?.name} planboard has been removed`,
+			priority: 100,
+			type: 'task',
+		});
+		await axiosRequests.postData('/notification/create', {
+			emailLists: addedEmailLists,
+			senderID: user._id,
+			content: `Your have been assigned a task on ${selectedPlanboardComponent?.data?.label} component on the ${planboard?.name} planboard`,
+			priority: 100,
+			type: 'task',
+		});
+
+		fetchedAssignedValues = assignedUsers;
+	};
+
 	useEffect(() => {
-		selectedPlanboardComponent && getAssignedUsers();
-	}, [selectedPlanboardComponent]);
+		if (a !== 10)
+			selectedPlanboardComponent?.data?.componentID && getAssignedUsers();
+	}, [selectedPlanboardComponent, a]);
 	useEffect(() => {
-		updateAssignedUser;
-		console.log(assignedUsers);
-	}, [assignedUsers]);
-	// useEffect(() => {
-	// 	console.log('TaskDelegation');
-	// }, []);
+		console.log(a);
+	}, [a]);
 	return (
 		<div>
-			<Dialog
-				onClose={toggleDialogClose}
-				open={delegateDialog}
-				sx={{ width: '80%', height: '100%' }}
-			>
+			<Dialog onClose={closeDialog} open={delegateDialog}>
 				<DialogTitle>
 					Delegate Users
-					<IconButton onClick={toggleDialogClose}>
+					<IconButton onClick={closeDialog}>
 						<CloseIcon />
 					</IconButton>
 				</DialogTitle>
-				<DialogContent sx={{ width: '80%', height: '100%' }}>
-					<>
-						<TableContainer>
-							{/* <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-								<TableHead>
-									<TableRow>
-										<TableCell>Type</TableCell>
-										<TableCell>User Name</TableCell>
-										<TableCell>User Email</TableCell>
-										<TableCell>Assigned By</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{assignedUsers.map((row) => (
-										<TableRow
-											key={uuidv4()}
-											sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-										>
-											<TableCell>{row?.type ?? ''}</TableCell>
-											<TableCell>{row?.assignedTo.fullName ?? ''}</TableCell>
-											<TableCell>{row?.assignedTo.email ?? ''}</TableCell>
-											<TableCell>{row?.assignedBy.email ?? ''}</TableCell>
-											<TableCell>
-												<Button
-													variant='outlined'
-													onClick={() => removeAssignUsers(row)}
-												>
-													Remove
-												</Button>
-											</TableCell>
-										</TableRow>
-									))}
-								</TableBody>
-							</Table> */}
-							<Table sx={{ minWidth: 650 }} aria-label='simple table'>
-								<TableHead>
-									<TableRow>
-										<TableCell>Type</TableCell>
-										<TableCell>User Name</TableCell>
-										<TableCell>User Email</TableCell>
-										<TableCell>Actions</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{planboard.users.map((row) => (
-										<TableRow
-											key={uuidv4()}
-											sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-										>
-											<TableCell>{row?.type ?? ''}</TableCell>
-											<TableCell>{row?.fullName ?? ''}</TableCell>
-											<TableCell>{row?.email ?? ''}</TableCell>
-											<TableCell>
-												<Stack direction='row' spacing={1}>
-													<Button
-														variant='text'
-														startIcon={<EditIcon />}
-														onClick={() => adduser(row)}
-													>
-														Edit
-													</Button>
-													<Button onClick={adduser}>Assign</Button>
-												</Stack>
-											</TableCell>
-										</TableRow>
-									))}
-								</TableBody>
-							</Table>
-						</TableContainer>
-					</>
+				<DialogContent sx={{ width: '500px' }}>
+					<Autocomplete
+						multiple
+						id='tags-standard'
+						options={planboard.users}
+						getOptionLabel={(option) => option.fullName}
+						value={assignedUsers}
+						onChange={(event, newValue) => {
+							setAssignedUsers(newValue);
+						}}
+						isOptionEqualToValue={(option, value) =>
+							option.email === value.email
+						}
+						renderOption={(props, option) => (
+							<Box
+								component='li'
+								sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+								{...props}
+							>
+								{option.fullName} ({option.email})
+							</Box>
+						)}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								variant='standard'
+								label='Assign Users'
+								placeholder='Users'
+								sx={{ width: '80%' }}
+							/>
+						)}
+					/>
 				</DialogContent>
 			</Dialog>
 		</div>
@@ -166,4 +139,6 @@ export default function TaskDelegation({ delegateDialog, toggleDialogClose }) {
 TaskDelegation.propTypes = {
 	toggleDialogClose: PropTypes.func,
 	delegateDialog: PropTypes.bool,
+	a: PropTypes.number,
+	setA: PropTypes.func,
 };
