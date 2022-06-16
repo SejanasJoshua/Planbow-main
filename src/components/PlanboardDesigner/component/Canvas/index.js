@@ -65,7 +65,7 @@ const nodeTypes = {
 
 let nodeData;
 let clickedNode = null;
-let clickedEdge = null;
+// let clickedEdge = null;
 
 export default function Canvas() {
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -89,7 +89,8 @@ export default function Canvas() {
 		setSelectedPlanboardComponent(element);
 	}, []);
 	const onClickEdge = useCallback((event, element) => {
-		clickedEdge = element;
+		// clickedEdge = element;
+		console.log(event,element);
 	}, []);
 
 	// const loadComponentonDoubleClick = (selectedNode) => {
