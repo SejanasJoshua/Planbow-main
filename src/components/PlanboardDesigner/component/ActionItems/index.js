@@ -95,6 +95,7 @@ export default function ActionItems() {
 		const response = await axiosRequests.getData(
 			`/componentIdeas/get?planboardID=${planboardID}&componentID=${componentID}`
 		);
+		console.log(response);
 		// if(response?.data?.data?.length){
 		setState([...state, { planboardID, componentID, data: dummy?.data }]);
 		//  }
@@ -114,24 +115,27 @@ export default function ActionItems() {
 							<TreeItem nodeId={data?._id} label={data?.name} key={data?._id}>
 								<TreeItem
 									nodeId={data?.id}
-									label={state
-										.filter((res) => res.componentID == data?._id)?.[0]
-										?.data.map((child) => (
-											<Grid container sx={{ alignItems: 'center' }}>
-												<Grid item xs={12} sm={3} md={4}>
-													{child?.idea}
-												</Grid>
-												<Grid item xs={12} sm={3} md={2}>
-													<ActionSlider />
-												</Grid>
-												<Grid item xs={6} sm={3} md={2}>
-													<Imapct />
-												</Grid>
-												<Grid item xs={6} sm={3} md={2}>
-													<Imapct />
-												</Grid>
-											</Grid>
-										))}
+									label={
+										state.filter((res) => res.componentID == data?._id).length
+											? state.filter((res) => res.componentID == data?._id)?.[0]
+													?.data.map((child) => (
+														<Grid key={child?._id} container sx={{ alignItems: 'center' }}>
+															<Grid item xs={12} sm={3} md={4}>
+																{child?.idea}
+															</Grid>
+															<Grid item xs={12} sm={3} md={2}>
+																<ActionSlider />
+															</Grid>
+															<Grid item xs={6} sm={3} md={2}>
+																<Imapct />
+															</Grid>
+															<Grid item xs={6} sm={3} md={2}>
+																<Imapct />
+															</Grid>
+														</Grid>
+													))
+											: '.............Loading........'
+									}
 								/>
 							</TreeItem>
 						);
