@@ -5,10 +5,13 @@ import PlanboardDesignerContext from '@contexts/planboardDesigner';
 import {
 	Autocomplete,
 	Box,
+	Button,
 	Dialog,
+	DialogActions,
 	DialogContent,
 	DialogTitle,
 	IconButton,
+	Stack,
 	TextField,
 } from '@mui/material';
 import axiosRequests from '@utils/axiosRequests';
@@ -46,6 +49,24 @@ export default function TaskDelegation({
 		setAssignedUsers(response.data.data?.tasksAssigned ?? []);
 		setA(10);
 	};
+	const handleCancel = () => {
+		setAssignedUsers(fetchedAssignedValues);
+		toggleDialogClose();
+	};
+	const addUserPlanboard = async (emails) => {
+		await axiosRequests.putData('/user/', {
+			assignedTasks: 'add',
+			emailLists: emails,
+			planboardID: planboard._id,
+		});
+	};
+	const removeUserPlanboard = async (emails) => {
+		await axiosRequests.putData('/user/', {
+			assignedTasks: 'remove',
+			emailLists: emails,
+			planboardID: planboard._id,
+		});
+	};
 	const closeDialog = async () => {
 		updateAssignedUser();
 		toggleDialogClose();
@@ -63,6 +84,8 @@ export default function TaskDelegation({
 		const addedEmailLists = added.map((item) => {
 			if (item) return item.email;
 		});
+		addUserPlanboard(addedEmailLists);
+		removeUserPlanboard(removedEmailLists);
 
 		await axiosRequests.postData('/notification/create', {
 			emailLists: removedEmailLists,
@@ -131,6 +154,18 @@ export default function TaskDelegation({
 						)}
 					/>
 				</DialogContent>
+				<DialogActions>
+					<Box sx={{ alignContent: 'right', display: 'flex' }}>
+						<Stack sx={{ display: 'block' }}>
+							<Button variant='outlined' onClick={handleCancel}>
+								Cancel
+							</Button>
+							<Button variant='outlined' onClick={closeDialog}>
+								Done
+							</Button>
+						</Stack>
+					</Box>
+				</DialogActions>
 			</Dialog>
 		</div>
 	);
