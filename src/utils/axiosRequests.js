@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// eslint-disable-next-line no-undef
 const appURL = process.env.REACT_APP_URL;
 
 const getData = (url) => {

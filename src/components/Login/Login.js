@@ -77,6 +77,7 @@ export default function Login() {
 			username: data.get('email'),
 			password: data.get('password'),
 		});
+		console.log(response.data);
 		if (response.data.message === 'success') {
 			if (response.data.data.defaultWorkspace)
 				fetchWorkspace(response.data.data.defaultWorkspace);
@@ -121,7 +122,7 @@ export default function Login() {
 				<Typography component='h1' variant='h5'>
 					{labels['component.login.label.sign-in']}
 				</Typography>
-				<Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Box component='form' onClick={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						margin='normal'
 						required
