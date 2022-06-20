@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import { updateUser, updateWorkspace } from '@redux/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 // import { createSocket } from '../functions';
 // import getRequests from '@utils/getRequests';
 // import postRequests from '@utils/postRequests';
@@ -88,9 +88,14 @@ export default function Login() {
 			else navigate('/dashboard');
 		}
 	};
-
+	const {user:User}=useSelector(state=>state);
 	useEffect(() => {
-		document.title = 'PlanBow - Login';
+		if(!User?.email){
+			document.title = 'PlanBow - Login';
+		}
+		else{
+			navigate('/dashboard');
+		}
 	}, []);
 
 	return (
