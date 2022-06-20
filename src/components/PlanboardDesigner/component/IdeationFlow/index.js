@@ -60,6 +60,9 @@ export default function IdeationFlow(props) {
 			console.log(e);
 		}
 	};
+	// React.useEffect(() => {
+	// 	console.log('Ideation Flow');
+	// }, []);
 
 	return (
 		<div>

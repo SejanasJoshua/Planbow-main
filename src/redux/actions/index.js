@@ -30,6 +30,12 @@ export const updatePlanboard = (data) => {
 		payload: data,
 	};
 };
+export const addActionItems = (data) => {
+	return {
+		type: 'ACTION_ITEMS',
+		payload: data,
+	};
+};
 export const updateSocket = (data) => {
 	return {
 		type: 'SOCKET',

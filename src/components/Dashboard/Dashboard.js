@@ -23,13 +23,10 @@ import { ICONS } from '@shared/assets';
 import HomeComponent from '@components/HomeComponent';
 import PlanboardComponents from '@components/PlanboardComponents';
 import PlanboardCanvas from '@components/PlanboardCanvas';
-// import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import // updateURLHistory,
-// updatePlanboard,
-// planboardComponentsModal,
-'@redux/actions';
+import { addActionItems }  from '@redux/actions';
 // import axios from 'axios';
 import axiosRequests from '@utils/axiosRequests';
 
@@ -318,5 +315,17 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
+	const dispatch = useDispatch();
+	React.useEffect(() => {
+	actionItemData();
+	},[]);
+	const actionItemData = async () => {
+		const response = await axiosRequests.getData(
+			'/planboardComponent/get?planboardID=624dba3e9c437cb32217cb90'
+		);
+		if (response?.data?.data?.length){
+			dispatch(addActionItems(response?.data?.data));
+		} 
+	};
 	return <DashboardContent />;
 }

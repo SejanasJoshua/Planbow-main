@@ -89,7 +89,8 @@ export default function Canvas() {
 		setSelectedPlanboardComponent(element);
 	}, []);
 	const onClickEdge = useCallback((event, element) => {
-		clickedEdge = element;
+		// clickedEdge = element;
+		console.log(event,element);
 	}, []);
 
 	// const loadComponentonDoubleClick = (selectedNode) => {

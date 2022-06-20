@@ -38,9 +38,9 @@ export default function AllComponentsList(props) {
 		setComponents([]);
 		dispatch(planboardComponentsModal(false));
 	};
-	React.useEffect(() => {
-		console.log(components);
-	}, [components]);
+	// React.useEffect(() => {
+	// 	console.log(components);
+	// }, [components]);
 	return (
 		<Dialog
 			fullScreen={fullScreen}

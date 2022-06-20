@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -8,8 +8,18 @@ import ActionSlider from './ActionSlider';
 import Imapct from './Imapct';
 import PropTypes from 'prop-types';
 import axiosRequests from '@utils/axiosRequests';
-export default function ActionItems({ actionItemData }) {
+import { useSelector } from 'react-redux';
+export default function ActionItems() {
+	const {
+		planboard: { actionItems: actionItemData },
+	} = useSelector((state) => state);
+	useEffect(() => {
+		if (actionItemData.length) {
+			setActionItem(actionItemData);
+		}
+	}, []);
 	const [state, setState] = useState([]);
+	const [actionItems, setActionItem] = useState([]);
 	const dummy = {
 		message: 'success',
 		data: [
@@ -77,7 +87,7 @@ export default function ActionItems({ actionItemData }) {
 	const selectItem = (e, nodeId) => {
 		if (!state.filter((data) => data.componentID == nodeId).length)
 			fetchChildren({
-				planboardID: actionItemData[0]?.planboardID,
+				planboardID: actionItems[0]?.planboardID,
 				componentID: nodeId,
 			});
 	};
@@ -87,12 +97,8 @@ export default function ActionItems({ actionItemData }) {
 		);
 		console.log(response);
 		// if(response?.data?.data?.length){
-
 		setState([...state, { planboardID, componentID, data: dummy?.data }]);
-		// }
-	};
-	const checkIdInState = (nodeId) => {
-		return state.filter((data) => data.componentID == nodeId);
+		//  }
 	};
 	return (
 		<TreeView
@@ -103,31 +109,38 @@ export default function ActionItems({ actionItemData }) {
 			sx={{ height: 240, flexGrow: 1, maxWidth: '100%', overflowY: 'auto' }}
 			onNodeSelect={selectItem}
 		>
-			{actionItemData.map((data) => {
-				checkIdInState(data?._id) ? (
-					<TreeItem nodeId={data?._id} label={data?.name} key={data?._id}>
-						<TreeItem
-							nodeId={data?.id}
-							label={
-								<Grid container sx={{ alignItems: 'center' }}>
-									<Grid item xs={12} sm={3} md={4}>
-										variable width content
-									</Grid>
-									<Grid item xs={12} sm={3} md={2}>
-										<ActionSlider />
-									</Grid>
-									<Grid item xs={6} sm={3} md={2}>
-										<Imapct />
-									</Grid>
-									<Grid item xs={6} sm={3} md={2}>
-										<Imapct />
-									</Grid>
-								</Grid>
-							}
-						/>
-					</TreeItem>
-				) : null;
-			})}
+			{actionItems?.length
+				? actionItems.map((data) => {
+						return (
+							<TreeItem nodeId={data?._id} label={data?.name} key={data?._id}>
+								<TreeItem
+									nodeId={data?.id}
+									label={
+										state.filter((res) => res.componentID == data?._id).length
+											? state.filter((res) => res.componentID == data?._id)?.[0]
+													?.data.map((child) => (
+														<Grid key={child?._id} container sx={{ alignItems: 'center' }}>
+															<Grid item xs={12} sm={3} md={4}>
+																{child?.idea}
+															</Grid>
+															<Grid item xs={12} sm={3} md={2}>
+																<ActionSlider />
+															</Grid>
+															<Grid item xs={6} sm={3} md={2}>
+																<Imapct />
+															</Grid>
+															<Grid item xs={6} sm={3} md={2}>
+																<Imapct />
+															</Grid>
+														</Grid>
+													))
+											: '.............Loading........'
+									}
+								/>
+							</TreeItem>
+						);
+				  })
+				: '....................Loading...'}
 			;
 		</TreeView>
 	);

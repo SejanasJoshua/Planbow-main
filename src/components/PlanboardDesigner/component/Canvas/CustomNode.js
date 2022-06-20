@@ -27,7 +27,6 @@ import {
 } from '@mdi/js';
 import { planboardComponentsModal } from '@redux/actions';
 
-// import { ICONS } from '@shared/assets';
 import IdeationFlow from '../IdeationFlow';
 // import AllComponentsList from './AllComponentsList';
 import { useDispatch } from 'react-redux';
@@ -52,6 +51,7 @@ export default function CustomNode(props) {
 	});
 	const [ideaDrawer, setideaDrawer] = useState(false);
 	const [delegateDialog, setDelegateDialog] = useState(false);
+	const [a, setA] = useState(0);
 
 	const dispatch = useDispatch();
 	// const [components, setComponents] = React.useState(false);
@@ -80,6 +80,7 @@ export default function CustomNode(props) {
 
 	const toggleDrawerOpen = () => {
 		setideaDrawer(true);
+		setA(0);
 	};
 
 	const toggleDrawerClose = () => {
@@ -195,6 +196,8 @@ export default function CustomNode(props) {
 			<TaskDelegation
 				delegateDialog={delegateDialog}
 				toggleDialogClose={toggleDialogClose}
+				a={a}
+				setA={setA}
 			/>
 			<Menu
 				id='demo-positioned-menu'
