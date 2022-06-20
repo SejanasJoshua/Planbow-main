@@ -22,10 +22,15 @@ import AddIcon from '@mui/icons-material/AddOutlined';
 
 import labels from '@shared/labels';
 
+// const imagesLink = [
+// 	'https://themeselection.com/wp-content/uploads/2020/01/10-node-js-dashboard-admin-templates-2020.jpg',
+// 	'https://themeselection.com/wp-content/webpc-passthru.php?src=https://themeselection.com/wp-content/uploads/2020/11/best-tailwind-admin-templates-thegem-blog-timeline-large.jpg&nocache=1',
+// 	'https://themeselection.com/wp-content/webpc-passthru.php?src=https://themeselection.com/wp-content/uploads/2020/01/20-bootstrap-simple-admin-panel-template-free-thegem-blog-timeline-large.jpg&nocache=1',
+// ];
 const imagesLink = [
-	'https://themeselection.com/wp-content/uploads/2020/01/10-node-js-dashboard-admin-templates-2020.jpg',
-	'https://themeselection.com/wp-content/webpc-passthru.php?src=https://themeselection.com/wp-content/uploads/2020/11/best-tailwind-admin-templates-thegem-blog-timeline-large.jpg&nocache=1',
-	'https://themeselection.com/wp-content/webpc-passthru.php?src=https://themeselection.com/wp-content/uploads/2020/01/20-bootstrap-simple-admin-panel-template-free-thegem-blog-timeline-large.jpg&nocache=1',
+	{ src: './assets/images/img1.jpg', alt: 'Image1' },
+	{ src: './assets/images/img2.webp', alt: 'Image2' },
+	{ src: './assets/images/img3.webp', alt: 'Image3' },
 ];
 
 export default function MyPlanboards({ planboards }) {
@@ -36,6 +41,7 @@ export default function MyPlanboards({ planboards }) {
 		dispatch(updateURLHistory('/home'));
 		navigate('/create-planboard');
 	};
+	console.log(imagesLink[0].src);
 	return (
 		<Grid item xs={12}>
 			<Grid>
@@ -102,7 +108,8 @@ export default function MyPlanboards({ planboards }) {
 								sx={{ filter: 'grayscale(60%)' }}
 								component='img'
 								height='194'
-								image={imagesLink[index]}
+								// image={imagesLink[index]}
+								image={imagesLink[index].src}
 								alt='Paella dish'
 							/>
 							{/* <CardContent

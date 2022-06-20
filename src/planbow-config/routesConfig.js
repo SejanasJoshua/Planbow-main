@@ -7,13 +7,18 @@ import Dashboard from '@components/Dashboard/Dashboard.js';
 import PlanboardDesigner from '../components/PlanboardDesigner';
 import PlanboardComponents from '../components/PlanboardComponents';
 import { PlanboardDesignerProvider } from '../contexts/planboardDesigner';
+import Registration from '../components/Registration';
+import Workspace from '../components/Workspace';
+import Colleagues from '../components/Colleagues';
+import OnBoardComponents from '../components/OnBoardComponents';
+
 
 export default function App() {
 	return (
 		<div>
 			<Routes>
 				<Route path='/' element={<Layout />}>
-					<Route index element={<Login />} />
+					<Route index element={<OnBoardComponents />} />
 					<Route
 						path='planboard-designer'
 						element={
@@ -24,6 +29,14 @@ export default function App() {
 					/>
 					<Route path='login' element={<Login />} />
 					<Route path='invite' element={<Invite />} />
+
+					{/* we need to remove this route */}
+					<Route path='registration' element={<Registration />} />
+					<Route path='workspace' element={<Workspace />} />
+					<Route path='colleagues' element={<Colleagues />} />
+
+					
+					{/* we need to remove this route */}
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='planboard' element={<PlanboardComponents />} />
 

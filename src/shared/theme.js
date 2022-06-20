@@ -90,6 +90,20 @@ const theme = createTheme({
 		},
 	},
 	components: {
+		MuiTypography: {
+			styleOverrides:{
+				mainTitle: ({ theme }) => ({
+					// padding: theme.spacing(0, 1),
+					color: theme.palette.primary.main,
+					// fontSize: '1.2rem',
+					// textTransform: 'uppercase'
+				}),
+				subContent: ({theme}) => ({
+					color: theme.palette.gullGray.main,
+					fontSize: '14px'
+				})
+			}
+		},
 		MuiButton: {
 			styleOverrides: {
 				root: ({ theme }) => ({
@@ -122,9 +136,10 @@ const theme = createTheme({
 		MuiOutlinedInput: {
 			styleOverrides: {
 				root: () => ({
-					borderRadius: '1em',
+					borderRadius: '0.3em',
 					'& input': {
-						height: '20px',
+						// height: '20px',
+						// padding: '5px 14px'
 					},
 				}),
 			},

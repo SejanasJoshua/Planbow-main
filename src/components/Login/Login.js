@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import Avatar from '@mui/material/Avatar';
+import PropTypes from 'prop-types';
+// import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,53 +9,23 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
+import Icon from '@mdi/react';
+import { mdiFacebook, mdiGoogle } from '@mdi/js';
 import { updateUser, updateWorkspace } from '@redux/actions';
 import { useDispatch } from 'react-redux';
-// import { createSocket } from '../functions';
-// import getRequests from '@utils/getRequests';
-// import postRequests from '@utils/postRequests';
 import axiosRequests from '@utils/axiosRequests';
+import Divider from '@mui/material/Divider';
 
 import labels from '@shared/labels';
-// import gotoRouter from '@utils/GlobelFunction';
+import { ICONS } from '@shared/assets';
 
-// import gotoRouter from '../../utils/GlobelFunction';
-
-function Copyright(props) {
-	return (
-		<Typography
-			variant='body2'
-			color='text.secondary'
-			align='center'
-			{...props}
-		>
-			{'Copyright © '}
-			<Link color='inherit' href='https://mui.com/'>
-				Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
-export default function Login() {
+export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	// let socket;
-	// const addNewUserSocket = (userData) => {
-	// 	const { _id, fullName, email, defaultWorkspace } = userData;
-	// 	socket.emit('newUser', { _id, fullName, email, defaultWorkspace });
-	// };
-
-	// const handleGoogle = () => {
-	// 	window.location.replace(`${process.env.REACT_APP_URL}/auth/google`);
-	// };
 
 	const fetchWorkspace = async (id) => {
 		console.log('fetch workspace');
@@ -63,12 +34,6 @@ export default function Login() {
 		);
 		if (response) dispatch(updateWorkspace(response.data.data));
 	};
-
-	// const newSocketConnection = (userData) => {
-	// 	console.log('new socket');
-	// 	socket = createSocket();
-	// 	addNewUserSocket(userData);
-	// };
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -94,35 +59,76 @@ export default function Login() {
 	}, []);
 
 	return (
-		<Container
-			component='main'
-			maxWidth='xs'
-			sx={{
-				// background: (theme) => `${theme.palette.secondary.main}`,
-				// border: (theme) =>`1px solid ${theme.palette.amber.main}`,
-				paddingTop: 8,
-				paddingBottom: 8,
-				position: 'absolute',
-				top: '50%;',
-				left: '50%',
-				transform: 'translate(-50%, -50%)',
-			}}
-		>
+		<Container maxWidth='xs' sx={{ ...whiteBoxCenter }}>
 			<CssBaseline />
 			<Box
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
-					alignItems: 'center',
+					// alignItems: 'center',
 				}}
 			>
-				<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-					<LockOutlinedIcon />
-				</Avatar>
-				<Typography component='h1' variant='h5'>
-					{labels['component.login.label.sign-in']}
-				</Typography>
-				<Box component='form' onClick={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Grid>
+					<Grid
+						sx={{
+							alignItems: 'center',
+							display: 'flex',
+							justifyContent: 'center',
+							pb: 2,
+						}}
+					>
+						{/* <Avatar src={ICONS.logoBrandRound} sx={{ m: 1, bgcolor: 'primery.main' }}></Avatar> */}
+						<img src={ICONS.logoBrandRound} alt='Logo' />
+					</Grid>
+					<Grid>
+						<Typography component='h2' variant='mainTitle'>
+							{labels['component.login.label.sign-in-title']}
+						</Typography>
+						<Typography component='p' variant='subContent'>
+							{labels['component.login.label.sign-in-subtext']}
+						</Typography>
+					</Grid>
+				</Grid>
+
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						m: '10px 0',
+					}}
+				>
+					<Stack direction='row' spacing={2} sx={{ ...socialIcon }}>
+						<Button
+							variant='outlined'
+							startIcon={
+								<Icon
+									path={mdiGoogle}
+									color='#4285f4'
+									title='Google'
+									size={1}
+								/>
+							}
+						>
+							Google
+						</Button>
+						<Button
+							variant='outlined'
+							startIcon={
+								<Icon
+									path={mdiFacebook}
+									color='#4867aa'
+									title='Facebook'
+									size={1}
+								/>
+							}
+						>
+							Facebook
+						</Button>
+					</Stack>
+				</Box>
+				<Divider>OR</Divider>
+				<Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						margin='normal'
 						required
@@ -132,6 +138,7 @@ export default function Login() {
 						name='email'
 						autoComplete='email'
 						autoFocus
+						size='small'
 					/>
 					<TextField
 						margin='normal'
@@ -142,6 +149,7 @@ export default function Login() {
 						type='password'
 						id='password'
 						autoComplete='current-password'
+						size='small'
 					/>
 					<FormControlLabel
 						control={<Checkbox value='remember' color='primary' />}
@@ -162,14 +170,28 @@ export default function Login() {
 							</Link>
 						</Grid>
 						<Grid item>
-							<Link href='#' variant='body2'>
+							<Link
+								href='#'
+								variant='body2'
+								onClick={(e) => {
+									e.stopPropagation();
+									e.nativeEvent.stopImmediatePropagation();
+									setOnboardNav('registration');
+								}}
+							>
 								Don&rsquo;t have an account? Sign Up
 							</Link>
 						</Grid>
 					</Grid>
 				</Box>
 			</Box>
-			<Copyright sx={{ mt: 8, mb: 4 }} />
+			{/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
 		</Container>
 	);
 }
+
+Login.propTypes = {
+	setOnboardNav: PropTypes.func,
+	whiteBoxCenter: PropTypes.object,
+	socialIcon: PropTypes.object,
+};
