@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import { updateUser, updateWorkspace } from '@redux/actions';
 import { useDispatch } from 'react-redux';
-import { createSocket } from '../functions';
+// import { createSocket } from '../functions';
 // import getRequests from '@utils/getRequests';
 // import postRequests from '@utils/postRequests';
 import axiosRequests from '@utils/axiosRequests';
@@ -46,11 +46,11 @@ function Copyright(props) {
 export default function Login() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	let socket;
-	const addNewUserSocket = (userData) => {
-		const { _id, fullName, email, defaultWorkspace } = userData;
-		socket.emit('newUser', { _id, fullName, email, defaultWorkspace });
-	};
+	// let socket;
+	// const addNewUserSocket = (userData) => {
+	// 	const { _id, fullName, email, defaultWorkspace } = userData;
+	// 	socket.emit('newUser', { _id, fullName, email, defaultWorkspace });
+	// };
 
 	// const handleGoogle = () => {
 	// 	window.location.replace(`${process.env.REACT_APP_URL}/auth/google`);
@@ -64,11 +64,11 @@ export default function Login() {
 		if (response) dispatch(updateWorkspace(response.data.data));
 	};
 
-	const newSocketConnection = (userData) => {
-		console.log('new socket');
-		socket = createSocket();
-		addNewUserSocket(userData);
-	};
+	// const newSocketConnection = (userData) => {
+	// 	console.log('new socket');
+	// 	socket = createSocket();
+	// 	addNewUserSocket(userData);
+	// };
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -77,11 +77,12 @@ export default function Login() {
 			username: data.get('email'),
 			password: data.get('password'),
 		});
+		console.log(response.data);
 		if (response.data.message === 'success') {
 			if (response.data.data.defaultWorkspace)
 				fetchWorkspace(response.data.data.defaultWorkspace);
 			dispatch(updateUser(response.data.data));
-			newSocketConnection(response.data.data);
+			// newSocketConnection(response.data.data);
 
 			if (response.data.data.defaultWorkspace) navigate('/dashboard');
 			else navigate('/dashboard');
@@ -121,7 +122,7 @@ export default function Login() {
 				<Typography component='h1' variant='h5'>
 					{labels['component.login.label.sign-in']}
 				</Typography>
-				<Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Box component='form' onClick={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						margin='normal'
 						required

@@ -26,9 +26,15 @@ import PlanboardCanvas from '@components/PlanboardCanvas';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import // updateURLHistory,
+// updatePlanboard,
+// planboardComponentsModal,
+'@redux/actions';
 import { addActionItems }  from '@redux/actions';
 // import axios from 'axios';
 import axiosRequests from '@utils/axiosRequests';
+import { Popover } from '@mui/material';
+import NotificationPopup from '../Notification/NotificationPopup';
 
 function Copyright(props) {
 	return (
@@ -144,6 +150,19 @@ function DashboardContent() {
 		}
 	};
 
+	const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+
+	const handlePopoverOpen = (event) => {
+		setPopoverAnchor(event.currentTarget);
+	};
+
+	const handlePopoverClose = () => {
+		setPopoverAnchor(null);
+	};
+
+	const openPopover = Boolean(popoverAnchor);
+	const popoverID = open ? 'simple-popover' : undefined;
+
 	// const newPlanboard = async () => {
 	// 	let value = '00001';
 	// 	planboards.map((item) => {
@@ -247,9 +266,13 @@ function DashboardContent() {
 					>
 						{labels['component.home.label.welcome']} {user?.fullName}
 					</Typography>
-					<IconButton color='inherit'>
+					<IconButton
+						color='inherit'
+						onClick={handlePopoverOpen}
+						aria-describedby={popoverID}
+					>
 						<Badge badgeContent={4} color='secondary'>
-							<Icon path={mdiBellOutline} title='Home' size={1} />
+							<Icon path={mdiBellOutline} title='Notification' size={1} />
 						</Badge>
 					</IconButton>
 					<IconButton color='inherit'>
@@ -310,6 +333,18 @@ function DashboardContent() {
 					<Copyright sx={{ pt: 4 }} />
 				</Container>
 			</Box>
+			<Popover
+				id={popoverID}
+				open={openPopover}
+				anchorEl={popoverAnchor}
+				onClose={handlePopoverClose}
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'left',
+				}}
+			>
+				<NotificationPopup notifications={notifications} />
+			</Popover>
 		</Box>
 	);
 }

@@ -8,15 +8,50 @@ import IconButton from '@mui/material/IconButton';
 import Icon from '@mdi/react';
 import { mdiBellOutline, mdiHelpCircleOutline, mdiArrowLeft } from '@mdi/js';
 import { useSelector } from 'react-redux';
+import axiosRequests from '@utils/axiosRequests';
+import { Popover } from '@mui/material';
+import NotificationPopup from '@components/Notification/NotificationPopup';
 
 export default function PlanboardDesignerHeader() {
 	const navigate = useNavigate();
+	const [notifications, setNotifications] = React.useState([]);
 
 	const toComponentB = () => {
 		navigate('/dashboard');
 	};
-	let planboard = '';
-	planboard = useSelector((state) => state.planboard);
+	const { planboard, user } = useSelector((state) => state);
+	const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+
+	const handlePopoverOpen = (event) => {
+		setPopoverAnchor(event.currentTarget);
+	};
+
+	const handlePopoverClose = () => {
+		setPopoverAnchor(null);
+	};
+
+	const openPopover = Boolean(popoverAnchor);
+	const popoverID = open ? 'simple-popover' : undefined;
+
+	const getNotifications = async () => {
+		console.log('Fetching Notifications...');
+
+		try {
+			const response = await axiosRequests.getData(
+				`/notification/get?userID=${user._id}&email=${user.email}`
+			);
+			if (response.data.message === 'error') {
+				console.log('no notifications');
+			} else {
+				setNotifications(response.data.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
+	React.useEffect(() => {
+		if (user !== 'no-data') getNotifications();
+	}, [user]);
 
 	return (
 		<AppBar position='static'>
@@ -37,7 +72,7 @@ export default function PlanboardDesignerHeader() {
 					{planboard?.name}
 				</Typography>
 
-				<IconButton color='inherit'>
+				<IconButton color='inherit' onClick={handlePopoverOpen}>
 					<Badge badgeContent={4} color='secondary'>
 						<Icon path={mdiBellOutline} title='Home' size={1} />
 					</Badge>
@@ -46,6 +81,18 @@ export default function PlanboardDesignerHeader() {
 					<Icon path={mdiHelpCircleOutline} title='Home' size={1} />
 				</IconButton>
 			</Toolbar>
+			<Popover
+				id={popoverID}
+				open={openPopover}
+				anchorEl={popoverAnchor}
+				onClose={handlePopoverClose}
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'left',
+				}}
+			>
+				<NotificationPopup notifications={notifications} />
+			</Popover>
 		</AppBar>
 	);
 }

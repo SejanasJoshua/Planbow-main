@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Routes, Route, Outlet, Link } from 'react-router-dom';
 
 import Login from '@components/Login/Login';
+import Invite from '@components/Invite';
 import Dashboard from '@components/Dashboard/Dashboard.js';
 import PlanboardDesigner from '../components/PlanboardDesigner';
 import PlanboardComponents from '../components/PlanboardComponents';
@@ -22,6 +23,7 @@ export default function App() {
 						}
 					/>
 					<Route path='login' element={<Login />} />
+					<Route path='invite' element={<Invite />} />
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='planboard' element={<PlanboardComponents />} />
 

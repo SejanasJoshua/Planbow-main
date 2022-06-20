@@ -11,60 +11,75 @@ import Icon from '@mdi/react';
 import { mdiDeleteOutline } from '@mdi/js';
 import { mdiPencilOutline } from '@mdi/js';
 import PropTypes from 'prop-types';
+import axiosRequests from '@utils/axiosRequests';
 
 export default function PlanboardListView(props) {
-	let { planboards, handleDeleteOpen, handleEdit } = props;
+	let { planboards, handleDeleteOpen, handleEdit, assignedTasks } = props;
+	const [assignedTasksData, setAssignedTasksData] = React.useState([]);
+
+	React.useEffect(() => {
+		assignedTasks.assignedTasks.map(async (item) => {
+			const res = await axiosRequests.getData(
+				`/planboard/get?planboard=${item}`
+			);
+			setAssignedTasksData([...assignedTasksData, res.data.data]);
+		});
+	}, []);
+	React.useEffect(() => {
+		console.log(assignedTasksData);
+	}, [assignedTasksData]);
 
 	return (
-		<List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-			{planboards?.map((row) => (
-				<div key={row._id}>
-					<ListItem
-						alignItems='flex-start'
-						secondaryAction={
-							<>
-								<IconButton
-									edge='end'
-									aria-label='edit'
-									onClick={() => handleEdit(row)}
-								>
-									<Icon path={mdiPencilOutline} title='Edit' size={1} />
-								</IconButton>
-								<IconButton
-									edge='end'
-									aria-label='delete'
-									onClick={() => handleDeleteOpen(row._id)}
-								>
-									<Icon path={mdiDeleteOutline} title='Delete' size={1} />
-								</IconButton>
-							</>
-						}
-					>
-						<ListItemAvatar>
-							<Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
-						</ListItemAvatar>
-						<ListItemText
-							// primary='Brunch this weekend?'
-							primary={row.name}
-							secondary={
-								<React.Fragment>
-									<Typography
-										sx={{ display: 'inline' }}
-										component='span'
-										variant='body2'
-										color='text.primary'
+		<>
+			<List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+				{planboards?.map((row) => (
+					<div key={row._id}>
+						<ListItem
+							alignItems='flex-start'
+							secondaryAction={
+								<>
+									<IconButton
+										edge='end'
+										aria-label='edit'
+										onClick={() => handleEdit(row)}
 									>
-										{row.user}
-									</Typography>
-									— I&rsquo;ll be in your neighborhood doing errands this…
-								</React.Fragment>
+										<Icon path={mdiPencilOutline} title='Edit' size={1} />
+									</IconButton>
+									<IconButton
+										edge='end'
+										aria-label='delete'
+										onClick={() => handleDeleteOpen(row._id)}
+									>
+										<Icon path={mdiDeleteOutline} title='Delete' size={1} />
+									</IconButton>
+								</>
 							}
-						/>
-					</ListItem>
-					<Divider variant='inset' component='li' />
-				</div>
-			))}
-			{/*<ListItem
+						>
+							<ListItemAvatar>
+								<Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
+							</ListItemAvatar>
+							<ListItemText
+								// primary='Brunch this weekend?'
+								primary={row.name}
+								secondary={
+									<React.Fragment>
+										<Typography
+											sx={{ display: 'inline' }}
+											component='span'
+											variant='body2'
+											color='text.primary'
+										>
+											{row.user}
+										</Typography>
+										— I&rsquo;ll be in your neighborhood doing errands this…
+									</React.Fragment>
+								}
+							/>
+						</ListItem>
+						<Divider variant='inset' component='li' />
+					</div>
+				))}
+				{/*<ListItem
 				alignItems='flex-start'
 				secondaryAction={
 					<IconButton edge='end' aria-label='delete'>
@@ -137,11 +152,70 @@ export default function PlanboardListView(props) {
 					}
 				/>
 			</ListItem> */}
-		</List>
+			</List>
+			{assignedTasks.assignedTasks ? (
+				<>
+					<Typography variant='h3'>Assigned Tasks</Typography>
+					<List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+						{assignedTasksData.map((row) => (
+							<div key={row._id}>
+								<ListItem
+									alignItems='flex-start'
+									secondaryAction={
+										<>
+											<IconButton
+												edge='end'
+												aria-label='edit'
+												onClick={() => handleEdit(row)}
+											>
+												<Icon path={mdiPencilOutline} title='Edit' size={1} />
+											</IconButton>
+											<IconButton
+												edge='end'
+												aria-label='delete'
+												onClick={() => handleDeleteOpen(row._id)}
+											>
+												<Icon path={mdiDeleteOutline} title='Delete' size={1} />
+											</IconButton>
+										</>
+									}
+								>
+									<ListItemAvatar>
+										<Avatar
+											alt='Remy Sharp'
+											src='/static/images/avatar/1.jpg'
+										/>
+									</ListItemAvatar>
+									<ListItemText
+										// primary='Brunch this weekend?'
+										primary={row.name}
+										secondary={
+											<React.Fragment>
+												<Typography
+													sx={{ display: 'inline' }}
+													component='span'
+													variant='body2'
+													color='text.primary'
+												>
+													{row.user}
+												</Typography>
+												— I&rsquo;ll be in your neighborhood doing errands this…
+											</React.Fragment>
+										}
+									/>
+								</ListItem>
+								<Divider variant='inset' component='li' />
+							</div>
+						))}
+					</List>
+				</>
+			) : null}
+		</>
 	);
 }
 PlanboardListView.propTypes = {
 	planboards: PropTypes.array,
 	handleDeleteOpen: PropTypes.func,
 	handleEdit: PropTypes.func,
+	assignedTasks: PropTypes.object,
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
@@ -19,7 +19,8 @@ import PlanboardGridView from './PlanboardGridView';
 import PlanboardListView from './PlanboardListView';
 import PlanboardCanvas from '@components/PlanboardCanvas';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import axiosRequests from '@utils/axiosRequests';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	updateURLHistory,
 	updatePlanboard,
@@ -36,6 +37,8 @@ export default function PlanboardComponents({ planboards }) {
 	const [deleteSuccess, setDeleteSuccess] = React.useState(1);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const user = useSelector((state) => state.user);
+	const [assignedTasks, setAssignedTasks] = React.useState(null);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -91,9 +94,16 @@ export default function PlanboardComponents({ planboards }) {
 		navigate('/planboard-designer', { state: { id: 1, name: 'sabaoon' } });
 	};
 
-	// const ideationhandleClose = () => {
-	// 	setOpenIdeation(false);
-	// };
+	const fetchUserData = async () => {
+		const response = await axiosRequests.getData(
+			`/user?assignedTasks=true&id=${user._id}`
+		);
+		setAssignedTasks(response.data.data);
+	};
+
+	useEffect(() => {
+		user && fetchUserData();
+	}, [user]);
 	return (
 		<Grid container spacing={3}>
 			<Grid item xs={12}>
@@ -187,6 +197,7 @@ export default function PlanboardComponents({ planboards }) {
 						planboards={planboards}
 						handleDeleteOpen={handleDeleteOpen}
 						handleEdit={handleEdit}
+						assignedTasks={assignedTasks}
 					/>
 				)}
 			</Grid>

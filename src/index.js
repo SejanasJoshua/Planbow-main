@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
+import { SocketProvider } from './contexts/socket';
 
 let persistor = persistStore(store);
 
@@ -19,7 +20,9 @@ root.render(
 		<CssBaseline />
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
-				<App />
+				<SocketProvider>
+					<App />
+				</SocketProvider>
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>
