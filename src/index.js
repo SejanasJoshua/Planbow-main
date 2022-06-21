@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import { SocketProvider } from './contexts/socket';
+import { BrowserRouter } from 'react-router-dom';
 
 let persistor = persistStore(store);
 
@@ -18,13 +19,15 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
 		<CssBaseline />
-		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
-				<SocketProvider>
-					<App />
-				</SocketProvider>
-			</PersistGate>
-		</Provider>
+		<BrowserRouter>
+			<Provider store={store}>
+				<PersistGate loading={null} persistor={persistor}>
+					<SocketProvider>
+						<App />
+					</SocketProvider>
+				</PersistGate>
+			</Provider>
+		</BrowserRouter>
 	</React.StrictMode>
 );
 
