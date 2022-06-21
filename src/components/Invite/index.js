@@ -75,7 +75,7 @@ const Invite = () => {
 		evt.preventDefault();
 
 		var paste = evt.clipboardData.getData('text');
-		var emails = paste.match(/[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/g);
+		var emails = paste.match(/[\w\d\\.-]+@[\w\d\\.-]+\.[\w\d\\.-]+/g);
 
 		if (emails) {
 			var toBeAdded = emails.filter((email) => isInList(email));
@@ -114,7 +114,7 @@ const Invite = () => {
 	};
 
 	const isEmail = (email) => {
-		return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email);
+		return /[\w\d\\.-]+@[\w\d\\.-]+\.[\w\d\\.-]+/.test(email);
 	};
 
 	useEffect(() => {

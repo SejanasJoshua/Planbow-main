@@ -7,6 +7,7 @@ export const ICONS = {
 	shopTruck: LocalShippingIcon,
 	store: StoreIcon,
 	logoBrand: `${ICONS_PATH}/logo.svg`,
+	logoBrandRound: `${ICONS_PATH}/logopb.svg`,
 	startNode: `${ICONS_PATH}/planboard/start.png`,
 	customNode: `${ICONS_PATH}/planboard/ideation.png`,
 	ideation: `${ICONS_PATH}/planboard/ideation.png`,

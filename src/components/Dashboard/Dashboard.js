@@ -352,7 +352,7 @@ function DashboardContent() {
 export default function Dashboard() {
 	const dispatch = useDispatch();
 	React.useEffect(() => {
-	actionItemData();
+		actionItemData();
 	},[]);
 	const actionItemData = async () => {
 		const response = await axiosRequests.getData(
