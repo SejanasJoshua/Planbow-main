@@ -12,10 +12,12 @@ import Content from './component/Content';
 import Activity from './component/Activity';
 import PlanboardDesignerContext from '@contexts/planboardDesigner';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 export default function PlanboardDesigner() {
 	// const theme = useTheme();
 	// const [selectedNav, setselectedNav] = React.useState('ideasummary');
+	const location=useLocation();
 	const { selectedNav, setselectedNav, setPlanboard,actionItem:actionItemData } = useContext(
 		PlanboardDesignerContext
 	);
@@ -55,7 +57,7 @@ export default function PlanboardDesigner() {
 				}}
 			>
 				{selectedNav == 'ideasummary' ? (
-					<Summary creator={User} Planboard={planboardRedux} />
+					<Summary creator={User} Planboard={planboardRedux} location={location} />
 				) : selectedNav == 'ideacanvas' ? (
 					<Canvas />
 				) : selectedNav == 'ideaactionitem' ? (

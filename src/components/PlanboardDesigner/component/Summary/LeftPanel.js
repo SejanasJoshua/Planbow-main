@@ -39,8 +39,8 @@ export default function LeftPanel(props) {
 
 	const [state, setState] = useState({
 		creator: props?.creator?.fullName,
-		title: props?.Planboard?.name??'',
-		description: props?.Planboard?.description??'',
+		title: props?.location?.state?'':props?.Planboard?.name??'',
+		description: props?.location?.state?'':props?.Planboard?.description??'',
 		coCreators: [],
 		users:[],
 		startDate: new Date(),
