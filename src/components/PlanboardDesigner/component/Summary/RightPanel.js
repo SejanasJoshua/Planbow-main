@@ -4,7 +4,6 @@ import BasicTable from './BasicTable';
 import {Divider} from '@mui/material';
 function RightPanel() {
   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
  const data = {
   labels,
   datasets: [
