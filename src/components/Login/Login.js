@@ -16,7 +16,10 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiFacebook, mdiGoogle } from '@mdi/js';
 import { updateUser, updateWorkspace } from '@redux/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
+// import { createSocket } from '../functions';
+// import getRequests from '@utils/getRequests';
+// import postRequests from '@utils/postRequests';
 import axiosRequests from '@utils/axiosRequests';
 import Divider from '@mui/material/Divider';
 
@@ -53,9 +56,14 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 			else navigate('/dashboard');
 		}
 	};
-
+	const {user:User}=useSelector(state=>state);
 	useEffect(() => {
-		document.title = 'PlanBow - Login';
+		if(!User?.email){
+			document.title = 'PlanBow - Login';
+		}
+		else{
+			navigate('/dashboard');
+		}
 	}, []);
 
 	return (

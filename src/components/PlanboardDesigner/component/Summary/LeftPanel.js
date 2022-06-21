@@ -39,9 +39,10 @@ export default function LeftPanel(props) {
 
 	const [state, setState] = useState({
 		creator: props?.creator?.fullName,
-		title: props?.Planboard?.name??'',
-		description: props?.Planboard?.description??'',
+		title: props?.location?.state?'':props?.Planboard?.name??'',
+		description: props?.location?.state?'':props?.Planboard?.description??'',
 		coCreators: [],
+		users:[],
 		startDate: new Date(),
 		endDate: defaultEndDate(),
 		error: {
@@ -49,19 +50,24 @@ export default function LeftPanel(props) {
 			description: false,
 		},
 	});
-	const removeUserFromCoCreators = (newUser) => {
+	const removeUserFromCoCreators = (newUser,type) => {
 		setState({
 			...state,
-			coCreators: [...state.coCreators.filter((user) => user != newUser)],
+			[type]: [...state[type].filter((user) => user != newUser)],
 		});
 	};
-	const checkIfUserExists = (newUser) => {
-		const userExist = state.coCreators.filter((user) => user == newUser).length;
-		if (userExist) removeUserFromCoCreators(newUser);
+	const checkIfUserExists = (newUser,type) => {
+		const userExist = state[type].filter((user) => user == newUser).length;
+		if (userExist) removeUserFromCoCreators(newUser,type);
 		return !userExist;
 	};
 	const addUser = (selected, { props: { value } }) => {
-		if (state.coCreators.length == 0 || checkIfUserExists(value)) {
+		if (state.coCreators.length == 0 || checkIfUserExists(value,'users')) {
+			setState({ ...state, users: [...state.users, value] });
+		}
+	};
+	const addCoCreator = (selected, { props: { value } }) => {
+		if (state.coCreators.length == 0 || checkIfUserExists(value,'coCreators')) {
 			setState({ ...state, coCreators: [...state.coCreators, value] });
 		}
 	};
@@ -191,7 +197,7 @@ export default function LeftPanel(props) {
 										<Select
 											labelId='demo-simple-select-label'
 											id='demo-simple-select'
-											value={state.coCreators}
+											value={state.users}
 											style={{ width: '100%' }}
 											multiple
 											defaultValue={'User'}
@@ -199,6 +205,44 @@ export default function LeftPanel(props) {
 											input={<OutlinedInput label='Name' />}
 											onChange={(e, children) =>
 												addUser(e.target.value, children)
+											}
+										>
+											{[
+												...users.map((user) => (
+													<MenuItem key={user.id} value={user.email}>
+														{user.name}
+													</MenuItem>
+												)),
+											]}
+										</Select>
+									</Grid>
+								</Grid>
+							</Typography>
+						</Grid>
+
+						<Grid item>
+							<Typography variant='h5' style={{ width: '100%' }}>
+								<Grid
+									container
+									direction='row'
+									width='25rem'
+									justifyContent='space-between'
+									alignItems='flex-start'
+								>
+									<Grid item>Add Co-Creators:</Grid>
+									<Grid item style={{ width: '100%' }}>
+										<InputLabel id='demo-simple-select-label'>Co-Creator</InputLabel>
+										<Select
+											labelId='demo-simple-select-label'
+											id='demo-simple-select'
+											value={state.coCreators}
+											style={{ width: '100%' }}
+											multiple
+											defaultValue={'User'}
+											label='User'
+											input={<OutlinedInput label='Name' />}
+											onChange={(e, children) =>
+												addCoCreator(e.target.value, children)
 											}
 										>
 											{[
@@ -328,5 +372,6 @@ export default function LeftPanel(props) {
 }
 LeftPanel.propTypes = {
 	creator: PropTypes.object,
-	Planboard: PropTypes.object
+	Planboard: PropTypes.object,
+	location: PropTypes.object
 };

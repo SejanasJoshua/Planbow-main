@@ -1,5 +1,6 @@
-import * as React from 'react';
-import { Routes, Route, Outlet, Link } from 'react-router-dom';
+import React,{ useEffect } from 'react';
+import { Routes, Route, Outlet, Link,useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Login from '@components/Login/Login';
 import Invite from '@components/Invite';
@@ -14,6 +15,13 @@ import OnBoardComponents from '../components/OnBoardComponents';
 
 
 export default function App() {
+	const {user:User}=useSelector(state=>state);
+	const navigate=useNavigate();
+	useEffect(() => {
+		if (!User?.email) {
+			navigate('/');
+		};
+	}, []);
 	return (
 		<div>
 			<Routes>

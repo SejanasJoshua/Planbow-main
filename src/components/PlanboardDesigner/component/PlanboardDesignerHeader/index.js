@@ -10,9 +10,10 @@ import { mdiBellOutline, mdiHelpCircleOutline, mdiArrowLeft } from '@mdi/js';
 import { useSelector } from 'react-redux';
 import axiosRequests from '@utils/axiosRequests';
 import { Popover } from '@mui/material';
+import PropTypes from 'prop-types';
 import NotificationPopup from '@components/Notification/NotificationPopup';
 
-export default function PlanboardDesignerHeader() {
+export default function PlanboardDesignerHeader(props) {
 	const navigate = useNavigate();
 	const [notifications, setNotifications] = React.useState([]);
 
@@ -69,7 +70,7 @@ export default function PlanboardDesignerHeader() {
 					<Icon path={mdiArrowLeft} title='Home' size={1} />
 				</IconButton>
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-					{planboard?.name}
+					{props?.location?.state?.editable?'':planboard?.name}
 				</Typography>
 
 				<IconButton color='inherit' onClick={handlePopoverOpen}>
@@ -96,3 +97,6 @@ export default function PlanboardDesignerHeader() {
 		</AppBar>
 	);
 }
+PlanboardDesignerHeader.propTypes = {
+	location: PropTypes.object
+};

@@ -41,7 +41,9 @@ export default function PlanboardComponents({ planboards }) {
 	const [assignedTasks, setAssignedTasks] = React.useState(null);
 
 	const handleClickOpen = () => {
-		setOpen(true);
+		// setOpen(true);
+		navigate('/planboard-designer',
+		{state:{editable:true}});
 	};
 
 	const handleClose = () => {
