@@ -1,12 +1,9 @@
-import React, { useEffect, useState, useTransition } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-// import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -14,12 +11,9 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import axiosRequests from '@utils/axiosRequests';
 import labels from '@shared/labels';
-import gotoRouter from '@utils/GlobelFunction';
 import { Alert } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateWorkspace } from '@redux/actions';
-
-// import gotoRouter from '../../utils/GlobelFunction';
 
 function Copyright(props) {
 	return (
@@ -40,7 +34,6 @@ function Copyright(props) {
 }
 
 export default function Workspace() {
-	const [isPending, startTransition] = useTransition();
 	const [workspace, setWorkspace] = useState('');
 	const [error, setError] = useState(null);
 	const [isValid, setIsValid] = useState(false);
@@ -49,10 +42,6 @@ export default function Workspace() {
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
-	const dashboardPage = () => {
-		// navigate('/dashboard');
-	};
 
 	const handleChange = (value) => {
 		setWorkspace(value);
@@ -85,14 +74,6 @@ export default function Workspace() {
 		}
 	};
 
-	// const handleSubmit = (event) => {
-	// 	event.preventDefault();
-	// 	const data = new FormData(event.currentTarget);
-	// 	console.log({
-	// 		email: data.get('email'),
-	// 		password: data.get('password'),
-	// 	});
-	// };
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const response = await axiosRequests.postData('/workspace/create', {
@@ -179,7 +160,6 @@ export default function Workspace() {
 					>
 						Create Workspace
 					</Button>
-					{isPending ? ' Loading...' : null}
 				</Box>
 			</Box>
 			<Copyright sx={{ mt: 8, mb: 4 }} />
