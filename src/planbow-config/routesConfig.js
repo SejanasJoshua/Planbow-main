@@ -1,5 +1,5 @@
-import React,{ useEffect } from 'react';
-import { Routes, Route, Outlet, Link,useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Login from '@components/Login/Login';
@@ -12,15 +12,15 @@ import Registration from '../components/Registration';
 import Workspace from '../components/Workspace';
 import Colleagues from '../components/Colleagues';
 import OnBoardComponents from '../components/OnBoardComponents';
-
+import Logout from '@components/Logout/Logout';
 
 export default function App() {
-	const {user:User}=useSelector(state=>state);
-	const navigate=useNavigate();
+	const { user: User } = useSelector((state) => state);
+	const navigate = useNavigate();
 	useEffect(() => {
 		if (!User?.email) {
 			navigate('/');
-		};
+		}
 	}, []);
 	return (
 		<div>
@@ -36,6 +36,7 @@ export default function App() {
 						}
 					/>
 					<Route path='login' element={<Login />} />
+					<Route path='logout' element={<Logout />} />
 					<Route path='invite' element={<Invite />} />
 
 					{/* we need to remove this route */}
@@ -43,7 +44,6 @@ export default function App() {
 					<Route path='workspace' element={<Workspace />} />
 					<Route path='colleagues' element={<Colleagues />} />
 
-					
 					{/* we need to remove this route */}
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='planboard' element={<PlanboardComponents />} />

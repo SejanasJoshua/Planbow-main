@@ -46,16 +46,6 @@ const initialNodes = [
 		},
 		position: { x: 500, y: 100 },
 	},
-	{
-		id: '100',
-		type: 'newNode',
-		data: { label: 'Ideation', sourcePosition: 'right' },
-		style: {
-			minHeight: 'auto',
-			color: '#5447C8',
-		},
-		position: { x: 700, y: 300 },
-	},
 ];
 const initialEdges = [];
 const nodeTypes = {
@@ -90,7 +80,7 @@ export default function Canvas() {
 	}, []);
 	const onClickEdge = useCallback((event, element) => {
 		// clickedEdge = element;
-		console.log(event,element);
+		console.log(event, element);
 	}, []);
 
 	// const loadComponentonDoubleClick = (selectedNode) => {
@@ -133,7 +123,6 @@ export default function Canvas() {
 	// };
 
 	const addNodes = (data) => {
-		console.log(data);
 		let source = clickedNode.id;
 		let count = 0;
 		data.map(async (item) => {
@@ -221,14 +210,40 @@ export default function Canvas() {
 
 	useEffect(() => {
 		deleteNodes();
+		const compare1 = initialNodes.map((node) => {
+			return node.id;
+		});
+		const compare = nodes.map((node) => {
+			return node.id;
+		});
+		if (compare1 !== compare) onSave();
 	}, [nodes]);
 	useEffect(() => {
 		deleteEdges();
+		if (edges !== initialEdges) onSave();
 	}, [edges]);
+	// useEffect(() => {
+	// 	if (planboard.canvas) {
+	// 		setNodes(planboard.canvas.nodes || []);
+	// 		setEdges(planboard.canvas.edges || []);
+	// 	}
+	// }, [planboard]);
+	const getCanvasData = async () => {
+		const response = await axiosRequests.getData(
+			`/planboard/get?planboard=${planboard._id}`
+		);
+		const { canvas } = response.data.data;
+		setNodes(canvas.nodes);
+		setEdges(canvas.edges);
+	};
+
 	useEffect(() => {
-		if (planboard.canvas) {
-			setNodes(planboard.canvas.nodes || []);
-			setEdges(planboard.canvas.edges || []);
+		if (planboard._id) {
+			try {
+				getCanvasData();
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	}, [planboard]);
 
@@ -255,8 +270,9 @@ export default function Canvas() {
 					onNodeClick={onClickNode}
 					onEdgeClick={onClickEdge}
 					// onNodeDoubleClick={(n) => loadComponentonDoubleClick(n)}
-					minZoom={0.05}
+					minZoom={0.35}
 					onInit={setFlowInstance}
+					maxZoom={1}
 				>
 					<MiniMap
 						nodeColor={(node_) => {
