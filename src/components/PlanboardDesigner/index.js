@@ -32,7 +32,7 @@ export default function PlanboardDesigner() {
 	return (
 		<Container maxWidth='xl'>
 			<Box sx={{ margin: '0 -24px' }}>
-				<PlanboardDesignerHeader />
+				<PlanboardDesignerHeader location={location}  />
 			</Box>
 			<Box
 				sx={{
@@ -45,6 +45,7 @@ export default function PlanboardDesigner() {
 				<PlanboardDesignerTab
 					selectedNav={selectedNav}
 					setselectedNav={setselectedNav}
+					location={location}
 				/>
 			</Box>
 			<Box

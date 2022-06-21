@@ -372,5 +372,6 @@ export default function LeftPanel(props) {
 }
 LeftPanel.propTypes = {
 	creator: PropTypes.object,
-	Planboard: PropTypes.object
+	Planboard: PropTypes.object,
+	location: PropTypes.object
 };
