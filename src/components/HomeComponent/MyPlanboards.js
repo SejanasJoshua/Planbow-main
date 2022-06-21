@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 // import { mdiDotsVertical } from '@mdi/js';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { updateURLHistory } from '@redux/actions';
+// import { updateURLHistory } from '@redux/actions';
 import { useDispatch } from 'react-redux';
 import AddIcon from '@mui/icons-material/AddOutlined';
 
@@ -36,7 +36,7 @@ const imagesLink = [
 export default function MyPlanboards({ planboards }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
+	dispatch();
 	const handleNewPlanboard = () => {
 		// dispatch(updateURLHistory('/home'));
 		navigate('/planboard-designer',

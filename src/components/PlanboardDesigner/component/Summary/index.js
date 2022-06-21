@@ -17,9 +17,9 @@ export default function IdeationSummary(props) {
 					<Grid item md={12}>
 						<LeftPanel {...props} />
 					</Grid>
-					<Grid item md={12} style={{width:'40%',height:'20%'}}>
+					{/* <Grid item md={12} style={{width:'40%',height:'20%'}}> */}
 						<RightPanel {...props} />
-					</Grid>
+					{/* </Grid> */}
 				</Grid>
 			
 		</>
