@@ -75,3 +75,9 @@ export const userLoggedOut = () => {
 		type: 'USER_LOGGED_OUT',
 	};
 };
+
+export const resetState = () => {
+	return {
+		type: 'RESET_STATE',
+	};
+};
