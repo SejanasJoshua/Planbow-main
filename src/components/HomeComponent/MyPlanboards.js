@@ -36,7 +36,7 @@ const imagesLink = [
 export default function MyPlanboards({ planboards }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	dispatch();
+	// dispatch();
 	const handleNewPlanboard = () => {
 		// dispatch(updateURLHistory('/home'));
 		navigate('/planboard-designer',
