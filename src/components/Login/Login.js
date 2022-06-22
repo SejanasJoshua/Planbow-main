@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiFacebook, mdiGoogle } from '@mdi/js';
 import { updateUser, updateWorkspace } from '@redux/actions';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import { createSocket } from '../functions';
 // import getRequests from '@utils/getRequests';
 // import postRequests from '@utils/postRequests';
@@ -37,7 +37,9 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 		);
 		if (response) dispatch(updateWorkspace(response.data.data));
 	};
-
+	const handleGoogleSignIn = () => {
+		window.location.replace(`${process.env.REACT_APP_URL}/auth/google`);
+	};
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
@@ -56,12 +58,11 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 			else navigate('/dashboard');
 		}
 	};
-	const {user:User}=useSelector(state=>state);
+	const { user: User } = useSelector((state) => state);
 	useEffect(() => {
-		if(!User?.email){
+		if (!User?.email) {
 			document.title = 'PlanBow - Login';
-		}
-		else{
+		} else {
 			navigate('/dashboard');
 		}
 	}, []);
@@ -109,6 +110,7 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 					<Stack direction='row' spacing={2} sx={{ ...socialIcon }}>
 						<Button
 							variant='outlined'
+							onClick={handleGoogleSignIn}
 							startIcon={
 								<Icon
 									path={mdiGoogle}

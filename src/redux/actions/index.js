@@ -69,3 +69,9 @@ export const updatePlanboardCanvas = (data) => {
 		payload: data,
 	};
 };
+
+export const userLoggedOut = () => {
+	return {
+		type: 'USER_LOGGED_OUT',
+	};
+};
