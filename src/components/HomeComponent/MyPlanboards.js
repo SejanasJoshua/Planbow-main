@@ -4,29 +4,17 @@ import Typography from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-// import CardContent from '@mui/material/CardContent';
-// import Box from '@mui/material/Box';
-// import IconButton from '@mui/material/IconButton';
 import CardMedia from '@mui/material/CardMedia';
 // import AccountCircleIcon from '@mui/icons-material/AccountCircleOutlined';
 import Avatar from '@mui/material/Avatar';
-// import Icon from '@mdi/react';
-// import { mdiDotsVertical } from '@mdi/js';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-// import { updateURLHistory } from '@redux/actions';
+import { updateURLHistory } from '@redux/actions';
 import { useDispatch } from 'react-redux';
 import AddIcon from '@mui/icons-material/AddOutlined';
 
-// import Title from '@shared/Title';
-
 import labels from '@shared/labels';
 
-// const imagesLink = [
-// 	'https://themeselection.com/wp-content/uploads/2020/01/10-node-js-dashboard-admin-templates-2020.jpg',
-// 	'https://themeselection.com/wp-content/webpc-passthru.php?src=https://themeselection.com/wp-content/uploads/2020/11/best-tailwind-admin-templates-thegem-blog-timeline-large.jpg&nocache=1',
-// 	'https://themeselection.com/wp-content/webpc-passthru.php?src=https://themeselection.com/wp-content/uploads/2020/01/20-bootstrap-simple-admin-panel-template-free-thegem-blog-timeline-large.jpg&nocache=1',
-// ];
 const imagesLink = [
 	{ src: './assets/images/img1.jpg', alt: 'Image1' },
 	{ src: './assets/images/img2.webp', alt: 'Image2' },
@@ -36,7 +24,6 @@ const imagesLink = [
 export default function MyPlanboards({ planboards }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	// dispatch();
 	const handleNewPlanboard = () => {
 		dispatch(updateURLHistory('/dashboard'));
 		navigate('/planboard-designer', { state: { editable: true } });
