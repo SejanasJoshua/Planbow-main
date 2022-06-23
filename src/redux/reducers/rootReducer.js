@@ -1,4 +1,3 @@
-
 import { combineReducers } from 'redux';
 
 // import filtersReducer from '../features/filters/filtersSlice';
@@ -16,10 +15,9 @@ const appReducer = combineReducers({
 	settings: settings,
 });
 
-const rootReducer = (state, action) => {   
-    if(action.type === 'RESET_STATE')
-       state = undefined;
+const rootReducer = (state, action) => {
+	if (action.type === 'RESET_STATE') state = undefined;
 
-    return appReducer(state, action);
- };
- export default rootReducer;
+	return appReducer(state, action);
+};
+export default rootReducer;
