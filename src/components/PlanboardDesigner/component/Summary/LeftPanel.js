@@ -36,7 +36,7 @@ export default function LeftPanel(props) {
 		const date = new Date();
 		return new Date(date.setDate(date.getDate() + 1));
 	};
-
+	const [showButton,setButton]=useState(props?.location?.state?true:false);
 	const [state, setState] = useState({
 		creator: props?.creator?.fullName,
 		title: props?.location?.state?'':props?.Planboard?.name??'',
@@ -359,9 +359,9 @@ export default function LeftPanel(props) {
 								justifyContent='space-between'
 								alignItems='flex-start'
 							>
-								<Button variant='contained' onClick={handleSubmit}>
+								{showButton?<Button variant='contained' onClick={handleSubmit}>
 									Submit
-								</Button>
+								</Button>:null}
 							</Grid>
 						</Grid>
 					</Stack>
