@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -11,37 +10,18 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import axiosRequests from '@utils/axiosRequests';
 import labels from '@shared/labels';
-import { Alert } from '@mui/material';
+import { Alert, Avatar } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateWorkspace } from '@redux/actions';
 
-function Copyright(props) {
-	return (
-		<Typography
-			variant='body2'
-			color='text.secondary'
-			align='center'
-			{...props}
-		>
-			{'Copyright © '}
-			<Link color='inherit' href='https://mui.com/'>
-				Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 export default function Workspace() {
+	const [loading, setLoading] = React.useState(false);
+	const { user: userRedux } = useSelector((state) => state);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [workspace, setWorkspace] = useState('');
 	const [error, setError] = useState(null);
 	const [isValid, setIsValid] = useState(false);
-
-	const { user: userRedux } = useSelector((state) => state);
-
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
 
 	const handleChange = (value) => {
 		setWorkspace(value);
@@ -62,12 +42,15 @@ export default function Workspace() {
 		}
 	};
 	const checkDuplicateWorkspace = async () => {
+		setLoading(true);
 		try {
 			const response = await axiosRequests.getData(
 				`/workspace/get?workspace=${workspace}`
 			);
+			setLoading(false);
 			if (response.data.message === 'conflict') {
 				setError('Workspace Already Exists!');
+				setIsValid(false);
 			}
 		} catch (e) {
 			console.log(e);
@@ -150,19 +133,18 @@ export default function Workspace() {
 						// 	),
 						// }}
 					/>
-
-					<Button
+					<LoadingButton
 						type='submit'
+						loading={loading}
 						fullWidth
 						variant='contained'
 						disabled={!isValid}
 						sx={{ mt: 3, mb: 2 }}
 					>
 						Create Workspace
-					</Button>
+					</LoadingButton>
 				</Box>
 			</Box>
-			<Copyright sx={{ mt: 8, mb: 4 }} />
 		</Container>
 	);
 }

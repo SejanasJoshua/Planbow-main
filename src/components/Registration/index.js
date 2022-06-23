@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
+import { useNavigate } from 'react-router-dom';
+import axiosRequests from '@utils/axiosRequests';
 
 import Icon from '@mdi/react';
 import { mdiFacebook, mdiGoogle } from '@mdi/js';
@@ -24,13 +26,32 @@ export default function Registration({
 	whiteBoxCenter,
 	socialIcon,
 }) {
-	const handleSubmit = (event) => {
-		event.preventDefault();
+	// const handleSubmit = (event) => {
+	// 	event.preventDefault();
+	// 	const data = new FormData(event.currentTarget);
+	// 	console.log({
+	// 		email: data.get('email'),
+	// 		password: data.get('password'),
+	// 	});
+	// };
+	const navigate = useNavigate();
+	const handleSubmit = async (event) => {
+		// event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log({
+		const response = await axiosRequests.postData('/auth/local/register', {
+			fullName: data.get('name'),
 			email: data.get('email'),
 			password: data.get('password'),
 		});
+		console.log(response.data);
+		if (response.data.message === 'success') {
+			// if (response.data.data.defaultWorkspace)
+			// 	fetchWorkspace(response.data.data.defaultWorkspace);
+			// dispatch(updateUser(response.data.data));
+			// newSocketConnection(response.data.data);
+
+			navigate('/login');
+		}
 	};
 	return (
 		<Container fixed>
@@ -166,7 +187,7 @@ export default function Registration({
 										name='name'
 										autoComplete='name'
 										autoFocus
-										size="small"
+										size='small'
 									/>
 									<TextField
 										margin='normal'
@@ -176,7 +197,7 @@ export default function Registration({
 										label='Email Address'
 										name='email'
 										autoComplete='email'
-										size="small"
+										size='small'
 										// autoFocus
 									/>
 									<TextField
@@ -188,7 +209,7 @@ export default function Registration({
 										type='password'
 										id='password'
 										autoComplete='current-password'
-										size="small"
+										size='small'
 									/>
 
 									<TextField
@@ -200,7 +221,7 @@ export default function Registration({
 										type='password'
 										id='confirmpassword'
 										autoComplete='current-password'
-										size="small"
+										size='small'
 									/>
 									<FormControlLabel
 										control={<Checkbox value='remember' color='primary' />}
@@ -211,6 +232,11 @@ export default function Registration({
 										fullWidth
 										variant='contained'
 										sx={{ mt: 3, mb: 2 }}
+										// onClick={(e) => {
+										// 	e.stopPropagation();
+										// 	e.nativeEvent.stopImmediatePropagation();
+										// 	setOnboardNav('workspace');
+										// }}
 									>
 										Create an Planbow account
 									</Button>

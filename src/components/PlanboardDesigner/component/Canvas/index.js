@@ -278,14 +278,14 @@ export default function Canvas() {
 					<MiniMap
 						nodeColor={(node_) => {
 							switch (node_.type) {
-								case 'input':
-									return 'red';
-								case 'default':
-									return '#00ff00';
-								case 'output':
-									return 'rgb(0,0,255)';
-								default:
-									return '#eee';
+							case 'input':
+								return 'red';
+							case 'default':
+								return '#00ff00';
+							case 'output':
+								return 'rgb(0,0,255)';
+							default:
+								return '#eee';
 							}
 						}}
 					/>

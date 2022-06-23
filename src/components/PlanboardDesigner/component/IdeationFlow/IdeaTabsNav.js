@@ -1,3 +1,4 @@
+/*eslint no-mixed-spaces-and-tabs: [2, "smart-tabs"]*/
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
@@ -34,18 +35,18 @@ export default function IdeaTabsNav({ SetideaNavTab, ideaNavTab }) {
 					sx={
 						ideaNavTab == data.route
 							? {
-								mx: '10px',
-								ml: 0,
-								fontSize: '14px',
-								borderBottom: '3px solid',
-								cursor: 'pointer',
+									mx: '10px',
+									ml: 0,
+									fontSize: '14px',
+									borderBottom: '3px solid',
+									cursor: 'pointer',
 							  }
 							: {
-								mx: '10px',
-								ml: 0,
-								fontSize: '14px',
-								pb: '3px',
-								cursor: 'pointer',
+									mx: '10px',
+									ml: 0,
+									fontSize: '14px',
+									pb: '3px',
+									cursor: 'pointer',
 							  }
 					}
 					key={index}

@@ -17,7 +17,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItems from './listItems';
 import labels from '@shared/labels';
 import Icon from '@mdi/react';
-import { mdiBellOutline, mdiHelpCircleOutline } from '@mdi/js';
+import { mdiBellOutline, mdiAccountCircle } from '@mdi/js';
 
 import { ICONS } from '@shared/assets';
 import HomeComponent from '@components/HomeComponent';
@@ -30,7 +30,7 @@ import // updateURLHistory,
 // updatePlanboard,
 // planboardComponentsModal,
 '@redux/actions';
-import { addActionItems }  from '@redux/actions';
+import { addActionItems } from '@redux/actions';
 // import axios from 'axios';
 import axiosRequests from '@utils/axiosRequests';
 import { Popover } from '@mui/material';
@@ -276,7 +276,7 @@ function DashboardContent() {
 						</Badge>
 					</IconButton>
 					<IconButton color='inherit'>
-						<Icon path={mdiHelpCircleOutline} title='Home' size={1} />
+						<Icon path={mdiAccountCircle} title='Account' size={1} />
 					</IconButton>
 				</Toolbar>
 			</AppBar>
@@ -353,14 +353,14 @@ export default function Dashboard() {
 	const dispatch = useDispatch();
 	React.useEffect(() => {
 		actionItemData();
-	},[]);
+	}, []);
 	const actionItemData = async () => {
 		const response = await axiosRequests.getData(
 			'/planboardComponent/get?planboardID=624dba3e9c437cb32217cb90'
 		);
-		if (response?.data?.data?.length){
+		if (response?.data?.data?.length) {
 			dispatch(addActionItems(response?.data?.data));
-		} 
+		}
 	};
 	return <DashboardContent />;
 }

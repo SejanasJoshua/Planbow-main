@@ -39,7 +39,7 @@ function Copyright(props) {
 export default function Colleagues() {
 	const [isPending, startTransition] = useTransition();
 	const navigate = useNavigate();
-  
+
 	const dashboardPage = () => {
 		navigate('/dashboard');
 	};
@@ -110,9 +110,9 @@ export default function Colleagues() {
 						type='submit'
 						fullWidth
 						variant='contained'
-						  onClick={() => {
-							  gotoRouter(startTransition,dashboardPage);
-						  }}
+						onClick={() => {
+							gotoRouter(startTransition, dashboardPage);
+						}}
 						sx={{ mt: 3, mb: 2 }}
 					>
 						{labels['component.login.label.sign-in']}
@@ -126,7 +126,7 @@ export default function Colleagues() {
 						</Grid>
 						<Grid item>
 							<Link href='#' variant='body2'>
-								{'Don\'t have an account? Sign Up'}
+								Dont have an account? Sign Up
 							</Link>
 						</Grid>
 					</Grid>

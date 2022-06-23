@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Login from '@components/Login/Login';
+// import Login from '@components/Login/Login';
 import Invite from '@components/Invite';
 import Dashboard from '@components/Dashboard/Dashboard.js';
 import PlanboardDesigner from '../components/PlanboardDesigner';
@@ -35,8 +35,11 @@ export default function App() {
 							</PlanboardDesignerProvider>
 						}
 					/>
-					<Route path='login' element={<Login />} />
-					<Route path='logout' element={<Logout />} />
+					<Route path='login' element={<OnBoardComponents />} />
+					<Route
+						path='logout'
+						element={User ? <Logout /> : <OnBoardComponents />}
+					/>
 					<Route path='invite' element={<Invite />} />
 
 					{/* we need to remove this route */}

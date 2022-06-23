@@ -43,7 +43,7 @@ export default function PlanboardComponents({ planboards }) {
 	const handleClickOpen = () => {
 		// setOpen(true);
 		navigate('/planboard-designer',
-		{state:{editable:true}});
+			{state:{editable:true}});
 	};
 
 	const handleClose = () => {

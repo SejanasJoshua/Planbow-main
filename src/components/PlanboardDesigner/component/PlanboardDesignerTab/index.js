@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
@@ -58,7 +59,7 @@ export default function PlanboardDesignerTab({
 									ml: 0,
 									fontSize: '14px',
 									pb: '3px',
-									cursor: location?.state?.editable?'no-drop':'pointer',
+									cursor: location?.state?.editable ? 'no-drop' : 'pointer',
 									pointerEvents: location?.state?.editable ? 'none' : 'auto',
 							  }
 					}
@@ -76,5 +77,5 @@ export default function PlanboardDesignerTab({
 PlanboardDesignerTab.propTypes = {
 	setselectedNav: PropTypes.func,
 	selectedNav: PropTypes.string,
-	location:PropTypes.object
+	location: PropTypes.object,
 };

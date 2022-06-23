@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useState, useEffect } from 'react';
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -117,9 +118,14 @@ export default function ActionItems() {
 									nodeId={data?.id}
 									label={
 										state.filter((res) => res.componentID == data?._id).length
-											? state.filter((res) => res.componentID == data?._id)?.[0]
+											? state
+													.filter((res) => res.componentID == data?._id)?.[0]
 													?.data.map((child) => (
-														<Grid key={child?._id} container sx={{ alignItems: 'center' }}>
+														<Grid
+															key={child?._id}
+															container
+															sx={{ alignItems: 'center' }}
+														>
 															<Grid item xs={12} sm={3} md={4}>
 																{child?.idea}
 															</Grid>
