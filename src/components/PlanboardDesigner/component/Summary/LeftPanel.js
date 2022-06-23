@@ -36,13 +36,17 @@ export default function LeftPanel(props) {
 		const date = new Date();
 		return new Date(date.setDate(date.getDate() + 1));
 	};
-
+	// const [showButton, setButton] = useState(
+	// 	props?.location?.state ? true : false
+	// );
 	const [state, setState] = useState({
 		creator: props?.creator?.fullName,
-		title: props?.location?.state?'':props?.Planboard?.name??'',
-		description: props?.location?.state?'':props?.Planboard?.description??'',
+		title: props?.location?.state ? '' : props?.Planboard?.name ?? '',
+		description: props?.location?.state
+			? ''
+			: props?.Planboard?.description ?? '',
 		coCreators: [],
-		users:[],
+		users: [],
 		startDate: new Date(),
 		endDate: defaultEndDate(),
 		error: {
@@ -50,24 +54,27 @@ export default function LeftPanel(props) {
 			description: false,
 		},
 	});
-	const removeUserFromCoCreators = (newUser,type) => {
+	const removeUserFromCoCreators = (newUser, type) => {
 		setState({
 			...state,
 			[type]: [...state[type].filter((user) => user != newUser)],
 		});
 	};
-	const checkIfUserExists = (newUser,type) => {
+	const checkIfUserExists = (newUser, type) => {
 		const userExist = state[type].filter((user) => user == newUser).length;
-		if (userExist) removeUserFromCoCreators(newUser,type);
+		if (userExist) removeUserFromCoCreators(newUser, type);
 		return !userExist;
 	};
 	const addUser = (selected, { props: { value } }) => {
-		if (state.coCreators.length == 0 || checkIfUserExists(value,'users')) {
+		if (state.coCreators.length == 0 || checkIfUserExists(value, 'users')) {
 			setState({ ...state, users: [...state.users, value] });
 		}
 	};
 	const addCoCreator = (selected, { props: { value } }) => {
-		if (state.coCreators.length == 0 || checkIfUserExists(value,'coCreators')) {
+		if (
+			state.coCreators.length == 0 ||
+			checkIfUserExists(value, 'coCreators')
+		) {
 			setState({ ...state, coCreators: [...state.coCreators, value] });
 		}
 	};
@@ -231,7 +238,9 @@ export default function LeftPanel(props) {
 								>
 									<Grid item>Add Co-Creators:</Grid>
 									<Grid item style={{ width: '100%' }}>
-										<InputLabel id='demo-simple-select-label'>Co-Creator</InputLabel>
+										<InputLabel id='demo-simple-select-label'>
+											Co-Creator
+										</InputLabel>
 										<Select
 											labelId='demo-simple-select-label'
 											id='demo-simple-select'
@@ -359,9 +368,16 @@ export default function LeftPanel(props) {
 								justifyContent='space-between'
 								alignItems='flex-start'
 							>
-								<Button variant='contained' onClick={handleSubmit}>
-									Submit
-								</Button>
+								{/* {showButton ? (
+									<Button variant='contained' onClick={handleSubmit}>
+										Submit
+									</Button>
+								) : null} */}
+								{props?.location?.state ? (
+									<Button variant='contained' onClick={handleSubmit}>
+										Submit
+									</Button>
+								) : null}
 							</Grid>
 						</Grid>
 					</Stack>
@@ -373,5 +389,5 @@ export default function LeftPanel(props) {
 LeftPanel.propTypes = {
 	creator: PropTypes.object,
 	Planboard: PropTypes.object,
-	location: PropTypes.object
+	location: PropTypes.object,
 };

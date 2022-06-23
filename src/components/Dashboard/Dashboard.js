@@ -26,6 +26,7 @@ import PlanboardCanvas from '@components/PlanboardCanvas';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import SidePanel from './SidePanel';
 import // updateURLHistory,
 // updatePlanboard,
 // planboardComponentsModal,
@@ -151,6 +152,7 @@ function DashboardContent() {
 	};
 
 	const [popoverAnchor, setPopoverAnchor] = React.useState(null);
+	const [sidePanel, setSidePanel] = React.useState(null);
 
 	const handlePopoverOpen = (event) => {
 		setPopoverAnchor(event.currentTarget);
@@ -158,6 +160,13 @@ function DashboardContent() {
 
 	const handlePopoverClose = () => {
 		setPopoverAnchor(null);
+	};
+	const handleSidePanelOpen = (event) => {
+		setSidePanel(event.currentTarget);
+	};
+
+	const handleSidePanelClose = () => {
+		setSidePanel(null);
 	};
 
 	const openPopover = Boolean(popoverAnchor);
@@ -275,8 +284,12 @@ function DashboardContent() {
 							<Icon path={mdiBellOutline} title='Notification' size={1} />
 						</Badge>
 					</IconButton>
-					<IconButton color='inherit'>
-						<Icon path={mdiAccountCircle} title='Account' size={1} />
+					<IconButton
+						color='inherit'
+						onClick={handleSidePanelOpen}
+						aria-describedby={'side-panel'}
+					>
+						<Icon path={mdiAccountCircle} title='Home' size={1} />
 					</IconButton>
 				</Toolbar>
 			</AppBar>
@@ -344,6 +357,19 @@ function DashboardContent() {
 				}}
 			>
 				<NotificationPopup notifications={notifications} />
+			</Popover>
+			<Popover
+				id={'side-panel'}
+				open={Boolean(sidePanel)}
+				anchorEl={sidePanel}
+				onClose={handleSidePanelClose}
+				style={{ marginRight: '50px ' }}
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'left',
+				}}
+			>
+				<SidePanel />
 			</Popover>
 		</Box>
 	);
