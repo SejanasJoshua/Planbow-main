@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import axiosRequests from '@utils/axiosRequests';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PopUpComponent from '../../../PopUpComponent';
 import {
 	Input,
@@ -15,13 +15,13 @@ import {
 	TextField,
 	Stack,
 	Button,
-	TextareaAutosize
+	TextareaAutosize,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { updatePlanboard } from '@redux/actions';
 export default function LeftPanel(props) {
-	const { user: User,workspace:Workspace } = useSelector((state) => state);
-	const dispatch= useDispatch();
+	const { user: User, workspace: Workspace } = useSelector((state) => state);
+	const dispatch = useDispatch();
 	const users = [
 		{ id: 1, email: '1@gmail.com', name: '1John' },
 		{ id: 2, email: '2@gmail.com', name: '2John' },
@@ -60,10 +60,10 @@ export default function LeftPanel(props) {
 			description: false,
 		},
 	});
-	const [popup,setPopUp]=useState({
-		message:'',
-		type:'',
-	})
+	const [popup, setPopUp] = useState({
+		message: '',
+		type: '',
+	});
 	const removeUserFromCoCreators = (newUser, type) => {
 		setState({
 			...state,
@@ -142,7 +142,7 @@ export default function LeftPanel(props) {
 	};
 	const handleSubmit = async () => {
 		if (!checkFields()) {
-			const response=await axiosRequests.postData('/planboard/create', {
+			const response = await axiosRequests.postData('/planboard/create', {
 				name: state.title,
 				workspace: Workspace._id,
 				user: User._id,
@@ -152,14 +152,17 @@ export default function LeftPanel(props) {
 				endDate: state.endDate,
 				startDate: state.startDate,
 			});
-		if(response?.data?.data){
-			console.log(response.data.data);
-			dispatch(updatePlanboard(response.data.data));
-		}
+			if (response?.data?.data) {
+				console.log(response.data.data);
+				dispatch(updatePlanboard(response.data.data));
+			}
+			if (response?.data?.data === 'success') {
+				setPopUp('Planboard created Successfully');
+			}
 		}
 		console.log(state);
 	};
-	
+
 	return (
 		<>
 			{
@@ -416,7 +419,7 @@ export default function LeftPanel(props) {
 					</Stack>
 				</Grid>
 			}
-			<PopUpComponent message={popup.message} type={popup.type}/>
+			<PopUpComponent message={popup.message} type={popup.type} />
 		</>
 	);
 }
