@@ -10,7 +10,6 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
-import faker from 'faker';
 
 ChartJS.register(
 	CategoryScale,
@@ -41,12 +40,12 @@ export const data = {
 	datasets: [
 		{
 			label: 'Dataset 1',
-			data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+			data: [220,334,564,55,434,778,124],
 			backgroundColor: 'rgba(255, 99, 132, 0.5)',
 		},
 		{
 			label: 'Dataset 2',
-			data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+			data: [225,339,569,60,439,783,129],
 			backgroundColor: 'rgba(53, 162, 235, 0.5)',
 		},
 	],
