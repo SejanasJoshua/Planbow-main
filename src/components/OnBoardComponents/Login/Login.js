@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,11 +17,16 @@ import Icon from '@mdi/react';
 import { mdiFacebook, mdiGoogle } from '@mdi/js';
 import { updateUser, updateWorkspace } from '@redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
+// import { useFormik } from 'formik';
 // import { createSocket } from '../functions';
 // import getRequests from '@utils/getRequests';
 // import postRequests from '@utils/postRequests';
 import axiosRequests from '@utils/axiosRequests';
 import Divider from '@mui/material/Divider';
+
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+// import { FormHelperText } from '@material-ui/core';
+import * as Yup from 'yup';
 
 import labels from '@shared/labels';
 import { ICONS } from '@shared/assets';
@@ -40,13 +45,18 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 	const handleGoogleSignIn = () => {
 		window.location.replace(`${process.env.REACT_APP_URL}/auth/google`);
 	};
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
+	const handleSubmit = async (values, props) => {
+		// console.log(value);
+		// event.preventDefault();
+		// const data = new FormData(event.currentTarget);
 		const response = await axiosRequests.postData('/auth/local/login', {
-			username: data.get('email'),
-			password: data.get('password'),
+			username: values.email,
+			password: values.password,
 		});
+		setTimeout(() => {
+			props.resetForm();
+			props.setSubmitting(false);
+		}, 2000);
 		console.log(response.data);
 		if (response.data.message === 'success') {
 			if (response.data.data.defaultWorkspace)
@@ -66,6 +76,26 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 			navigate('/dashboard');
 		}
 	}, []);
+
+	const initialValues = {
+		email: '',
+		password: '',
+	};
+	const validationSchema = Yup.object().shape({
+		email: Yup.string().email('Enter valid email').required('Required'),
+		password: Yup.string()
+			.min(6, 'Password minimum length should be 6')
+			.required('Required'),
+	});
+
+	// const onSubmit = (values, props) => {
+	// 	console.log(values);
+	// 	console.log(props);
+	// 	setTimeout(() => {
+	// 		props.resetForm();
+	// 		props.setSubmitting(false);
+	// 	}, 2000);
+	// };
 
 	return (
 		<Container maxWidth='xs' sx={{ ...whiteBoxCenter }}>
@@ -138,42 +168,54 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 					</Stack>
 				</Box>
 				<Divider>OR</Divider>
-				<Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-					<TextField
-						margin='normal'
-						required
-						fullWidth
-						id='email'
-						label='Email Address'
-						name='email'
-						autoComplete='email'
-						autoFocus
-						size='small'
-					/>
-					<TextField
-						margin='normal'
-						required
-						fullWidth
-						name='password'
-						label='Password'
-						type='password'
-						id='password'
-						autoComplete='current-password'
-						size='small'
-					/>
-					<FormControlLabel
-						control={<Checkbox value='remember' color='primary' />}
-						label='Remember me'
-					/>
-					<Button
-						type='submit'
-						fullWidth
-						variant='contained'
-						sx={{ mt: 3, mb: 2 }}
-					>
-						{labels['component.login.label.sign-in']}
-					</Button>
-					<Grid container>
+				<Formik
+					initialValues={initialValues}
+					validationSchema={validationSchema}
+					onSubmit={handleSubmit}
+				>
+					{() => (
+						<Form>
+							<Field
+								as={TextField}
+								margin='normal'
+								required
+								fullWidth
+								id='email'
+								label='Email Address'
+								name='email'
+								autoComplete='email'
+								autoFocus
+								size='small'
+								helperText={<ErrorMessage name='email' />}
+							/>
+							<Field
+								as={TextField}
+								margin='normal'
+								required
+								fullWidth
+								name='password'
+								label='Password'
+								type='password'
+								id='password'
+								autoComplete='current-password'
+								size='small'
+								helperText={<ErrorMessage name='password' />}
+							/>
+							{/* <FormControlLabel
+								control={
+									<Field as={Checkbox} value='remember' color='primary' />
+								}
+								label='Remember me'
+							/> */}
+							<Button
+								type='submit'
+								fullWidth
+								variant='contained'
+								sx={{ mt: 3, mb: 2 }}
+							>
+								{labels['component.login.label.sign-in']}
+							</Button>
+							<Grid container>
 						<Grid item xs>
 							<Link
 								onClick={() => navigate('/forgot-password')}
@@ -197,7 +239,9 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 							</Link>
 						</Grid>
 					</Grid>
-				</Box>
+						</Form>
+					)}
+				</Formik>
 			</Box>
 			{/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
 		</Container>
@@ -208,4 +252,6 @@ Login.propTypes = {
 	setOnboardNav: PropTypes.func,
 	whiteBoxCenter: PropTypes.object,
 	socialIcon: PropTypes.object,
+	resetForm: PropTypes.object,
+	setSubmitting: PropTypes.object,
 };
