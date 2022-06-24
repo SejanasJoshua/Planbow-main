@@ -26,31 +26,93 @@ export default function Registration({
 	whiteBoxCenter,
 	socialIcon,
 }) {
-	// const handleSubmit = (event) => {
-	// 	event.preventDefault();
-	// 	const data = new FormData(event.currentTarget);
-	// 	console.log({
-	// 		email: data.get('email'),
-	// 		password: data.get('password'),
-	// 	});
-	// };
 	const navigate = useNavigate();
-	const handleSubmit = async (event) => {
-		// event.preventDefault();
-		const data = new FormData(event.currentTarget);
+
+	const [input, setInput] = React.useState({
+		username: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+	});
+
+	const [error, setError] = React.useState({
+		username: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		terms: '',
+	});
+
+	const [isChecked, setIsChecked] = React.useState(false);
+
+	const onInputChange = (e) => {
+		const { name, value } = e.target;
+		setInput((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+		validateInput(e);
+	};
+	const validateInput = (e) => {
+		let { name, value } = e.target;
+		var regularExpression = /^[a-zA-Z0-9!@#$%^&*]{8,30}$/;
+		setError((prev) => {
+			const stateObj = { ...prev, [name]: '' };
+
+			switch (name) {
+				case 'username':
+					if (!value) {
+						stateObj[name] = 'Please enter your Name.';
+					} else if (value.length < 4) {
+						stateObj[name] = 'Please enter a valid Username.';
+					}
+					break;
+				case 'email':
+					if (!value) {
+						stateObj[name] = 'Please enter your EmailId.';
+					}
+					break;
+				case 'password':
+					if (!value) {
+						stateObj[name] = 'Please enter Password.';
+					} else if (input.confirmPassword && value !== input.confirmPassword) {
+						stateObj['confirmPassword'] =
+							'Password and Confirm Password does not match.';
+					} else if (!regularExpression.test(value)) {
+						stateObj[name] =
+							'password should contain atleast one number and one special character and can be in the range 8-30 characters';
+					} else {
+						stateObj['confirmPassword'] = input.confirmPassword
+							? ''
+							: error.confirmPassword;
+					}
+					break;
+
+				case 'confirmPassword':
+					if (!value) {
+						stateObj[name] = 'Please enter Confirm Password.';
+					} else if (input.password && value !== input.password) {
+						stateObj[name] = 'Password and Confirm Password does not match.';
+					}
+					break;
+
+				default:
+					break;
+			}
+
+			return stateObj;
+		});
+	};
+
+	const handleSubmit = async () => {
 		const response = await axiosRequests.postData('/auth/local/register', {
-			fullName: data.get('name'),
-			email: data.get('email'),
-			password: data.get('password'),
+			fullName: input.username,
+			email: input.email,
+			password: input.confirmPassword,
 		});
 		console.log(response.data);
 		if (response.data.message === 'success') {
-			// if (response.data.data.defaultWorkspace)
-			// 	fetchWorkspace(response.data.data.defaultWorkspace);
-			// dispatch(updateUser(response.data.data));
-			// newSocketConnection(response.data.data);
-
-			navigate('/login');
+			navigate('/');
 		}
 	};
 	return (
@@ -175,19 +237,25 @@ export default function Registration({
 								<Box
 									component='form'
 									onSubmit={handleSubmit}
-									noValidate
+									// noValidate
 									sx={{ mt: 1 }}
 								>
 									<TextField
 										margin='normal'
 										required
 										fullWidth
-										id='name'
+										id='username'
 										label='Name'
-										name='name'
+										name='username'
 										autoComplete='name'
 										autoFocus
 										size='small'
+										placeholder='Enter Full Name'
+										value={input.username}
+										onChange={onInputChange}
+										onBlur={validateInput}
+										error={error.username}
+										helperText={error.username}
 									/>
 									<TextField
 										margin='normal'
@@ -197,8 +265,14 @@ export default function Registration({
 										label='Email Address'
 										name='email'
 										autoComplete='email'
+										type='email'
 										size='small'
-										// autoFocus
+										placeholder='Enter Email Id'
+										value={input.email}
+										onChange={onInputChange}
+										onBlur={validateInput}
+										error={error.email}
+										helperText={error.email}
 									/>
 									<TextField
 										margin='normal'
@@ -210,21 +284,39 @@ export default function Registration({
 										id='password'
 										autoComplete='current-password'
 										size='small'
+										placeholder='Enter Password'
+										value={input.password}
+										onChange={onInputChange}
+										onBlur={validateInput}
+										error={error.password}
+										helperText={error.password}
 									/>
 
 									<TextField
 										margin='normal'
 										required
 										fullWidth
-										name='confirmpassword'
+										name='confirmPassword'
 										label='Confirm Password'
-										type='password'
 										id='confirmpassword'
 										autoComplete='current-password'
 										size='small'
+										placeholder='Confirm Password'
+										value={input.confirmPassword}
+										onChange={onInputChange}
+										onBlur={validateInput}
+										error={error.confirmPassword}
+										helperText={error.confirmPassword}
 									/>
 									<FormControlLabel
-										control={<Checkbox value='remember' color='primary' />}
+										control={
+											<Checkbox
+												name='terms'
+												value={isChecked}
+												onChange={() => setIsChecked(!isChecked)}
+												color='primary'
+											/>
+										}
 										label='I read and accept terms and conditions'
 									/>
 									<Button
@@ -232,31 +324,29 @@ export default function Registration({
 										fullWidth
 										variant='contained'
 										sx={{ mt: 3, mb: 2 }}
-										// onClick={(e) => {
-										// 	e.stopPropagation();
-										// 	e.nativeEvent.stopImmediatePropagation();
-										// 	setOnboardNav('workspace');
-										// }}
+										disabled={
+											error.username ||
+											error.email ||
+											error.password ||
+											error.confirmPassword ||
+											!isChecked
+										}
 									>
 										Create an Planbow account
 									</Button>
 									<Grid container>
-										<Grid item xs>
-											<Link href='#' variant='body2'>
-												{labels['component.login.label.forgot-password']}
-											</Link>
-										</Grid>
+										<Grid item xs />
 										<Grid item>
 											<Link
-												href='#'
 												variant='body2'
 												onClick={(e) => {
 													e.stopPropagation();
 													e.nativeEvent.stopImmediatePropagation();
-													setOnboardNav('registration');
+													setOnboardNav('login');
 												}}
+												sx={{ cursor: 'pointer' }}
 											>
-												Don&rsquo;t have an account? Sign Up
+												Have an account? Sign In
 											</Link>
 										</Grid>
 									</Grid>

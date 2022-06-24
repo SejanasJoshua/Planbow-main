@@ -1,27 +1,22 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Outlet, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-// import Login from '@components/Login/Login';
 import Invite from '@components/Invite';
 import Dashboard from '@components/Dashboard/Dashboard.js';
 import PlanboardDesigner from '../components/PlanboardDesigner';
 import PlanboardComponents from '../components/PlanboardComponents';
 import { PlanboardDesignerProvider } from '../contexts/planboardDesigner';
-import Registration from '../components/Registration';
+import Registration from '../components/OnBoardComponents/Registration';
 import Workspace from '../components/Workspace';
 import Colleagues from '../components/Colleagues';
 import OnBoardComponents from '../components/OnBoardComponents';
 import Logout from '@components/Logout/Logout';
+import ResetPassword from '../components/OnBoardComponents/ResetPassword';
+import ForgotPassword from '../components/OnBoardComponents/ForgotPassword';
 
 export default function App() {
 	const { user: User } = useSelector((state) => state);
-	const navigate = useNavigate();
-	useEffect(() => {
-		if (!User?.email) {
-			navigate('/');
-		}
-	}, []);
+
 	return (
 		<div>
 			<Routes>
@@ -41,6 +36,8 @@ export default function App() {
 						element={User ? <Logout /> : <OnBoardComponents />}
 					/>
 					<Route path='invite' element={<Invite />} />
+					<Route path='forgot-password' element={<ForgotPassword />} />
+					<Route path='reset-password/:id/:token' element={<ResetPassword />} />
 
 					{/* we need to remove this route */}
 					<Route path='registration' element={<Registration />} />

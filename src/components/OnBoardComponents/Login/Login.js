@@ -175,19 +175,23 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 					</Button>
 					<Grid container>
 						<Grid item xs>
-							<Link href='#' variant='body2'>
+							<Link
+								onClick={() => navigate('/forgot-password')}
+								variant='body2'
+								sx={{ cursor: 'pointer' }}
+							>
 								{labels['component.login.label.forgot-password']}
 							</Link>
 						</Grid>
 						<Grid item>
 							<Link
-								href='#'
 								variant='body2'
 								onClick={(e) => {
 									e.stopPropagation();
 									e.nativeEvent.stopImmediatePropagation();
 									setOnboardNav('registration');
 								}}
+								sx={{ cursor: 'pointer' }}
 							>
 								Don&rsquo;t have an account? Sign Up
 							</Link>

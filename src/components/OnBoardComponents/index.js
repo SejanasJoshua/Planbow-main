@@ -1,6 +1,6 @@
 import React from 'react';
-import Login from '../Login/Login';
-import Registration from '../Registration';
+import Login from './Login/Login';
+import Registration from './Registration';
 import Box from '@mui/material/Box';
 
 const bg = {
@@ -34,9 +34,17 @@ export default function OnBoardComponents() {
 	return (
 		<Box sx={{ ...bg }}>
 			{onboardNav === 'login' ? (
-				<Login setOnboardNav={setOnboardNav} socialIcon={socialIcon} whiteBoxCenter={whiteBoxCenter} />
+				<Login
+					setOnboardNav={setOnboardNav}
+					socialIcon={socialIcon}
+					whiteBoxCenter={whiteBoxCenter}
+				/>
 			) : onboardNav === 'registration' ? (
-				<Registration setOnboardNav={setOnboardNav} socialIcon={socialIcon} whiteBoxCenter={whiteBoxCenter} />
+				<Registration
+					setOnboardNav={setOnboardNav}
+					socialIcon={socialIcon}
+					whiteBoxCenter={whiteBoxCenter}
+				/>
 			) : null}
 		</Box>
 	);
