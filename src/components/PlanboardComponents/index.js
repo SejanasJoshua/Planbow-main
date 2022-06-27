@@ -79,7 +79,7 @@ export default function PlanboardComponents({ planboards }) {
 	const handleEdit = (planboard) => {
 		dispatch(updateURLHistory('/dashboard'));
 		dispatch(updatePlanboard(planboard));
-		navigate('/planboard-designer',{state:{editable:true}});
+		navigate('/planboard-designer',{state:{editable:true,planboard}});
 	};
 
 	const handleDeleteOpen = (id) => {

@@ -21,7 +21,9 @@ import PropTypes from 'prop-types';
 import { updatePlanboard } from '@redux/actions';
 export default function LeftPanel(props) {
 	const { user: User, workspace: Workspace } = useSelector((state) => state);
+	const [visible, setVisible] = useState(true);
 	const dispatch = useDispatch();
+	const ParentState = props?.location?.state;
 	const users = [
 		{ id: 1, email: '1@gmail.com', name: '1John' },
 		{ id: 2, email: '2@gmail.com', name: '2John' },
@@ -47,9 +49,11 @@ export default function LeftPanel(props) {
 	// );
 	const [state, setState] = useState({
 		creator: props?.creator?.fullName,
-		title: props?.location?.state ? '' : props?.Planboard?.name ?? '',
+		title: props?.location?.state
+			? ParentState?.planboard?.name
+			: props?.Planboard?.name ?? '',
 		description: props?.location?.state
-			? ''
+			? ParentState?.planboard?.description
 			: props?.Planboard?.description ?? '',
 		coCreators: [],
 		users: [],
@@ -140,9 +144,10 @@ export default function LeftPanel(props) {
 		}
 		return error;
 	};
-	const handleSubmit = async () => {
-		if (!checkFields()) {
-			const response = await axiosRequests.postData('/planboard/create', {
+	const toggleApi = async (endpoint) => {
+		let requestData = '';
+		if (endpoint.split('/').slice(-1)[0].toLowerCase() === 'create') {
+			requestData = {
 				name: state.title,
 				workspace: Workspace._id,
 				user: User._id,
@@ -151,13 +156,37 @@ export default function LeftPanel(props) {
 				notificationTypes: [],
 				endDate: state.endDate,
 				startDate: state.startDate,
-			});
+			};
+			const response = await axiosRequests.postData(endpoint, { ...requestData });
+			return response;
+		}
+		requestData = {
+			users: state.users,
+			endDate: state.endDate,
+			description: state.description,
+			planboardID: ParentState?.planboard?._id,
+		};
+		const response = await axiosRequests.putData(endpoint, { ...requestData });
+		return response;
+	};
+	const handleSubmit =async () => {
+		if (!checkFields()) {
+			const response = ParentState?.newPlanboard
+				? await toggleApi('/planboard/create')
+				: await toggleApi('/planboard/update');
 			if (response?.data?.data) {
 				console.log(response.data.data);
 				dispatch(updatePlanboard(response.data.data));
 			}
-			if (response?.data?.data === 'success') {
-				setPopUp('Planboard created Successfully');
+			if (response?.data?.message === 'success') {
+				setPopUp({
+					message: ParentState?.newPlanboard
+						? 'Planboard is successfully created'
+						: 'Planboard is successfully updated',
+					type: 'success',
+				});
+			} else {
+				setPopUp({ message: 'Some Server Error', type: 'error' });
 			}
 		}
 		console.log(state);
@@ -202,25 +231,31 @@ export default function LeftPanel(props) {
 									alignItems='flex-start'
 								>
 									<Grid item>Title:</Grid>
-									<Grid item lr={18}>
-										<Input
-											onChange={(e) => {
-												setState({ ...state, title: e.target.value });
-											}}
-											value={state?.title}
-										/>
-										{state?.error?.title ? (
-											<Typography
-												variant='body2'
-												gutterBottom
-												style={{ width: '100%', ...errorClass }}
-											>
-												Please enter the title
-											</Typography>
-										) : (
-											''
-										)}
-									</Grid>
+									{ParentState?.newPlanboard ? (
+										<Grid item lr={18}>
+											<Input
+												onChange={(e) => {
+													setState({ ...state, title: e.target.value });
+												}}
+												value={state?.title}
+											/>
+											{state?.error?.title ? (
+												<Typography
+													variant='body2'
+													gutterBottom
+													style={{ width: '100%', ...errorClass }}
+												>
+													Please enter the title
+												</Typography>
+											) : (
+												''
+											)}
+										</Grid>
+									) : (
+										<Grid item lr={18}>
+											{state?.title}
+										</Grid>
+									)}
 								</Grid>
 							</Typography>
 						</Grid>
@@ -311,9 +346,10 @@ export default function LeftPanel(props) {
 									width='25rem'
 									justifyContent='space-between'
 									alignItems='flex-start'
+									style={ParentState.newPlanboard?{}:{cursor:'not-allowed'}}
 								>
 									<Grid item>Start Date:</Grid>
-									<Grid item style={{ width: '100%' }}>
+									<Grid item style={{ width: '100%' ,...ParentState.newPlanboard?{}:{pointerEvents:'none'} }}>
 										<LocalizationProvider dateAdapter={AdapterDateFns}>
 											<DesktopDatePicker
 												label='Date desktop'
@@ -419,7 +455,14 @@ export default function LeftPanel(props) {
 					</Stack>
 				</Grid>
 			}
-			<PopUpComponent message={popup.message} type={popup.type} />
+			{popup.type != '' ? (
+				<PopUpComponent
+					message={popup.message}
+					type={popup.type}
+					visible={visible}
+					setVisible={setVisible}
+				/>
+			) : null}
 		</>
 	);
 }

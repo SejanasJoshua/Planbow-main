@@ -26,7 +26,7 @@ export default function MyPlanboards({ planboards }) {
 	const dispatch = useDispatch();
 	const handleNewPlanboard = () => {
 		dispatch(updateURLHistory('/dashboard'));
-		navigate('/planboard-designer', { state: { editable: true } });
+		navigate('/planboard-designer', { state: { editable: true,newPlanboard:true } });
 	};
 	console.log(imagesLink[0].src);
 	return (

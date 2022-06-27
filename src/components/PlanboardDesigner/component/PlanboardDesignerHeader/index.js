@@ -13,6 +13,7 @@ export default function PlanboardDesignerHeader(props) {
 		navigate('/dashboard');
 	};
 	const { planboard } = useSelector((state) => state);
+	const ParentState=props?.location?.state;
 
 	return (
 		<AppBar position='static'>
@@ -30,7 +31,8 @@ export default function PlanboardDesignerHeader(props) {
 					<Icon path={mdiArrowLeft} title='Home' size={1} />
 				</IconButton>
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-					{props?.location?.state?.editable ? '' : planboard?.name}
+					{props?.location?.state?.editable ? 
+					ParentState?.planboard?.name : planboard?.name}
 				</Typography>
 			</Toolbar>
 		</AppBar>
