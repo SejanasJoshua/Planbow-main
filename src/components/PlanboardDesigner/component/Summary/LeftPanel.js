@@ -16,6 +16,9 @@ import {
 	Stack,
 	Button,
 	TextareaAutosize,
+	Switch,
+	FormGroup,
+	FormControlLabel,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { updatePlanboard } from '@redux/actions';
@@ -44,9 +47,7 @@ export default function LeftPanel(props) {
 		const date = new Date();
 		return new Date(date.setDate(date.getDate() + 1));
 	};
-	// const [showButton, setButton] = useState(
-	// 	props?.location?.state ? true : false
-	// );
+	const [editButton, toggleSwitch] = useState(false);
 	const [state, setState] = useState({
 		creator: props?.creator?.fullName,
 		title: props?.location?.state
@@ -157,7 +158,9 @@ export default function LeftPanel(props) {
 				endDate: state.endDate,
 				startDate: state.startDate,
 			};
-			const response = await axiosRequests.postData(endpoint, { ...requestData });
+			const response = await axiosRequests.postData(endpoint, {
+				...requestData,
+			});
 			return response;
 		}
 		requestData = {
@@ -169,13 +172,12 @@ export default function LeftPanel(props) {
 		const response = await axiosRequests.putData(endpoint, { ...requestData });
 		return response;
 	};
-	const handleSubmit =async () => {
+	const handleSubmit = async () => {
 		if (!checkFields()) {
 			const response = ParentState?.newPlanboard
 				? await toggleApi('/planboard/create')
 				: await toggleApi('/planboard/update');
 			if (response?.data?.data) {
-				console.log(response.data.data);
 				dispatch(updatePlanboard(response.data.data));
 			}
 			if (response?.data?.message === 'success') {
@@ -189,11 +191,28 @@ export default function LeftPanel(props) {
 				setPopUp({ message: 'Some Server Error', type: 'error' });
 			}
 		}
-		console.log(state);
+	};
+	const toggleEdit = () => {
+		if (ParentState?.newPlanboard) return true;
+		return editButton;
 	};
 
 	return (
 		<>
+			{!ParentState?.newPlanboard ? (
+				<FormGroup>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={editButton}
+								onChange={() => toggleSwitch(!editButton)}
+								color='warning'
+							/>
+						}
+						label='Edit'
+					/>
+				</FormGroup>
+			) : null}
 			{
 				<Grid
 					style={{ border: '2px 2px solid black' }}
@@ -231,7 +250,7 @@ export default function LeftPanel(props) {
 									alignItems='flex-start'
 								>
 									<Grid item>Title:</Grid>
-									{ParentState?.newPlanboard ? (
+									{toggleEdit() ? (
 										<Grid item lr={18}>
 											<Input
 												onChange={(e) => {
@@ -346,22 +365,31 @@ export default function LeftPanel(props) {
 									width='25rem'
 									justifyContent='space-between'
 									alignItems='flex-start'
-									style={ParentState?.newPlanboard?{}:{cursor:'not-allowed'}}
 								>
 									<Grid item>Start Date:</Grid>
-									<Grid item style={{ width: '100%' ,...ParentState?.newPlanboard?{}:{pointerEvents:'none'} }}>
-										<LocalizationProvider dateAdapter={AdapterDateFns}>
-											<DesktopDatePicker
-												label='Date desktop'
-												inputFormat='dd/MM/yyyy'
-												value={state.startDate}
-												onChange={(value, keyboardInputValue) =>
-													setDate(value, keyboardInputValue, 'startDate')
-												}
-												minDate={new Date()}
-												renderInput={(params) => <TextField {...params} />}
-											/>
-										</LocalizationProvider>
+									<Grid
+										item
+										style={{
+											width: '100%',
+											...(toggleEdit() ? {} : { pointerEvents: 'none' }),
+										}}
+									>
+										{toggleEdit() ? (
+											<LocalizationProvider dateAdapter={AdapterDateFns}>
+												<DesktopDatePicker
+													label='Date desktop'
+													inputFormat='dd/MM/yyyy'
+													value={state.startDate}
+													onChange={(value, keyboardInputValue) =>
+														setDate(value, keyboardInputValue, 'startDate')
+													}
+													minDate={new Date()}
+													renderInput={(params) => <TextField {...params} />}
+												/>
+											</LocalizationProvider>
+										) : (
+											new Date(state.startDate).toDateString()
+										)}
 									</Grid>
 								</Grid>
 							</Typography>
@@ -377,19 +405,29 @@ export default function LeftPanel(props) {
 									alignItems='flex-start'
 								>
 									<Grid item>End Date:</Grid>
-									<Grid item style={{ width: '100%' }}>
-										<LocalizationProvider dateAdapter={AdapterDateFns}>
-											<DesktopDatePicker
-												label='End Date'
-												inputFormat='dd/MM/yyyy'
-												value={state.endDate}
-												onChange={(value, keyboardInputValue) =>
-													setDate(value, keyboardInputValue, 'endDate')
-												}
-												minDate={new Date().setDate(new Date().getDate() + 1)}
-												renderInput={(params) => <TextField {...params} />}
-											/>
-										</LocalizationProvider>
+									<Grid
+										item
+										style={{
+											width: '100%',
+											...(toggleEdit() ? {} : { pointerEvents: 'none' }),
+										}}
+									>
+										{toggleEdit() ? (
+											<LocalizationProvider dateAdapter={AdapterDateFns}>
+												<DesktopDatePicker
+													label='End Date'
+													inputFormat='dd/MM/yyyy'
+													value={state.endDate}
+													onChange={(value, keyboardInputValue) =>
+														setDate(value, keyboardInputValue, 'endDate')
+													}
+													minDate={new Date().setDate(new Date().getDate() + 1)}
+													renderInput={(params) => <TextField {...params} />}
+												/>
+											</LocalizationProvider>
+										) : (
+											new Date(state.endDate).toDateString()
+										)}
 									</Grid>
 								</Grid>
 							</Typography>
@@ -405,29 +443,41 @@ export default function LeftPanel(props) {
 									alignItems='flex-start'
 								>
 									<Grid item>Description:</Grid>
-									<Grid item lr={18}>
-										<TextareaAutosize
-											maxRows={4}
-											aria-label='maximum height'
-											style={{ width: 200 }}
-											minRows={4}
-											value={state?.description}
-											onChange={(e) => {
-												setState({ ...state, description: e.target.value });
+									{toggleEdit() ? (
+										<Grid
+											item
+											lr={18}
+											style={{
+												...(toggleEdit() ? {} : { pointerEvents: 'none' }),
 											}}
-										/>
-										{state?.error?.description ? (
-											<Typography
-												variant='body2'
-												gutterBottom
-												style={{ width: '100%', ...errorClass }}
-											>
-												Please enter the description
-											</Typography>
-										) : (
-											''
-										)}
-									</Grid>
+										>
+											<TextareaAutosize
+												maxRows={4}
+												aria-label='maximum height'
+												style={{ width: 200 }}
+												minRows={4}
+												value={state?.description}
+												onChange={(e) => {
+													setState({ ...state, description: e.target.value });
+												}}
+											/>
+											{state?.error?.description ? (
+												<Typography
+													variant='body2'
+													gutterBottom
+													style={{ width: '100%', ...errorClass }}
+												>
+													Please enter the description
+												</Typography>
+											) : (
+												''
+											)}
+										</Grid>
+									) : (
+										<Grid item lr={18}>
+											{state?.description}
+										</Grid>
+									)}
 								</Grid>
 							</Typography>
 						</Grid>
@@ -440,12 +490,7 @@ export default function LeftPanel(props) {
 								justifyContent='space-between'
 								alignItems='flex-start'
 							>
-								{/* {showButton ? (
-									<Button variant='contained' onClick={handleSubmit}>
-										Submit
-									</Button>
-								) : null} */}
-								{props?.location?.state ? (
+								{toggleEdit() ? (
 									<Button variant='contained' onClick={handleSubmit}>
 										Submit
 									</Button>
