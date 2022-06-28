@@ -15,7 +15,7 @@ export default function ActionItems() {
 		planboard: { actionItems: actionItemData },
 	} = useSelector((state) => state);
 	useEffect(() => {
-		if (actionItemData.length) {
+		if (actionItemData?.length) {
 			setActionItem(actionItemData);
 		}
 	}, []);

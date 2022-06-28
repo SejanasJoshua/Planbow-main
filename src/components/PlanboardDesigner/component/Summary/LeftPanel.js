@@ -346,10 +346,10 @@ export default function LeftPanel(props) {
 									width='25rem'
 									justifyContent='space-between'
 									alignItems='flex-start'
-									style={ParentState.newPlanboard?{}:{cursor:'not-allowed'}}
+									style={ParentState?.newPlanboard?{}:{cursor:'not-allowed'}}
 								>
 									<Grid item>Start Date:</Grid>
-									<Grid item style={{ width: '100%' ,...ParentState.newPlanboard?{}:{pointerEvents:'none'} }}>
+									<Grid item style={{ width: '100%' ,...ParentState?.newPlanboard?{}:{pointerEvents:'none'} }}>
 										<LocalizationProvider dateAdapter={AdapterDateFns}>
 											<DesktopDatePicker
 												label='Date desktop'

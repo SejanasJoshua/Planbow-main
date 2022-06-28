@@ -59,8 +59,8 @@ export default function PlanboardDesignerTab({
 									ml: 0,
 									fontSize: '14px',
 									pb: '3px',
-									cursor: location?.state?.editable ? 'no-drop' : 'pointer',
-									pointerEvents: location?.state?.editable ? 'none' : 'auto',
+									cursor: location?.state?.newPlanboard?'no-drop':location?.state?.editable ? 'pointer' : 'no-drop',
+									pointerEvents: location?.state?.newPlanboard?'none':location?.state?.editable ? 'auto' : 'none',
 							  }
 					}
 					key={index}
