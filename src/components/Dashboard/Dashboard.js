@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -171,57 +171,6 @@ function DashboardContent() {
 
 	const openPopover = Boolean(popoverAnchor);
 	const popoverID = open ? 'simple-popover' : undefined;
-
-	// const newPlanboard = async () => {
-	// 	let value = '00001';
-	// 	planboards.map((item) => {
-	// 		if (item.name.substring(0, 5) == 'demo_') {
-	// 			let itemValue = parseInt(item.name.substring(5, 10), 10);
-	// 			if (itemValue >= parseInt(value, 10))
-	// 				value = (itemValue + 1).toString(10);
-	// 		}
-	// 	});
-	// 	while (value.length <= 4) {
-	// 		value = '0' + value;
-	// 	}
-	// 	console.log('demo_' + value);
-	// 	try {
-	// 		const response = await axios.post(
-	// 			`${process.env.REACT_APP_URL}/planboard/create`,
-	// 			{
-	// 				name: 'demo_' + value,
-	// 				workspace: workspace._id,
-	// 				user: user._id,
-	// 				description: '',
-	// 				users: '',
-	// 				coCreators: '',
-	// 				notificationTypes: '',
-	// 				endDate: new Date(),
-	// 			}
-	// 		);
-	// 		if (response.data.message === 'conflict') {
-	// 			// alertMessage(
-	// 			// 	`Looks Like You Already have a Planboard in this Workspace.`,
-	// 			// 	'warning'
-	// 			// );
-	// 			alert('Looks Like You Already have a Planboard in this Workspace.');
-	// 			getPlanboards();
-	// 		} else {
-	// 			// alertMessage('demo_' + value, 'success');
-	// 			alert('demo_' + value);
-	// 			dispatch(updatePlanboard(response.data.data));
-	// 			dispatch(updateURLHistory('/dashboard'));
-	// 			navigate('/ideation');
-	// 		}
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// };
-
-	// const handlePlanbowComponentsinAction = () => {
-	// 	dispatch(planboardComponentsModal(true));
-	// 	newPlanboard();
-	// };
 
 	React.useEffect(() => {
 		console.log('home');
