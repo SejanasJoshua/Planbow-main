@@ -59,8 +59,8 @@ let clickedNode = null;
 // let clickedEdge = null;
 
 export default function Canvas() {
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+	const [nodes, setNodes, onNodesChange] = useNodesState([]);
+	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const [flowInstance, setFlowInstance] = useState(null);
 	const planboard = useSelector((state) => state.planboard);
 	const user = useSelector((state) => state.user._id);
@@ -84,12 +84,6 @@ export default function Canvas() {
 		console.log(event, element);
 	}, []);
 
-	// const loadComponentonDoubleClick = (selectedNode) => {
-	// 	// dispatch(updatePlanboardComponent(selectedNode));
-	// 	onSave();
-	// 	renderComponent();
-	// };
-
 	const onSave = useCallback(async () => {
 		// const saveFlow = async () => {
 		try {
@@ -112,17 +106,6 @@ export default function Canvas() {
 		// saveFlow();
 	}, [flowInstance]);
 
-	// const renderComponent = () => {
-	// 	if (clickedNode.data.label === 'Ideation') history.push('/ideation');
-	// 	if (clickedNode.data.label === 'Output') history.push('/ideation');
-	// 	if (clickedNode.data.label === 'Offerings') return null;
-	// 	if (clickedNode.data.label === 'Funnel') return null;
-	// 	if (clickedNode.data.label === 'Start') return null;
-	// 	if (clickedNode.data.label === 'Logistics') return null;
-	// 	if (clickedNode.data.label === 'Process') return null;
-	// 	return null;
-	// };
-
 	const addNodes = (data) => {
 		let source = clickedNode.id;
 		let count = 0;
@@ -141,7 +124,6 @@ export default function Canvas() {
 					type: 'newNode',
 					position: {
 						x: clickedNode.position.x + 500 * count,
-						// x: clickedNode.position.x + 500 * (index + 1),
 						y: clickedNode.position.y,
 					},
 					data: {
@@ -217,11 +199,11 @@ export default function Canvas() {
 		const compare = nodes.map((node) => {
 			return node.id;
 		});
-		if (compare1 !== compare) onSave();
+		if (compare1 !== compare && nodes.length > 1) onSave();
 	}, [nodes]);
 	useEffect(() => {
 		deleteEdges();
-		if (edges !== initialEdges) onSave();
+		if (edges !== initialEdges && edges.length > 0) onSave();
 	}, [edges]);
 	// useEffect(() => {
 	// 	if (planboard.canvas) {
@@ -234,8 +216,8 @@ export default function Canvas() {
 			`/planboard/get?planboard=${planboard._id}`
 		);
 		const { canvas } = response.data.data;
-		setNodes(canvas.nodes);
-		setEdges(canvas.edges);
+		setNodes(canvas.nodes || initialNodes);
+		setEdges(canvas.edges || initialEdges);
 	};
 
 	useEffect(() => {
@@ -278,14 +260,14 @@ export default function Canvas() {
 					<MiniMap
 						nodeColor={(node_) => {
 							switch (node_.type) {
-							case 'input':
-								return 'red';
-							case 'default':
-								return '#00ff00';
-							case 'output':
-								return 'rgb(0,0,255)';
-							default:
-								return '#eee';
+								case 'input':
+									return 'red';
+								case 'default':
+									return '#00ff00';
+								case 'output':
+									return 'rgb(0,0,255)';
+								default:
+									return '#eee';
 							}
 						}}
 					/>
