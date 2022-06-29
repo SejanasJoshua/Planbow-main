@@ -31,7 +31,7 @@ export default function ListItems({ setselectedNav }) {
 				</ListItemIcon>
 				<ListItemText primary='Planboards' />
 			</ListItemButton>
-			<ListItemButton>
+			<ListItemButton onClick={()=>setselectedNav('teams')}>
 				<ListItemIcon>
 					<PeopleIcon />
 				</ListItemIcon>
@@ -47,18 +47,18 @@ export default function ListItems({ setselectedNav }) {
 				</ListItemIcon>
 				<ListItemText primary='Planboard Designer' />
 			</ListItemButton>
-			<ListItemButton>
+			{/* <ListItemButton>
 				<ListItemIcon>
 					<LayersIcon />
 				</ListItemIcon>
 				<ListItemText primary='Users & Account' />
-			</ListItemButton>
-			<ListItemButton>
+			</ListItemButton> */}
+			{/* <ListItemButton>
 				<ListItemIcon>
 					<LayersIcon />
 				</ListItemIcon>
 				<ListItemText primary='Settings' />
-			</ListItemButton>
+			</ListItemButton> */}
 			<ListItemButton>
 				<ListItemIcon>
 					<LayersIcon />
