@@ -30,11 +30,16 @@ export default function LeftPanel(props) {
 	const navigate = useNavigate();
 	const ParentState = props?.location?.state;
 	const users = [
-		{ id: 1, email: '1@gmail.com', name: '1John' },
-		{ id: 2, email: '2@gmail.com', name: '2John' },
-		{ id: 3, email: '3@gmail.com', name: '3John' },
-		{ id: 4, email: '4@gmail.com', name: '4John' },
-		{ id: 5, email: '5@gmail.com', name: '5John' },
+		{ id: 1, email: '1@gmail.com', name: '1John',type:'user' },
+		{ id: 2, email: '2@gmail.com', name: '2John',type:'user' },
+		{ id: 3, email: '3@gmail.com', name: '3John',type:'user' },
+		{ id: 4, email: '4@gmail.com', name: '4John',type:'user' },
+		{ id: 5, email: '5@gmail.com', name: '5John',type:'user' },
+		{ id: 6, email: '1@gmail.com', name: '6John',type:'coCreator' },
+		{ id: 7, email: '7@gmail.com', name: '7John',type:'coCreator' },
+		{ id: 8, email: '8@gmail.com', name: '8John',type:'coCreator' },
+		{ id: 9, email: '9@gmail.com', name: '9John',type:'coCreator' },
+		{ id: 10, email: '10@gmail.com', name: '10John',type:'coCreator' },
 	];
 	const INVALID_DATE = 'Invalid Date';
 	const errorClass = {
@@ -226,7 +231,7 @@ export default function LeftPanel(props) {
 					justifyContent='space-around'
 					alignItems='flex-start'
 				>
-					<Stack spacing={2} direction='column'>
+					<Stack spacing={7} direction='column'>
 						<Grid item>
 							<Typography variant='h5' style={{ width: '100%' }}>
 								<Grid
@@ -310,7 +315,7 @@ export default function LeftPanel(props) {
 											}
 										>
 											{[
-												...users.map((user) => (
+												...users.filter(user=>user.type=='user').map((user) => (
 													<MenuItem key={user.id} value={user.email}>
 														{user.name}
 													</MenuItem>
@@ -350,7 +355,7 @@ export default function LeftPanel(props) {
 											}
 										>
 											{[
-												...users.map((user) => (
+												...users.filter(user=>user.type=='coCreator').map((user) => (
 													<MenuItem key={user.id} value={user.email}>
 														{user.name}
 													</MenuItem>
