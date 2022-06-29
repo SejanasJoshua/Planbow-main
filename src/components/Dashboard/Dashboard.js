@@ -36,6 +36,7 @@ import { addActionItems } from '@redux/actions';
 import axiosRequests from '@utils/axiosRequests';
 import { Popover } from '@mui/material';
 import NotificationPopup from '../Notification/NotificationPopup';
+import TeamsComponent from '../TeamsComponent';
 
 function Copyright(props) {
 	return (
@@ -342,7 +343,9 @@ function DashboardContent() {
 						/>
 					) : selectedNav == 'canvas' ? (
 						<PlanboardCanvas />
-					) : null}
+					) : selectedNav == 'teams' ? (
+						<TeamsComponent />
+					): null}
 					<Copyright sx={{ pt: 4 }} />
 				</Container>
 			</Box>

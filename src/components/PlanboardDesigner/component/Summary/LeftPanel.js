@@ -4,6 +4,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import axiosRequests from '@utils/axiosRequests';
 import { useSelector, useDispatch } from 'react-redux';
 import PopUpComponent from '../../../PopUpComponent';
+import { useNavigate } from 'react-router-dom';
 import {
 	Input,
 	Typography,
@@ -26,6 +27,7 @@ export default function LeftPanel(props) {
 	const { user: User, workspace: Workspace } = useSelector((state) => state);
 	const [visible, setVisible] = useState(true);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const ParentState = props?.location?.state;
 	const users = [
 		{ id: 1, email: '1@gmail.com', name: '1John' },
@@ -187,6 +189,9 @@ export default function LeftPanel(props) {
 						: 'Planboard is successfully updated',
 					type: 'success',
 				});
+				setTimeout(() => {
+					navigate('/dashboard');
+				}, 500);
 			} else {
 				setPopUp({ message: 'Some Server Error', type: 'error' });
 			}

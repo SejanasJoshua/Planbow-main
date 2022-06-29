@@ -13,6 +13,7 @@ import OnBoardComponents from '../components/OnBoardComponents';
 import Logout from '@components/Logout/Logout';
 import ResetPassword from '../components/OnBoardComponents/ResetPassword';
 import ForgotPassword from '../components/OnBoardComponents/ForgotPassword';
+import TeamsComponent from '../components/TeamsComponent';
 
 export default function App() {
 	const { user: User } = useSelector((state) => state);
@@ -47,6 +48,8 @@ export default function App() {
 					{/* we need to remove this route */}
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='planboard' element={<PlanboardComponents />} />
+					{/* teams route  */}
+					<Route path='teams' element={<TeamsComponent />} />
 
 					{/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
