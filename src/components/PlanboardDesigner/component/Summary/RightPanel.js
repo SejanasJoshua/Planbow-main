@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart } from '../../../ChartComponent';
-import BasicTable from './BasicTable';
-import { Divider } from '@mui/material';
+// import BasicTable from './BasicTable';
+// import { Divider } from '@mui/material';
 function RightPanel() {
 	// const labels = [
 	// 	'January',
@@ -53,8 +53,8 @@ function RightPanel() {
 			{/* <BarChart options={options} data={data} /> */}
 
 			<BarChart />
-			<Divider />
-			<BasicTable />
+			{/* <Divider /> */}
+			{/* <BasicTable /> */}
 		</div>
 	);
 }

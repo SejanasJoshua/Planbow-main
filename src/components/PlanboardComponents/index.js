@@ -27,7 +27,7 @@ import {
 	// planboardComponentsModal,
 } from '@redux/actions';
 
-export default function PlanboardComponents({ planboards }) {
+export default function PlanboardComponents({ planboards, setPlanboards }) {
 	// let { setselectedNav } = props;
 	const [view, setView] = useState('Grid');
 	const [open, setOpen] = React.useState(false);
@@ -42,7 +42,9 @@ export default function PlanboardComponents({ planboards }) {
 
 	const handleClickOpen = () => {
 		// setOpen(true);
-			navigate('/planboard-designer', { state: { editable: true,newPlanboard:true } });
+		navigate('/planboard-designer', {
+			state: { editable: true, newPlanboard: true },
+		});
 	};
 
 	const handleClose = () => {
@@ -64,10 +66,12 @@ export default function PlanboardComponents({ planboards }) {
 			if (response.data.data === 'success') {
 				setOpenDialog(false);
 				setDeleteSuccess(deleteSuccess + 1);
-				// alertMessage('Delete Successfull', 'success');
+				const newPlanboard = planboards.filter(
+					(item) => item._id !== planboardID
+				);
+				setPlanboards(newPlanboard);
 				alert('Delete Successfull');
 			} else {
-				// alertMessage('Delete Failed!', 'error');
 				alert('Delete Failed');
 			}
 		} catch (e) {
@@ -78,7 +82,7 @@ export default function PlanboardComponents({ planboards }) {
 	const handleEdit = (planboard) => {
 		dispatch(updateURLHistory('/dashboard'));
 		dispatch(updatePlanboard(planboard));
-		navigate('/planboard-designer',{state:{editable:true,planboard}});
+		navigate('/planboard-designer', { state: { editable: true, planboard } });
 	};
 
 	const handleDeleteOpen = (id) => {
@@ -228,4 +232,5 @@ export default function PlanboardComponents({ planboards }) {
 PlanboardComponents.propTypes = {
 	setselectedNav: PropTypes.func,
 	planboards: PropTypes.array,
+	setPlanboards: PropTypes.func,
 };

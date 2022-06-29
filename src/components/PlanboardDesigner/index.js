@@ -14,6 +14,16 @@ import PlanboardDesignerContext from '@contexts/planboardDesigner';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
+const bg = {
+	backgroundSize: '8px 8px',
+	backgroundImage:
+		'linear-gradient( to right, #e8e8e8 1px, transparent 1px ), linear-gradient(to bottom, #e8e8e8 1px, transparent 1px)',
+	height: '100vh',
+	overflow:'auto'
+	// boxShadow: '0px 7px 29px 0px #ddd',
+};
+
+
 export default function PlanboardDesigner() {
 	// const theme = useTheme();
 	// const [selectedNav, setselectedNav] = React.useState('ideasummary');
@@ -30,7 +40,7 @@ export default function PlanboardDesigner() {
 	}, []);
 
 	return (
-		<Container maxWidth='xl'>
+		<Container maxWidth='xl' sx={{...bg}}>
 			<Box sx={{ margin: '0 -24px' }}>
 				<PlanboardDesignerHeader location={location}  />
 			</Box>

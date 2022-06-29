@@ -1,22 +1,22 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
+// import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import Icon from '@mdi/react';
 import { mdiHome } from '@mdi/js';
 
 export default function ListItems({ setselectedNav }) {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
-	const toComponentB = () => {
-		navigate('/planboard-designer');
-	};
+	// const toComponentB = () => {
+	// 	navigate('/planboard-designer');
+	// };
 	return (
 		<React.Fragment>
 			<ListItemButton onClick={() => setselectedNav('home')}>
@@ -31,13 +31,13 @@ export default function ListItems({ setselectedNav }) {
 				</ListItemIcon>
 				<ListItemText primary='Planboards' />
 			</ListItemButton>
-			<ListItemButton onClick={()=>setselectedNav('teams')}>
+			<ListItemButton onClick={() => setselectedNav('teams')}>
 				<ListItemIcon>
 					<PeopleIcon />
 				</ListItemIcon>
 				<ListItemText primary='Teams' />
 			</ListItemButton>
-			<ListItemButton
+			{/* <ListItemButton
 				onClick={() => {
 					toComponentB();
 				}}
@@ -46,7 +46,7 @@ export default function ListItems({ setselectedNav }) {
 					<BarChartIcon />
 				</ListItemIcon>
 				<ListItemText primary='Planboard Designer' />
-			</ListItemButton>
+			</ListItemButton> */}
 			{/* <ListItemButton>
 				<ListItemIcon>
 					<LayersIcon />

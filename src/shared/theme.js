@@ -153,6 +153,13 @@ const theme = createTheme({
 				}),
 			},
 		},
+		// MuiPaper: {
+		// 	styleOverrides: {
+		// 		root: () =>({
+		// 			padding:'1rem',
+		// 		})
+		// 	}
+		// }
 	},
 });
 

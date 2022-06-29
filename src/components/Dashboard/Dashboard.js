@@ -289,12 +289,13 @@ function DashboardContent() {
 						<PlanboardComponents
 							setselectedNav={setselectedNav}
 							planboards={planboards}
+							setPlanboards={setPlanboards}
 						/>
 					) : selectedNav == 'canvas' ? (
 						<PlanboardCanvas />
 					) : selectedNav == 'teams' ? (
 						<TeamsComponent />
-					): null}
+					) : null}
 					<Copyright sx={{ pt: 4 }} />
 				</Container>
 			</Box>
