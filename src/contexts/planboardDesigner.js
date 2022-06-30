@@ -1,12 +1,15 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axiosRequests from '@utils/axiosRequests';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const PlanboardDesignerContext = createContext();
 
 export const PlanboardDesignerProvider = ({ children }) => {
+	const {workspace:Workspace}=useSelector(state=>state);
 	const [selectedNav, setselectedNav] = useState('ideasummary');
 	const [planboard, setPlanboard] = useState(null);
+	const [totalPlanboards, setTotalPlanboards] = useState([]);
 	const [selectedPlanboardComponent, setSelectedPlanboardComponent] =
 		useState(null);
 	const [actionItem, setActionItemData] = useState([]);
@@ -17,8 +20,19 @@ export const PlanboardDesignerProvider = ({ children }) => {
 		);
 		if (response?.data?.data?.length) setActionItemData(response?.data?.data);
 	};
+	const getPlanboards = async () => {
+			const response = await axiosRequests.getData(
+				`/planboard/get?workspace=${Workspace._id}`
+			);
+			if (response.data.data === 'No-Data') {
+				setTotalPlanboards([]);
+			} else {
+				setTotalPlanboards(response.data.data);
+			}
+	};
 	useEffect(() => {
-		actionItemData();
+		actionItemData(),
+		getPlanboards();
 	}, [selectedNav]);
 
 	return (
@@ -31,6 +45,7 @@ export const PlanboardDesignerProvider = ({ children }) => {
 				selectedPlanboardComponent,
 				setSelectedPlanboardComponent,
 				actionItem,
+				totalPlanboards
 			}}
 		>
 			{children}

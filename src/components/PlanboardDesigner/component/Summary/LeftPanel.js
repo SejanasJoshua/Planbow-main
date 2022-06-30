@@ -21,7 +21,7 @@ import {
 	FormControlLabel,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { updatePlanboard,planboardComponentsModal } from '@redux/actions';
+import { updatePlanboard, planboardComponentsModal } from '@redux/actions';
 
 export default function LeftPanel(props) {
 	const { user: User, workspace: Workspace } = useSelector((state) => state);
@@ -124,9 +124,18 @@ export default function LeftPanel(props) {
 			}
 		}
 	};
+	const checkIfTitleExists = (title) => {
+		if (
+			props?.totalPlanboards.filter(
+				(planboard) => planboard?.name.toLowerCase() == title.toLowerCase()
+			).length
+		)
+			return true;
+		return false;
+	};
 	const checkFields = () => {
 		let error = false;
-		if (!state?.title.length) {
+		if (!state?.title.length || checkIfTitleExists(state?.title)) {
 			setState((prevState) => ({
 				...state,
 				error: { ...prevState.error, title: true },
@@ -264,7 +273,9 @@ export default function LeftPanel(props) {
 										<Grid item lr={18}>
 											<Input
 												onChange={(e) => {
-													setState({ ...state, title: e.target.value });
+													setState(prevState=>({ ...state, title: e.target.value,
+														error:{...prevState.error,title:false}
+													}));
 												}}
 												value={state?.title}
 											/>
@@ -274,7 +285,9 @@ export default function LeftPanel(props) {
 													gutterBottom
 													style={{ width: '100%', ...errorClass }}
 												>
-													Please enter the title
+													{state.title.length
+														? 'Planboard already exists'
+														: 'Please enter the title'}
 												</Typography>
 											) : (
 												''
@@ -529,5 +542,6 @@ LeftPanel.propTypes = {
 	creator: PropTypes.object,
 	Planboard: PropTypes.object,
 	location: PropTypes.object,
-	setselectedNav:PropTypes.func,
+	setselectedNav: PropTypes.func,
+	totalPlanboards: PropTypes.object,
 };
