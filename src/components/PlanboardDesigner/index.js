@@ -68,7 +68,7 @@ export default function PlanboardDesigner() {
 				}}
 			>
 				{selectedNav == 'ideasummary' ? (
-					<Summary creator={User} Planboard={planboardRedux} location={location} />
+					<Summary creator={User} Planboard={planboardRedux} location={location} setselectedNav={setselectedNav} />
 				) : selectedNav == 'ideacanvas' ? (
 					<Canvas />
 				) : selectedNav == 'ideaactionitem' ? (

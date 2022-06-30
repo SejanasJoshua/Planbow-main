@@ -4,7 +4,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import axiosRequests from '@utils/axiosRequests';
 import { useSelector, useDispatch } from 'react-redux';
 import PopUpComponent from '../../../PopUpComponent';
-// import { useNavigate } from 'react-router-dom';
 import {
 	Input,
 	Typography,
@@ -22,7 +21,8 @@ import {
 	FormControlLabel,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { updatePlanboard } from '@redux/actions';
+import { updatePlanboard,planboardComponentsModal } from '@redux/actions';
+
 export default function LeftPanel(props) {
 	const { user: User, workspace: Workspace } = useSelector((state) => state);
 	const [visible, setVisible] = useState(true);
@@ -195,9 +195,8 @@ export default function LeftPanel(props) {
 						: 'Planboard is successfully updated',
 					type: 'success',
 				});
-				// setTimeout(() => {
-				// 	navigate('/dashboard');
-				// }, 500);
+				dispatch(planboardComponentsModal(true));
+				props.setselectedNav('ideacanvas');
 			} else {
 				setPopUp({ message: 'Some Server Error', type: 'error' });
 			}
@@ -530,4 +529,5 @@ LeftPanel.propTypes = {
 	creator: PropTypes.object,
 	Planboard: PropTypes.object,
 	location: PropTypes.object,
+	setselectedNav:PropTypes.func,
 };
