@@ -273,8 +273,10 @@ export default function LeftPanel(props) {
 										<Grid item lr={18}>
 											<Input
 												onChange={(e) => {
-													setState(prevState=>({ ...state, title: e.target.value,
-														error:{...prevState.error,title:false}
+													setState((prevState) => ({
+														...state,
+														title: e.target.value,
+														error: { ...prevState.error, title: false },
 													}));
 												}}
 												value={state?.title}
@@ -543,5 +545,5 @@ LeftPanel.propTypes = {
 	Planboard: PropTypes.object,
 	location: PropTypes.object,
 	setselectedNav: PropTypes.func,
-	totalPlanboards: PropTypes.object,
+	totalPlanboards: PropTypes.array,
 };

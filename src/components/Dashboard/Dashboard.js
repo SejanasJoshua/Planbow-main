@@ -116,10 +116,7 @@ function DashboardContent() {
 		setOpen(!open);
 	};
 
-	console.log(notifications);
 	const getNotifications = async () => {
-		console.log('Fetching Notifications...');
-
 		try {
 			const response = await axiosRequests.getData(
 				`/notification/get?userID=${user._id}&email=${user.email}`
@@ -135,14 +132,11 @@ function DashboardContent() {
 	};
 
 	const getPlanboards = async () => {
-		console.log('Fetching Planboards...');
-
 		try {
 			const response = await axiosRequests.getData(
 				`/planboard/get?workspace=${workspace._id}`
 			);
 			if (response.data.data === 'No-Data') {
-				// alertMessage('No Planboards!', 'warning');
 				console.log('no planboards');
 			} else {
 				setPlanboards(response.data.data);

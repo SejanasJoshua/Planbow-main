@@ -37,28 +37,6 @@ export default function ListItems({ setselectedNav }) {
 				</ListItemIcon>
 				<ListItemText primary='Teams' />
 			</ListItemButton>
-			{/* <ListItemButton
-				onClick={() => {
-					toComponentB();
-				}}
-			>
-				<ListItemIcon>
-					<BarChartIcon />
-				</ListItemIcon>
-				<ListItemText primary='Planboard Designer' />
-			</ListItemButton> */}
-			{/* <ListItemButton>
-				<ListItemIcon>
-					<LayersIcon />
-				</ListItemIcon>
-				<ListItemText primary='Users & Account' />
-			</ListItemButton> */}
-			{/* <ListItemButton>
-				<ListItemIcon>
-					<LayersIcon />
-				</ListItemIcon>
-				<ListItemText primary='Settings' />
-			</ListItemButton> */}
 			<ListItemButton>
 				<ListItemIcon>
 					<LayersIcon />

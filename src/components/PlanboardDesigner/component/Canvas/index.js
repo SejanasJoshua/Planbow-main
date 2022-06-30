@@ -76,7 +76,6 @@ export default function Canvas() {
 	const onClickNode = useCallback((event, element) => {
 		clickedNode = element;
 		dispatch(updatePlanboardComponent(element));
-		// console.log(element);
 		setSelectedPlanboardComponent(element);
 	}, []);
 	const onClickEdge = useCallback((event, element) => {
@@ -118,7 +117,6 @@ export default function Canvas() {
 				};
 				const componentDBdetails = await saveComponent(nodeDetails);
 				count++;
-				console.log(count);
 				const newNode = {
 					id: nodeDetails._id,
 					type: 'newNode',
@@ -153,7 +151,6 @@ export default function Canvas() {
 				// 	nodes: [...nodes, newNode],
 				// 	edges: [...edges, newEdge],
 				// };
-				// console.log(d);
 				// dispatch(updatePlanboardCanvas(d));
 				source = nodeDetails._id; // update source with new node created
 			}
@@ -192,6 +189,7 @@ export default function Canvas() {
 	};
 
 	useEffect(() => {
+		console.log(nodes);
 		deleteNodes();
 		const compare1 = initialNodes.map((node) => {
 			return node.id;
@@ -216,8 +214,8 @@ export default function Canvas() {
 			`/planboard/get?planboard=${planboard._id}`
 		);
 		const { canvas } = response.data.data;
-		setNodes(canvas.nodes || initialNodes);
-		setEdges(canvas.edges || initialEdges);
+		setNodes(canvas?.nodes || initialNodes);
+		setEdges(canvas?.edges || initialEdges);
 	};
 
 	useEffect(() => {
