@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	updateURLHistory,
 	updatePlanboard,
-	updateTotalPlanboard
+	updateTotalPlanboard,
 	// planboardComponentsModal,
 } from '@redux/actions';
 
@@ -38,11 +38,12 @@ export default function PlanboardComponents() {
 	const [deleteSuccess, setDeleteSuccess] = React.useState(1);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const {user,totalPlanboards:planboards} = useSelector(state => state);
+	const { user, totalPlanboards: planboards } = useSelector((state) => state);
 	const [assignedTasks, setAssignedTasks] = React.useState(null);
 
 	const handleClickOpen = () => {
 		// setOpen(true);
+		dispatch(updateURLHistory('/planboard'));
 		navigate('/planboard-designer', {
 			state: { editable: true, newPlanboard: true },
 		});
@@ -81,7 +82,7 @@ export default function PlanboardComponents() {
 	};
 
 	const handleEdit = (planboard) => {
-		dispatch(updateURLHistory('/dashboard'));
+		dispatch(updateURLHistory('/planboard'));
 		dispatch(updatePlanboard(planboard));
 		navigate('/planboard-designer', { state: { editable: true, planboard } });
 	};
