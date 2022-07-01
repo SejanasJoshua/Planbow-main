@@ -10,7 +10,7 @@ import // updateURLHistory,
 // updatePlanboard,
 // planboardComponentsModal,
 '@redux/actions';
-import { addActionItems } from '@redux/actions';
+import { addActionItems,updateTotalPlanboard } from '@redux/actions';
 // import axios from 'axios';
 import axiosRequests from '@utils/axiosRequests';
 import TeamsComponent from '../TeamsComponent';
@@ -18,10 +18,9 @@ import TeamsComponent from '../TeamsComponent';
 function DashboardContent() {
 	const navigate = useNavigate();
 	const [selectedNav, setselectedNav] = React.useState('home');
-	const [planboards, setPlanboards] = React.useState([]);
 	const user = useSelector((state) => state.user);
 	const workspace = useSelector((state) => state.workspace);
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	// const toggleDrawer = () => {
 	// 	setOpen(!open);
@@ -50,7 +49,7 @@ function DashboardContent() {
 			if (response.data.data === 'No-Data') {
 				console.log('no planboards');
 			} else {
-				setPlanboards(response.data.data);
+				dispatch(updateTotalPlanboard(response.data.data));
 			}
 		} catch (e) {
 			console.log(e);
@@ -70,12 +69,10 @@ function DashboardContent() {
 	return (
 		<Grid>
 			{selectedNav == 'home' ? (
-				<HomeComponent planboards={planboards} />
+				<HomeComponent  />
 			) : selectedNav == 'planboards' ? (
 				<PlanboardComponents
 					setselectedNav={setselectedNav}
-					planboards={planboards}
-					setPlanboards={setPlanboards}
 				/>
 			) : selectedNav == 'canvas' ? (
 				<PlanboardCanvas />

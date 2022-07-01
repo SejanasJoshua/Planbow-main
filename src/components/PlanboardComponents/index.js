@@ -24,10 +24,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	updateURLHistory,
 	updatePlanboard,
+	updateTotalPlanboard
 	// planboardComponentsModal,
 } from '@redux/actions';
 
-export default function PlanboardComponents({ planboards, setPlanboards }) {
+export default function PlanboardComponents() {
 	// let { setselectedNav } = props;
 	const [view, setView] = useState('Grid');
 	const [open, setOpen] = React.useState(false);
@@ -37,7 +38,7 @@ export default function PlanboardComponents({ planboards, setPlanboards }) {
 	const [deleteSuccess, setDeleteSuccess] = React.useState(1);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const user = useSelector((state) => state.user);
+	const {user,totalPlanboards:planboards} = useSelector(state => state);
 	const [assignedTasks, setAssignedTasks] = React.useState(null);
 
 	const handleClickOpen = () => {
@@ -69,7 +70,7 @@ export default function PlanboardComponents({ planboards, setPlanboards }) {
 				const newPlanboard = planboards.filter(
 					(item) => item._id !== planboardID
 				);
-				setPlanboards(newPlanboard);
+				dispatch(updateTotalPlanboard(newPlanboard));
 				alert('Delete Successfull');
 			} else {
 				alert('Delete Failed');
@@ -231,6 +232,4 @@ export default function PlanboardComponents({ planboards, setPlanboards }) {
 
 PlanboardComponents.propTypes = {
 	setselectedNav: PropTypes.func,
-	planboards: PropTypes.array,
-	setPlanboards: PropTypes.func,
 };

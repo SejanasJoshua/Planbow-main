@@ -3,12 +3,14 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Grid';
 import MyPlanboards from './MyPlanboards';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 // import PlanboardComponents from '../PlanboardComponents';
 import PlanboardGridView from '@components/PlanboardComponents/PlanboardGridView';
 
 import labels from '@shared/labels';
 
-export default function HomeComponent({ planboards }) {
+export default function HomeComponent() {
+	const {totalPlanboards:planboards}=useSelector(state=>state);
 	return (
 		<Grid container spacing={3}>
 			{/* Chart */}
