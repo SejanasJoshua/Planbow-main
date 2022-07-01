@@ -24,7 +24,8 @@ export default function StartNode() {
 	// };
 	return (
 		<>
-			<Grid
+			<Grid 
+			className="nodrag"
 				container
 				sx={{
 					display: 'flex',

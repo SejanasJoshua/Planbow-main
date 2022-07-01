@@ -1,5 +1,11 @@
 /*eslint-disable */
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useRef,
+} from 'react';
 import ReactFlow, {
 	ReactFlowProvider,
 	MiniMap,
@@ -75,6 +81,7 @@ export default function Canvas() {
 
 	const onClickNode = useCallback((event, element) => {
 		clickedNode = element;
+		console.log(flowInstance);
 		dispatch(updatePlanboardComponent(element));
 		setSelectedPlanboardComponent(element);
 	}, []);
@@ -83,20 +90,9 @@ export default function Canvas() {
 		console.log(event, element);
 	}, []);
 
-	// const onNodesChange = useCallback(
-	// 	(changes) => {
-	// 		const nextChanges = changes.filter((change) => {
-	// 			const node = nodes.find((node) => {
-	// 				return node.id === change.id;
-	// 			});
-	// 			return change.type === 'remove' && node && node.data.deletable;
-	// 		});
-	// 		return setNodes((nodes) => {
-	// 			return applyNodeChanges(nextChanges, nodes);
-	// 		});
-	// 	},
-	// 	[setNodes]
-	// );
+	const checkChange = (deletedNode) => {
+		setNodes(nodes.filter((node) => node.id != deletedNode[0]?.id));
+	};
 
 	const onSave = useCallback(async () => {
 		// const saveFlow = async () => {
@@ -256,10 +252,17 @@ export default function Canvas() {
 				}}
 			>
 				<ReactFlow
+					id='reactFlow'
 					nodes={nodes}
 					edges={edges}
 					onNodesChange={onNodesChange}
 					onEdgesChange={onEdgesChange}
+					onKeyDown={function (e) {
+						if (true) {
+							console.log(e, 'reactflow');
+						}
+					}}
+					deleteKeyCode='Backspace'
 					onConnect={onConnect}
 					nodeTypes={nodeTypes}
 					connectionLineStyle={connectionLineStyle}
@@ -268,6 +271,7 @@ export default function Canvas() {
 					// onNodeDoubleClick={(n) => loadComponentonDoubleClick(n)}
 					minZoom={0.35}
 					onInit={setFlowInstance}
+					onNodesDelete={checkChange}
 					maxZoom={1}
 				>
 					<MiniMap
