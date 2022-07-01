@@ -61,7 +61,7 @@ export default function MyPlanboards({ planboards }) {
 						New Planboard
 					</Button>
 				</Grid>
-				{planboards.slice(0, 3).map((item, index) => (
+				{typeof(planboards)!='string' && planboards.slice(0, 3).map((item, index) => (
 					<Grid
 						item
 						xs={12}
