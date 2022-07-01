@@ -28,10 +28,10 @@ export default function PlanboardDesigner() {
 	// const theme = useTheme();
 	// const [selectedNav, setselectedNav] = React.useState('ideasummary');
 	const location=useLocation();
-	const { selectedNav, setselectedNav, setPlanboard,actionItem:actionItemData,totalPlanboards } = useContext(
+	const { selectedNav, setselectedNav, setPlanboard,actionItem:actionItemData } = useContext(
 		PlanboardDesignerContext
 	);
-	const { planboard: planboardRedux, user: User } = useSelector(
+	const { planboard: planboardRedux, user: User,totalPlanboards } = useSelector(
 		(state) => state
 	);
 	
