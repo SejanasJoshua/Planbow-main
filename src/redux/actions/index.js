@@ -30,6 +30,12 @@ export const updatePlanboard = (data) => {
 		payload: data,
 	};
 };
+export const updateTotalPlanboard = (data) => {
+	return {
+		type: 'TOTALPLANBOARDS',
+		payload: data,
+	};
+};
 export const addActionItems = (data) => {
 	return {
 		type: 'ACTION_ITEMS',

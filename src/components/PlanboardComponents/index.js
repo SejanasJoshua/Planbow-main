@@ -58,12 +58,12 @@ export default function PlanboardComponents({ planboards, setPlanboards }) {
 	const handleDelete = async () => {
 		try {
 			const response = await axios.put(
-				`${process.env.REACT_APP_URL}/planboard/delete`,
+				`${process.env.REACT_APP_URL}/planboard/update`,
 				{
 					deletePlanboardID: planboardID,
 				}
 			);
-			if (response.data.data === 'success') {
+			if (response.data.message === 'success') {
 				setOpenDialog(false);
 				setDeleteSuccess(deleteSuccess + 1);
 				const newPlanboard = planboards.filter(

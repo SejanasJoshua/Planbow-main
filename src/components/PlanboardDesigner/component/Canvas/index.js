@@ -83,6 +83,21 @@ export default function Canvas() {
 		console.log(event, element);
 	}, []);
 
+	// const onNodesChange = useCallback(
+	// 	(changes) => {
+	// 		const nextChanges = changes.filter((change) => {
+	// 			const node = nodes.find((node) => {
+	// 				return node.id === change.id;
+	// 			});
+	// 			return change.type === 'remove' && node && node.data.deletable;
+	// 		});
+	// 		return setNodes((nodes) => {
+	// 			return applyNodeChanges(nextChanges, nodes);
+	// 		});
+	// 	},
+	// 	[setNodes]
+	// );
+
 	const onSave = useCallback(async () => {
 		// const saveFlow = async () => {
 		try {

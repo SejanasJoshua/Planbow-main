@@ -6,13 +6,15 @@ import addWorkspace from '../reducers/workspace';
 import addPlanboard from '../reducers/planboard';
 import addSocket from '../reducers/socket';
 import settings from '../reducers/settings';
+import totalPlanboards from './totalPlanboards';
 
 const appReducer = combineReducers({
 	user: addUser,
 	workspace: addWorkspace,
 	planboard: addPlanboard,
 	socket: addSocket,
-	settings: settings,
+	settings,
+	totalPlanboards,
 });
 
 const rootReducer = (state, action) => {
