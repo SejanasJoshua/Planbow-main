@@ -42,7 +42,9 @@ export default function StartNode() {
 						Start
 					</Typography>
 				</Grid>
-				<IconButton
+				
+			</Grid>
+			<IconButton
 					aria-haspopup='true'
 					aria-label='settings'
 					sx={{
@@ -55,7 +57,6 @@ export default function StartNode() {
 				>
 					<Icon path={mdiPlusCircle} title='Add' size={1} />
 				</IconButton>
-			</Grid>
 			<AllComponentsList
 			// components={components}
 			// componentsClickOpen={componentsClickOpen}
