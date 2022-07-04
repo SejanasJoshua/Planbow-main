@@ -16,6 +16,8 @@ import ForgotPassword from '../components/OnBoardComponents/ForgotPassword';
 import TeamsComponent from '../components/TeamsComponent';
 import RecycleBin from '../components/RecycleBin';
 import MasterLayoutComponent from '@components/MasterLayoutComponent';
+import ProtectedRoutes from './ProtectedRoutes';
+import NonAuthenticatedRoutes from './NonAuthenticatedRoutes';
 
 export default function App() {
 	const { user: User } = useSelector((state) => state);
@@ -25,23 +27,70 @@ export default function App() {
 			<Routes>
 				<Route path='/' element={<Layout />}>
 					<Route index element={<OnBoardComponents />} />
-					<Route
-						path='planboard-designer'
-						element={
-							<PlanboardDesignerProvider>
-								<PlanboardDesigner />
-							</PlanboardDesignerProvider>
-						}
-					/>
-					<Route path='login' element={<OnBoardComponents />} />
+
+					{/* Protected Routes */}
+					<Route element={<ProtectedRoutes />}>
+						<Route
+							path='dashboard'
+							element={
+								<MasterLayoutComponent>
+									<Dashboard />
+								</MasterLayoutComponent>
+							}
+						/>
+						<Route
+							path='planboard'
+							element={
+								<MasterLayoutComponent>
+									<PlanboardComponents />
+								</MasterLayoutComponent>
+							}
+						/>
+						<Route
+							path='bin'
+							element={
+								<MasterLayoutComponent>
+									<RecycleBin />
+								</MasterLayoutComponent>
+							}
+						/>
+
+						{/* teams route  */}
+						<Route
+							path='teams'
+							element={
+								<MasterLayoutComponent>
+									<TeamsComponent />
+								</MasterLayoutComponent>
+							}
+						/>
+						<Route
+							path='planboard-designer'
+							element={
+								<PlanboardDesignerProvider>
+									<PlanboardDesigner />
+								</PlanboardDesignerProvider>
+							}
+						/>
+					</Route>
+					{/* End of Protected Routes */}
+
+					{/* These routes can be accessed only when user is logged out */}
+					<Route element={<NonAuthenticatedRoutes />}>
+						<Route path='login' element={<OnBoardComponents />} />
+						<Route path='forgot-password' element={<ForgotPassword />} />
+						<Route
+							path='reset-password/:id/:token'
+							element={<ResetPassword />}
+						/>
+					</Route>
+
 					<Route path='home' element={<MasterLayoutComponent />} />
 					<Route
 						path='logout'
 						element={User ? <Logout /> : <OnBoardComponents />}
 					/>
 					<Route path='invite' element={<Invite />} />
-					<Route path='forgot-password' element={<ForgotPassword />} />
-					<Route path='reset-password/:id/:token' element={<ResetPassword />} />
 
 					{/* we need to remove this route */}
 					<Route path='registration' element={<Registration />} />
@@ -49,40 +98,6 @@ export default function App() {
 					<Route path='colleagues' element={<Colleagues />} />
 
 					{/* we need to remove this route */}
-					<Route
-						path='dashboard'
-						element={
-							<MasterLayoutComponent>
-								<Dashboard />
-							</MasterLayoutComponent>
-						}
-					/>
-					<Route
-						path='planboard'
-						element={
-							<MasterLayoutComponent>
-								<PlanboardComponents />
-							</MasterLayoutComponent>
-						}
-					/>
-					<Route
-						path='bin'
-						element={
-							<MasterLayoutComponent>
-								<RecycleBin />
-							</MasterLayoutComponent>
-						}
-					/>
-
-					{/* teams route  */}
-					<Route
-						path='teams'
-						element={
-							<MasterLayoutComponent>
-								<TeamsComponent />
-							</MasterLayoutComponent>
-						}
-					/>
 
 					{/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit

@@ -92,9 +92,10 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 	useEffect(() => {
 		if (!User?.email) {
 			document.title = 'PlanBow - Login';
-		} else {
-			navigate('/dashboard');
 		}
+		// else {
+		// 	navigate('/dashboard');
+		// }
 	}, []);
 
 	const initialValues = {

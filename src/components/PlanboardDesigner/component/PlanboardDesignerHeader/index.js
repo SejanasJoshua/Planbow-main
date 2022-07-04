@@ -8,12 +8,12 @@ import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 
 export default function PlanboardDesignerHeader(props) {
 	const navigate = useNavigate();
+	const { planboard, settings } = useSelector((state) => state);
+	const ParentState = props?.location?.state;
 
-	const toComponentB = () => {
-		navigate('/dashboard');
+	const goBack = () => {
+		navigate(settings.URLHistory);
 	};
-	const { planboard } = useSelector((state) => state);
-	const ParentState=props?.location?.state;
 
 	return (
 		<AppBar position='static'>
@@ -24,15 +24,14 @@ export default function PlanboardDesignerHeader(props) {
 					color='inherit'
 					aria-label='menu'
 					sx={{ mr: 2 }}
-					onClick={() => {
-						toComponentB();
-					}}
+					onClick={goBack}
 				>
 					<Icon path={mdiArrowLeft} title='Home' size={1} />
 				</IconButton>
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-					{props?.location?.state?.editable ? 
-					ParentState?.planboard?.name : planboard?.name}
+					{props?.location?.state?.editable
+						? ParentState?.planboard?.name
+						: planboard?.name}
 				</Typography>
 			</Toolbar>
 		</AppBar>
