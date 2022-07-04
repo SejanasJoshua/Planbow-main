@@ -1,26 +1,21 @@
 import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-// import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import {
+	Box,
+	Button,
+	Container,
+	CssBaseline,
+	Grid,
+	Link,
+	Stack,
+	TextField,
+	Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiFacebook, mdiGoogle } from '@mdi/js';
 import { updateUser, updateWorkspace } from '@redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useFormik } from 'formik';
-// import { createSocket } from '../functions';
-// import getRequests from '@utils/getRequests';
-// import postRequests from '@utils/postRequests';
 import axiosRequests from '@utils/axiosRequests';
 import Divider from '@mui/material/Divider';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
