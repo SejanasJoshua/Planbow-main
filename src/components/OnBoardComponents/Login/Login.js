@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
 	Box,
@@ -20,34 +20,34 @@ import axiosRequests from '@utils/axiosRequests';
 import Divider from '@mui/material/Divider';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { SocketContext } from '@contexts/socket';
+// import { SocketContext } from '@contexts/socket';
 import labels from '@shared/labels';
 import { ICONS } from '@shared/assets';
 
 export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const socket = useContext(SocketContext);
+	// const socket = useContext(SocketContext);
 
-	const addNewUserSocket = (userData) => {
-		// const {
-		// 	license,
-		// 	userType,
-		// 	profilePic,
-		// 	__v,
-		// 	createdAt,
-		// 	updatedAt,
-		// 	...others
-		// } = userData;
-		alert('add to socket');
-		const socketData = {
-			_id: userData._id,
-			fullName: userData.fullName,
-			email: userData.email,
-		};
-		console.log(socket);
-		socket.emit('newUser', socketData);
-	};
+	// const addNewUserSocket = (userData) => {
+	// 	// const {
+	// 	// 	license,
+	// 	// 	userType,
+	// 	// 	profilePic,
+	// 	// 	__v,
+	// 	// 	createdAt,
+	// 	// 	updatedAt,
+	// 	// 	...others
+	// 	// } = userData;
+	// 	alert('add to socket');
+	// 	const socketData = {
+	// 		_id: userData._id,
+	// 		fullName: userData.fullName,
+	// 		email: userData.email,
+	// 	};
+	// 	console.log(socket);
+	// 	socket.emit('newUser', socketData);
+	// };
 
 	const fetchWorkspace = async (id) => {
 		console.log('fetch workspace');
@@ -76,7 +76,7 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 			if (response.data.data.defaultWorkspace)
 				fetchWorkspace(response.data.data.defaultWorkspace);
 			dispatch(updateUser(response.data.data));
-			addNewUserSocket(response.data.data);
+			// addNewUserSocket(response.data.data);
 			// newSocketConnection(response.data.data);
 
 			if (response.data.data.defaultWorkspace) navigate('/dashboard');

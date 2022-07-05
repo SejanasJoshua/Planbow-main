@@ -18,6 +18,9 @@ import RecycleBin from '../components/RecycleBin';
 import MasterLayoutComponent from '@components/MasterLayoutComponent';
 import ProtectedRoutes from './ProtectedRoutes';
 import NonAuthenticatedRoutes from './NonAuthenticatedRoutes';
+import Step1 from '../components/OnBoardComponents/Registration/Step1';
+import Step2 from '../components/OnBoardComponents/Registration/Step2';
+import Step3 from '../components/OnBoardComponents/Registration/Step3';
 
 export default function App() {
 	const { user: User } = useSelector((state) => state);
@@ -83,6 +86,9 @@ export default function App() {
 							path='reset-password/:id/:token'
 							element={<ResetPassword />}
 						/>
+						<Route path='register/step-1' element={<Step1 />} />
+						<Route path='register/step-2/:id/:token' element={<Step2 />} />
+						<Route path='register/step-3' element={<Step3 />} />
 					</Route>
 
 					<Route path='home' element={<MasterLayoutComponent />} />
