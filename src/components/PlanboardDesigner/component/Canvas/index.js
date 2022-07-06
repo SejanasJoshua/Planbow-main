@@ -272,6 +272,16 @@ export default function Canvas() {
 					minZoom={0.35}
 					onInit={setFlowInstance}
 					onNodesDelete={checkChange}
+					// -----------------new Attributes------------------------------------------------
+					elementsSelectable={true}
+					nodesConnectable={true}
+					nodesDraggable={true}
+					zoomOnScroll={true}
+					panOnScroll={true}
+					panOnScrollMode={'horizontal'}
+					zoomOnDoubleClick={false}
+					panOnDrag={true}
+					fitView
 					maxZoom={1}
 				>
 					<MiniMap
