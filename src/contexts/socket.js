@@ -1,5 +1,5 @@
 // import React, { createContext, useState } from 'react';
-import React from 'react';
+// import React from 'react';
 // import PropTypes from 'prop-types';
 
 // const SocketContext = createContext();
@@ -19,7 +19,7 @@ import React from 'react';
 // };
 
 // export default SocketContext;
-import socketio from 'socket.io-client';
+// import socketio from 'socket.io-client';
 
-export const socket = socketio.connect(process.env.REACT_SOCKET_URL);
-export const SocketContext = React.createContext();
+// export const socket = socketio.connect(process.env.REACT_SOCKET_URL);
+// export const SocketContext = React.createContext();
