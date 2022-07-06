@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from './Login/Login';
-import Registration from './Registration';
+// import Registration from './Registration';
+import Step1 from './Registration/Step1';
 import Box from '@mui/material/Box';
 
 const bg = {
@@ -40,12 +41,17 @@ export default function OnBoardComponents() {
 					whiteBoxCenter={whiteBoxCenter}
 				/>
 			) : onboardNav === 'registration' ? (
-				<Registration
+				<Step1
 					setOnboardNav={setOnboardNav}
 					socialIcon={socialIcon}
 					whiteBoxCenter={whiteBoxCenter}
 				/>
-			) : null}
+			) : // <Registration
+			// 	setOnboardNav={setOnboardNav}
+			// 	socialIcon={socialIcon}
+			// 	whiteBoxCenter={whiteBoxCenter}
+			// />
+			null}
 		</Box>
 	);
 }

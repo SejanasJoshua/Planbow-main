@@ -80,7 +80,7 @@ export default function Login({ setOnboardNav, whiteBoxCenter, socialIcon }) {
 			// newSocketConnection(response.data.data);
 
 			if (response.data.data.defaultWorkspace) navigate('/dashboard');
-			else navigate('/dashboard');
+			else navigate('/workspace');
 		}
 	};
 	const { user: User } = useSelector((state) => state);
