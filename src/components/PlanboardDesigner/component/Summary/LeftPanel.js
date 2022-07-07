@@ -21,8 +21,7 @@ import {
 	FormControlLabel,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { updatePlanboard, planboardComponentsModal } from '@redux/actions';
-
+import { updatePlanboard, planboardComponentsModal,updateTotalPlanboard } from '@redux/actions';
 export default function LeftPanel(props) {
 	const { user: User, workspace: Workspace } = useSelector((state) => state);
 	const [visible, setVisible] = useState(true);
@@ -177,6 +176,10 @@ export default function LeftPanel(props) {
 			const response = await axiosRequests.postData(endpoint, {
 				...requestData,
 			});
+			if (response?.data?.message === 'success') {
+				dispatch(updatePlanboard(response.data.data));
+				updateTotalPlanboards(response.data.data,'create');
+			}
 			return response;
 		}
 		requestData = {
@@ -185,18 +188,33 @@ export default function LeftPanel(props) {
 			endDate: state.endDate,
 			description: state.description,
 			planboardID: ParentState?.planboard?._id,
+			startDate: state.startDate,
+			workspace: Workspace._id,
+			
 		};
 		const response = await axiosRequests.putData(endpoint, { ...requestData });
+		if (response?.data?.message === 'success') {
+			dispatch(updatePlanboard(requestData));
+			updateTotalPlanboards(requestData,'update');
+		}
 		return response;
+	};
+	const updateTotalPlanboards =(data,type)=>{
+		if(type=='create'){
+			return dispatch(updateTotalPlanboard([...props.totalPlanboards,{...data}]));
+		}
+		let planboards=props.totalPlanboards;
+		planboards[planboards.findIndex(planboard=>planboard._id==data.planboardID)]={...data,isDeleted:false};
+		return dispatch(updateTotalPlanboard([...planboards]));
 	};
 	const handleSubmit = async () => {
 		if (!checkFields()) {
 			const response = ParentState?.newPlanboard
 				? await toggleApi('/planboard/create')
 				: await toggleApi('/planboard/update');
-			if (response?.data?.data) {
-				dispatch(updatePlanboard(response.data.data));
-			}
+			// if (response?.data?.data) {
+			// 	dispatch(updatePlanboard(response.data.data));
+			// }
 			if (response?.data?.message === 'success') {
 				setPopUp({
 					message: ParentState?.newPlanboard

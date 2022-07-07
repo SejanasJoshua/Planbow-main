@@ -91,7 +91,8 @@ export default function Canvas() {
 	}, []);
 
 	const checkChange = (deletedNode) => {
-		setNodes(nodes.filter((node) => node.id != deletedNode[0]?.id));
+		if (deletedNode?.[0]?.type != 'start')
+			setNodes(nodes.filter((node) => node.id != deletedNode[0]?.id));
 	};
 
 	const onSave = useCallback(async () => {
@@ -262,7 +263,7 @@ export default function Canvas() {
 							console.log(e, 'reactflow');
 						}
 					}}
-					deleteKeyCode='Backspace'
+					// deleteKeyCode='Backspace'
 					onConnect={onConnect}
 					nodeTypes={nodeTypes}
 					connectionLineStyle={connectionLineStyle}
@@ -278,7 +279,7 @@ export default function Canvas() {
 					// nodesDraggable={true}
 					// zoomOnScroll={true}
 					panOnScroll={true}
-					panOnScrollMode={'horizontal'}
+					panOnScrollMode={'free'}
 					// zoomOnDoubleClick={false}
 					// panOnDrag={true}
 					fitView
