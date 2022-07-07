@@ -10,7 +10,7 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import {Badge, Container} from '@mui/material';
+import { Badge, Container } from '@mui/material';
 // import Container from '@mui/material/Container';
 // import Grid from '@mui/material/Grid';
 // import Paper from '@mui/material/Paper';
@@ -104,10 +104,7 @@ export default function MasterLayoutComponent(props) {
 	const openPopover = Boolean(popoverAnchor);
 	const popoverID = open ? 'simple-popover' : undefined;
 
-	console.log(notifications);
 	const getNotifications = async () => {
-		console.log('Fetching Notifications...');
-
 		try {
 			const response = await axiosRequests.getData(
 				`/notification/get?userID=${user._id}&email=${user.email}`
@@ -184,7 +181,7 @@ export default function MasterLayoutComponent(props) {
 						px: [1],
 					}}
 				>
-                    <img
+					<img
 						style={{ width: '120px', marginRight: 'auto', marginTop: '10px' }}
 						src={ICONS.logoBrand}
 						alt='planbow'
@@ -213,10 +210,9 @@ export default function MasterLayoutComponent(props) {
 					overflow: 'auto',
 				}}
 			>
-                <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-                {props.children}
-                </Container>
-				
+				<Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+					{props.children}
+				</Container>
 			</Box>
 
 			<Popover

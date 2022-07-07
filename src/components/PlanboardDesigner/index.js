@@ -14,35 +14,42 @@ import PlanboardDesignerContext from '@contexts/planboardDesigner';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-const bg = {
-	backgroundSize: '8px 8px',
-	backgroundImage:
-		'linear-gradient( to right, #e8e8e8 1px, transparent 1px ), linear-gradient(to bottom, #e8e8e8 1px, transparent 1px)',
-	height: '100vh',
-	overflow:'auto'
-	// boxShadow: '0px 7px 29px 0px #ddd',
-};
-
+// const bg = {
+// 	backgroundSize: '8px 8px',
+// 	backgroundImage:
+// 		'linear-gradient( to right, #e8e8e8 1px, transparent 1px ), linear-gradient(to bottom, #e8e8e8 1px, transparent 1px)',
+// 	height: '100vh',
+// 	overflow: 'auto',
+// 	// boxShadow: '0px 7px 29px 0px #ddd',
+// };
 
 export default function PlanboardDesigner() {
 	// const theme = useTheme();
 	// const [selectedNav, setselectedNav] = React.useState('ideasummary');
-	const location=useLocation();
-	const { selectedNav, setselectedNav, setPlanboard,actionItem:actionItemData } = useContext(
-		PlanboardDesignerContext
-	);
-	const { planboard: planboardRedux, user: User,totalPlanboards } = useSelector(
-		(state) => state
-	);
-	
+	const location = useLocation();
+	const {
+		selectedNav,
+		setselectedNav,
+		setPlanboard,
+		actionItem: actionItemData,
+	} = useContext(PlanboardDesignerContext);
+	const {
+		planboard: planboardRedux,
+		user: User,
+		totalPlanboards,
+	} = useSelector((state) => state);
+
 	useEffect(() => {
 		planboardRedux && setPlanboard(planboardRedux);
 	}, []);
 
 	return (
-		<Container maxWidth='xl' sx={{...bg}}>
+		<Container
+			maxWidth='xl'
+			// sx={{ ...bg }}
+		>
 			<Box sx={{ margin: '0 -24px' }}>
-				<PlanboardDesignerHeader location={location}  />
+				<PlanboardDesignerHeader location={location} />
 			</Box>
 			<Box
 				sx={{
@@ -68,13 +75,17 @@ export default function PlanboardDesigner() {
 				}}
 			>
 				{selectedNav == 'ideasummary' ? (
-					<Summary creator={User} Planboard={planboardRedux} location={location} setselectedNav={setselectedNav}
-					totalPlanboards={totalPlanboards}
+					<Summary
+						creator={User}
+						Planboard={planboardRedux}
+						location={location}
+						setselectedNav={setselectedNav}
+						totalPlanboards={totalPlanboards}
 					/>
 				) : selectedNav == 'ideacanvas' ? (
 					<Canvas />
 				) : selectedNav == 'ideaactionitem' ? (
-					<ActionItems  actionItemData={actionItemData}/>
+					<ActionItems actionItemData={actionItemData} />
 				) : selectedNav == 'ideaevent' ? (
 					<Events />
 				) : selectedNav == 'ideacontent' ? (

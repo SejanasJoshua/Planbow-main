@@ -26,12 +26,12 @@ import CustomNode from './CustomNode';
 import AllComponentsList from './AllComponentsList';
 import PlanboardDesignerContext from '@contexts/planboardDesigner';
 
-const bg = {
-	backgroundSize: '8px 8px',
-	backgroundImage:
-		'linear-gradient( to right, #e8e8e8 1px, transparent 1px ), linear-gradient(to bottom, #e8e8e8 1px, transparent 1px)',
-	height: '100vh',
-};
+// const bg = {
+// 	backgroundSize: '8px 8px',
+// 	backgroundImage:
+// 		'linear-gradient( to right, #e8e8e8 1px, transparent 1px ), linear-gradient(to bottom, #e8e8e8 1px, transparent 1px)',
+// 	height: '100vh',
+// };
 
 const connectionLineStyle = { stroke: '#1A192B' };
 const getId = () => `node_${new Date().toJSON()}`;
@@ -200,7 +200,7 @@ export default function Canvas() {
 	};
 
 	useEffect(() => {
-		console.log(nodes);
+		// console.log(nodes);
 		deleteNodes();
 		const compare1 = initialNodes.map((node) => {
 			return node.id;
@@ -248,7 +248,7 @@ export default function Canvas() {
 					flexGrow: 1,
 					height: '100vh',
 					width: '100%',
-					...bg,
+					// ...bg,
 				}}
 			>
 				<ReactFlow
@@ -273,14 +273,14 @@ export default function Canvas() {
 					onInit={setFlowInstance}
 					onNodesDelete={checkChange}
 					// -----------------new Attributes------------------------------------------------
-					elementsSelectable={true}
-					nodesConnectable={true}
-					nodesDraggable={true}
-					zoomOnScroll={true}
+					// elementsSelectable={true}
+					// nodesConnectable={true}
+					// nodesDraggable={true}
+					// zoomOnScroll={true}
 					panOnScroll={true}
 					panOnScrollMode={'horizontal'}
-					zoomOnDoubleClick={false}
-					panOnDrag={true}
+					// zoomOnDoubleClick={false}
+					// panOnDrag={true}
 					fitView
 					maxZoom={1}
 				>
