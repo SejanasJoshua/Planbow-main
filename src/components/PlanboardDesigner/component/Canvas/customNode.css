@@ -1,0 +1,7 @@
+.node-hide {
+	display: none;
+}
+.node-card:hover .node-hide {
+	display: flex;
+	justify-content: space-between;
+}

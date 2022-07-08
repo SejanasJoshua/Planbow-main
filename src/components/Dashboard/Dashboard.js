@@ -2,7 +2,6 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import HomeComponent from '@components/HomeComponent';
 import PlanboardComponents from '@components/PlanboardComponents';
-import PlanboardCanvas from '@components/PlanboardCanvas';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,7 @@ import // updateURLHistory,
 // updatePlanboard,
 // planboardComponentsModal,
 '@redux/actions';
-import { addActionItems,updateTotalPlanboard } from '@redux/actions';
+import { addActionItems, updateTotalPlanboard } from '@redux/actions';
 // import axios from 'axios';
 import axiosRequests from '@utils/axiosRequests';
 import TeamsComponent from '../TeamsComponent';
@@ -69,13 +68,9 @@ function DashboardContent() {
 	return (
 		<Grid>
 			{selectedNav == 'home' ? (
-				<HomeComponent  />
+				<HomeComponent />
 			) : selectedNav == 'planboards' ? (
-				<PlanboardComponents
-					setselectedNav={setselectedNav}
-				/>
-			) : selectedNav == 'canvas' ? (
-				<PlanboardCanvas />
+				<PlanboardComponents setselectedNav={setselectedNav} />
 			) : selectedNav == 'teams' ? (
 				<TeamsComponent />
 			) : null}

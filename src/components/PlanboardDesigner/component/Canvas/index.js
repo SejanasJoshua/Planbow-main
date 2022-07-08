@@ -91,8 +91,13 @@ export default function Canvas() {
 	}, []);
 
 	const checkChange = (deletedNode) => {
-		if (deletedNode?.[0]?.type != 'start')
-			setNodes(nodes.filter((node) => node.id != deletedNode[0]?.id));
+		if (deletedNode?.[0]?.type === 'start') {
+			const prev = nodes;
+
+			setNodes(prev);
+		}
+		// if (deletedNode?.[0]?.type != 'start')
+		// 	setNodes(nodes.filter((node) => node.id != deletedNode[0]?.id));
 	};
 
 	const onSave = useCallback(async () => {

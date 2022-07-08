@@ -24,8 +24,8 @@ export default function StartNode() {
 	// };
 	return (
 		<>
-			<Grid 
-			className="nodrag"
+			<Grid
+				// className="nodrag"
 				container
 				sx={{
 					display: 'flex',
@@ -42,21 +42,20 @@ export default function StartNode() {
 						Start
 					</Typography>
 				</Grid>
-				
 			</Grid>
 			<IconButton
-					aria-haspopup='true'
-					aria-label='settings'
-					sx={{
-						right: '-50px',
-						top: '50%',
-						transform: 'translateY(-50%)',
-						position: 'absolute',
-					}}
-					onClick={componentsClickOpen}
-				>
-					<Icon path={mdiPlusCircle} title='Add' size={1} />
-				</IconButton>
+				aria-haspopup='true'
+				aria-label='settings'
+				sx={{
+					right: '-50px',
+					top: '50%',
+					transform: 'translateY(-50%)',
+					position: 'absolute',
+				}}
+				onClick={componentsClickOpen}
+			>
+				<Icon path={mdiPlusCircle} title='Add' size={1} />
+			</IconButton>
 			<AllComponentsList
 			// components={components}
 			// componentsClickOpen={componentsClickOpen}

@@ -25,6 +25,7 @@ import {
 	mdiAccountMultiplePlus,
 	mdiPlusCircle,
 } from '@mdi/js';
+import './customNode.css';
 import { planboardComponentsModal } from '@redux/actions';
 
 import IdeationFlow from '../IdeationFlow';
@@ -97,7 +98,7 @@ export default function CustomNode(props) {
 		<>
 			<Handle type='target' position='left' style={{ background: '#555' }} />
 			<Grid container>
-				<Card>
+				<Card className='node-card'>
 					<CardHeader
 						// avatar={<img src={ICONS.customNode} alt='icon name' />}
 						avatar={<img src={props.data.icon} alt={nodeName} />}
@@ -109,6 +110,7 @@ export default function CustomNode(props) {
 								aria-expanded={menuOpen ? 'true' : undefined}
 								onClick={handleClick}
 								aria-label='settings'
+								className='node-hide'
 							>
 								<Icon path={mdiDotsVertical} title='Home' size={1} />
 							</IconButton>
@@ -153,7 +155,7 @@ export default function CustomNode(props) {
 						</IconButton>
 					</CardContent>
 
-					<CardActions>
+					<CardActions className='node-hide'>
 						<IconButton
 							aria-label='lock'
 							onClick={() => setStates({ ...states, lock: !states.lock })}

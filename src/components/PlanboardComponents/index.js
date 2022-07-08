@@ -6,7 +6,6 @@ import Typography from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -17,7 +16,6 @@ import { mdiFormatListBulleted, mdiGridLarge } from '@mdi/js';
 import labels from '@shared/labels';
 import PlanboardGridView from './PlanboardGridView';
 import PlanboardListView from './PlanboardListView';
-import PlanboardCanvas from '@components/PlanboardCanvas';
 import axios from 'axios';
 import axiosRequests from '@utils/axiosRequests';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,15 +23,11 @@ import {
 	updateURLHistory,
 	updatePlanboard,
 	updateTotalPlanboard,
-	// planboardComponentsModal,
 } from '@redux/actions';
 
 export default function PlanboardComponents() {
-	// let { setselectedNav } = props;
 	const [view, setView] = useState('Grid');
-	const [open, setOpen] = React.useState(false);
 	const [openDialog, setOpenDialog] = React.useState(false);
-	const [openIdeation, setOpenIdeation] = React.useState(false);
 	const [planboardID, setPlanboardID] = React.useState();
 	const [deleteSuccess, setDeleteSuccess] = React.useState(1);
 	const dispatch = useDispatch();
@@ -41,21 +35,12 @@ export default function PlanboardComponents() {
 	const { user, totalPlanboards: planboards } = useSelector((state) => state);
 	const [assignedTasks, setAssignedTasks] = React.useState(null);
 
-	const handleClickOpen = () => {
-		// setOpen(true);
+	const handleCreatePlanboard = () => {
 		dispatch(updateURLHistory('/planboard'));
 		navigate('/planboard-designer', {
 			state: { editable: true, newPlanboard: true },
 		});
 	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-	// const ideationClickOpen = () => {
-	// 	setOpenIdeation(true);
-	// 	setOpen(false);
-	// };
 
 	const handleDelete = async () => {
 		try {
@@ -97,10 +82,6 @@ export default function PlanboardComponents() {
 		setOpenDialog(false);
 	};
 
-	const ideation = () => {
-		navigate('/planboard-designer', { state: { id: 1, name: 'sabaoon' } });
-	};
-
 	const fetchUserData = async () => {
 		const response = await axiosRequests.getData(
 			`/user?assignedTasks=true&id=${user._id}`
@@ -125,42 +106,13 @@ export default function PlanboardComponents() {
 					</Typography>
 					<Button
 						// onClick={() => setselectedNav('canvas')}
-						onClick={handleClickOpen}
+						onClick={handleCreatePlanboard}
 						variant='contained'
 						size='small'
 						sx={{ ml: 2 }}
 					>
 						Create Planboard
 					</Button>
-					<Dialog open={open} onClose={handleClose}>
-						<DialogTitle>Subscribe</DialogTitle>
-						<DialogContent>
-							<DialogContentText>
-								To subscribe to this website, please enter your email address
-								here. We will send updates occasionally.
-							</DialogContentText>
-							<TextField
-								autoFocus
-								margin='dense'
-								id='name'
-								label='Email Address'
-								type='email'
-								fullWidth
-								variant='standard'
-							/>
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={handleClose}>Cancel</Button>
-							{/* <Button onClick={ideationClickOpen}>Subscribe</Button> */}
-							<Button
-								onClick={() => {
-									ideation();
-								}}
-							>
-								Subscribe
-							</Button>
-						</DialogActions>
-					</Dialog>
 					<Grid
 						sx={{
 							ml: 'auto',
@@ -183,14 +135,6 @@ export default function PlanboardComponents() {
 							</IconButton>
 						</Stack>
 					</Grid>
-				</Grid>
-				<Grid>
-					{openIdeation === true && (
-						<PlanboardCanvas
-							openIdeation={openIdeation}
-							setOpenIdeation={setOpenIdeation}
-						/>
-					)}
 				</Grid>
 				{view === 'Grid' && (
 					<PlanboardGridView

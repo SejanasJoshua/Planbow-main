@@ -76,8 +76,6 @@ export default function TaskDelegation({
 		const added = assignedUsers.filter(
 			(x) => !fetchedAssignedValues.includes(x)
 		);
-		console.log(removed);
-		console.log(added);
 		const removedEmailLists = removed.map((item) => {
 			if (item) return item.email;
 		});
@@ -109,6 +107,9 @@ export default function TaskDelegation({
 		if (a !== 10)
 			selectedPlanboardComponent?.data?.componentID && getAssignedUsers();
 	}, [selectedPlanboardComponent, a]);
+	useEffect(() => {
+		planboard && console.log(planboard.users, 'users');
+	}, [planboard]);
 	useEffect(() => {
 		console.log(a);
 	}, [a]);
