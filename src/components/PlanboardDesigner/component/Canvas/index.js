@@ -90,10 +90,18 @@ export default function Canvas() {
 		console.log(event, element);
 	}, []);
 
-	const checkChange = (deletedNode) => {
-		if (deletedNode?.[0]?.type != 'start')
-			setNodes(nodes.filter((node) => node.id != deletedNode[0]?.id));
+	const checkNodeDelete = (deletedNode) => {
+		 if (deletedNode?.[0]?.type === 'start'){
+		return setTimeout(()=>setNodes([...nodes,...deletedNode]),0);
+		}
 	};
+	const checkEdgeDelete = (deletedEdge) => {
+			let updatedEdges=edges.filter(edge=>edge.target!==deletedEdge[0].target);
+			if(clickedNode?.id=='99'){
+				return setTimeout(()=>setEdges([...edges]),0);
+			}
+	   		 setTimeout(()=>setEdges([...updatedEdges]),0);
+   };
 
 	const onSave = useCallback(async () => {
 		// const saveFlow = async () => {
@@ -263,7 +271,7 @@ export default function Canvas() {
 							console.log(e, 'reactflow');
 						}
 					}}
-					// deleteKeyCode='Backspace'
+					deleteKeyCode='Backspace'
 					onConnect={onConnect}
 					nodeTypes={nodeTypes}
 					connectionLineStyle={connectionLineStyle}
@@ -272,7 +280,8 @@ export default function Canvas() {
 					// onNodeDoubleClick={(n) => loadComponentonDoubleClick(n)}
 					minZoom={0.35}
 					onInit={setFlowInstance}
-					onNodesDelete={checkChange}
+					onNodesDelete={checkNodeDelete}
+					onEdgesDelete={checkEdgeDelete}
 					// -----------------new Attributes------------------------------------------------
 					// elementsSelectable={true}
 					// nodesConnectable={true}
