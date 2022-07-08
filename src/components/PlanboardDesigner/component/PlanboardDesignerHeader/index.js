@@ -6,10 +6,10 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 
-export default function PlanboardDesignerHeader() {
+export default function PlanboardDesignerHeader(props) {
 	const navigate = useNavigate();
 	const { planboard, settings } = useSelector((state) => state);
-	// const ParentState = props?.location?.state;
+	const ParentState = props?.location?.state;
 
 	const goBack = () => {
 		navigate(settings.URLHistory);
@@ -29,7 +29,7 @@ export default function PlanboardDesignerHeader() {
 					<Icon path={mdiArrowLeft} title='Home' size={1} />
 				</IconButton>
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-					{planboard?.name}
+					{ParentState?.newPlanboard ? '' : planboard?.name}
 				</Typography>
 			</Toolbar>
 		</AppBar>
