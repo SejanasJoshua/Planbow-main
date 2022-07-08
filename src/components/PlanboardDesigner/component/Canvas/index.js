@@ -81,7 +81,7 @@ export default function Canvas() {
 
 	const onClickNode = useCallback((event, element) => {
 		clickedNode = element;
-		console.log(flowInstance);
+		// console.log(flowInstance);
 		dispatch(updatePlanboardComponent(element));
 		setSelectedPlanboardComponent(element);
 	}, []);
@@ -152,6 +152,7 @@ export default function Canvas() {
 						icon: item.icon,
 						sourcePosition: 'right',
 						targetPosition: 'left',
+						createdBy: user,
 					},
 					style: {
 						// width: '300px',

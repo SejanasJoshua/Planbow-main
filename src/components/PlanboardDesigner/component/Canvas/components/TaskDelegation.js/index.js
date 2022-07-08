@@ -127,7 +127,8 @@ export default function TaskDelegation({
 						multiple
 						id='tags-standard'
 						options={planboard.users}
-						getOptionLabel={(option) => option.fullName}
+						// getOptionLabel={(option) => option.fullName}
+						// getOptionLabel={(option) => option}
 						value={assignedUsers}
 						onChange={(event, newValue) => {
 							setAssignedUsers(newValue);
@@ -135,15 +136,15 @@ export default function TaskDelegation({
 						isOptionEqualToValue={(option, value) =>
 							option.email === value.email
 						}
-						renderOption={(props, option) => (
-							<Box
-								component='li'
-								sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-								{...props}
-							>
-								{option.fullName} ({option.email})
-							</Box>
-						)}
+						// renderOption={(props, option) => (
+						// 	<Box
+						// 		component='li'
+						// 		sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+						// 		{...props}
+						// 	>
+						// 		{option.fullName} ({option.email})
+						// 	</Box>
+						// )}
 						renderInput={(params) => (
 							<TextField
 								{...params}

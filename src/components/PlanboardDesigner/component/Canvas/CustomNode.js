@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -27,6 +28,7 @@ import {
 } from '@mdi/js';
 import './customNode.css';
 import { planboardComponentsModal } from '@redux/actions';
+import axiosRequests from '@utils/axiosRequests';
 
 import IdeationFlow from '../IdeationFlow';
 // import AllComponentsList from './AllComponentsList';
@@ -42,13 +44,14 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 	},
 	[`& .${linearProgressClasses.bar}`]: {
 		borderRadius: 5,
-		backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+		backgroundColor: theme.palette.mode === 'light' ? '#6fe65a' : '#6fe65a',
 	},
 }));
 
 export default function CustomNode(props) {
 	const [states, setStates] = useState({
 		lock: true,
+		createdBy: '',
 	});
 	const [ideaDrawer, setideaDrawer] = useState(false);
 	const [delegateDialog, setDelegateDialog] = useState(false);
@@ -94,14 +97,31 @@ export default function CustomNode(props) {
 	const toggleDialogClose = () => {
 		setDelegateDialog(false);
 	};
+
+	const getUserName = async () => {
+		const response = await axiosRequests.getData(
+			`/user?id=${props.data.createdBy}`
+		);
+		if (response.data.message === 'success') {
+			setStates((prev) => ({
+				...prev,
+				createdBy: response.data.data,
+			}));
+		}
+	};
+	useEffect(() => {
+		getUserName();
+	}, [props.data.createdBy]);
 	return (
 		<>
 			<Handle type='target' position='left' style={{ background: '#555' }} />
 			<Grid container>
-				<Card className='node-card'>
+				<Card
+					className='node-card'
+					sx={{ background: '#f7f699', width: '230px', height: '200px' }}
+				>
 					<CardHeader
 						// avatar={<img src={ICONS.customNode} alt='icon name' />}
-						avatar={<img src={props.data.icon} alt={nodeName} />}
 						action={
 							<IconButton
 								id='demo-positioned-button'
@@ -110,25 +130,47 @@ export default function CustomNode(props) {
 								aria-expanded={menuOpen ? 'true' : undefined}
 								onClick={handleClick}
 								aria-label='settings'
-								className='node-hide'
 							>
-								<Icon path={mdiDotsVertical} title='Home' size={1} />
+								<Icon
+									path={mdiDotsVertical}
+									title='Home'
+									size={1}
+									className='node-hide'
+								/>
 							</IconButton>
 						}
 						title={
-							<Typography
-								sx={{ fontWeight: 'bold', fontSize: '16px' }}
-								variant='h5'
-								component='span'
-							>
-								{props.data.label}
-							</Typography>
+							<>
+								<Box sx={{ display: 'flex' }}>
+									<Typography
+										sx={{ fontWeight: 'bold', fontSize: '16px' }}
+										variant='h5'
+										component='span'
+									>
+										{props.data.label}
+									</Typography>
+									<img
+										style={{ paddingLeft: '10px' }}
+										src={props.data.icon}
+										alt={nodeName}
+									/>
+								</Box>
+							</>
 						}
+						// avatar={<img src={props.data.icon} alt={nodeName} />}
 					/>
 					<CardContent className='flex' sx={{ py: 0 }}>
 						<Grid container>
-							<Grid item sx={{ width: '100%' }}>
-								<BorderLinearProgress variant='determinate' value={50} />
+							<Grid
+								item
+								sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+							>
+								<BorderLinearProgress
+									variant='determinate'
+									value={50}
+									sx={{ width: '95%', marginRight: '10px' }}
+								/>
+								50%
 							</Grid>
 							<Grid item>
 								<Typography
@@ -153,35 +195,40 @@ export default function CustomNode(props) {
 						>
 							<Icon path={mdiPlusCircle} title='Add' size={1} />
 						</IconButton>
+						<Box className='node-hide'>
+							<IconButton
+								aria-label='lock'
+								onClick={() => setStates({ ...states, lock: !states.lock })}
+							>
+								{states.lock ? (
+									<Icon path={mdiLockOpenOutline} title='lock open' size={1} />
+								) : (
+									<Icon path={mdiLockOutline} title='lock close' size={1} />
+								)}
+							</IconButton>
+							<IconButton aria-label='chat'>
+								<Icon path={mdiMessageOutline} title='lock close' size={1} />
+							</IconButton>
+							<IconButton aria-label='chat'>
+								<Icon
+									path={mdiCalendarMonthOutline}
+									title='lock close'
+									size={1}
+								/>
+							</IconButton>
+							<IconButton aria-label='lock' onClick={toggleDrawerOpen}>
+								<Icon path={mdiEyeOutline} title='lock close' size={1} />
+							</IconButton>
+							<IconButton aria-label='chat' onClick={toggleDialogOpen}>
+								<Icon path={mdiAccountMultiplePlus} title='Account' size={1} />
+							</IconButton>
+						</Box>
 					</CardContent>
 
-					<CardActions className='node-hide'>
-						<IconButton
-							aria-label='lock'
-							onClick={() => setStates({ ...states, lock: !states.lock })}
-						>
-							{states.lock ? (
-								<Icon path={mdiLockOpenOutline} title='lock open' size={1} />
-							) : (
-								<Icon path={mdiLockOutline} title='lock close' size={1} />
-							)}
-						</IconButton>
-						<IconButton aria-label='chat'>
-							<Icon path={mdiMessageOutline} title='lock close' size={1} />
-						</IconButton>
-						<IconButton aria-label='chat'>
-							<Icon
-								path={mdiCalendarMonthOutline}
-								title='lock close'
-								size={1}
-							/>
-						</IconButton>
-						<IconButton aria-label='lock' onClick={toggleDrawerOpen}>
-							<Icon path={mdiEyeOutline} title='lock close' size={1} />
-						</IconButton>
-						<IconButton aria-label='chat' onClick={toggleDialogOpen}>
-							<Icon path={mdiAccountMultiplePlus} title='Account' size={1} />
-						</IconButton>
+					<CardActions sx={{ bottom: '0', position: 'absolute' }}>
+						<Grid container>
+							<Grid item>{states.createdBy}</Grid>
+						</Grid>
 					</CardActions>
 				</Card>
 			</Grid>

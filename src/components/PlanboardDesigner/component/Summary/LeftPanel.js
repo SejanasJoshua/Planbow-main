@@ -21,7 +21,11 @@ import {
 	FormControlLabel,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { updatePlanboard, planboardComponentsModal,updateTotalPlanboard } from '@redux/actions';
+import {
+	updatePlanboard,
+	planboardComponentsModal,
+	updateTotalPlanboard,
+} from '@redux/actions';
 export default function LeftPanel(props) {
 	const { user: User, workspace: Workspace } = useSelector((state) => state);
 	const [visible, setVisible] = useState(true);
@@ -88,7 +92,12 @@ export default function LeftPanel(props) {
 	};
 	const addUser = (selected, { props: { value } }) => {
 		if (state.coCreators.length == 0 || checkIfUserExists(value, 'users')) {
-			setState({ ...state, users: [...state.users, value] });
+			let userData;
+			users.map((user) => {
+				if (user.email === value) return (userData = user);
+				return null;
+			});
+			setState({ ...state, users: [...state.users, { userData }] });
 		}
 	};
 	const addCoCreator = (selected, { props: { value } }) => {
@@ -178,7 +187,7 @@ export default function LeftPanel(props) {
 			});
 			if (response?.data?.message === 'success') {
 				dispatch(updatePlanboard(response.data.data));
-				updateTotalPlanboards(response.data.data,'create');
+				updateTotalPlanboards(response.data.data, 'create');
 			}
 			return response;
 		}
@@ -190,21 +199,24 @@ export default function LeftPanel(props) {
 			planboardID: ParentState?.planboard?._id,
 			startDate: state.startDate,
 			workspace: Workspace._id,
-			
 		};
 		const response = await axiosRequests.putData(endpoint, { ...requestData });
 		if (response?.data?.message === 'success') {
 			dispatch(updatePlanboard(requestData));
-			updateTotalPlanboards(requestData,'update');
+			updateTotalPlanboards(requestData, 'update');
 		}
 		return response;
 	};
-	const updateTotalPlanboards =(data,type)=>{
-		if(type=='create'){
-			return dispatch(updateTotalPlanboard([...props.totalPlanboards,{...data}]));
+	const updateTotalPlanboards = (data, type) => {
+		if (type == 'create') {
+			return dispatch(
+				updateTotalPlanboard([...props.totalPlanboards, { ...data }])
+			);
 		}
-		let planboards=props.totalPlanboards;
-		planboards[planboards.findIndex(planboard=>planboard._id==data.planboardID)]={...data,isDeleted:false};
+		let planboards = props.totalPlanboards;
+		planboards[
+			planboards.findIndex((planboard) => planboard._id == data.planboardID)
+		] = { ...data, isDeleted: false };
 		return dispatch(updateTotalPlanboard([...planboards]));
 	};
 	const handleSubmit = async () => {
