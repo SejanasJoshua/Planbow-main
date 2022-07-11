@@ -9,16 +9,12 @@ import ActionSlider from './ActionSlider';
 import Imapct from './Imapct';
 import PropTypes from 'prop-types';
 import axiosRequests from '@utils/axiosRequests';
-import { useSelector } from 'react-redux';
-export default function ActionItems() {
-	const {
-		planboard: { actionItems: actionItemData },
-	} = useSelector((state) => state);
+export default function ActionItems({ actionItemData }) {
 	useEffect(() => {
 		if (actionItemData?.length) {
 			setActionItem(actionItemData);
 		}
-	}, []);
+	}, [actionItemData]);
 	const [state, setState] = useState([]);
 	const [actionItems, setActionItem] = useState([]);
 	const dummy = {
