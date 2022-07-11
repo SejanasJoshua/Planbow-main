@@ -14,13 +14,13 @@ export const PlanboardDesignerProvider = ({ children }) => {
 
 	const actionItemData = async () => {
 		const response = await axiosRequests.getData(
-			'/planboardComponent/get?planboardID=624dba3e9c437cb32217cb90'
+			`/planboardComponent/get?planboardID=${planboard?._id}`
 		);
 		if (response?.data?.data?.length) setActionItemData(response?.data?.data);
 	};
 	useEffect(() => {
-		actionItemData();
-	}, [selectedNav]);
+		if (planboard?._id) actionItemData();
+	}, [selectedNav, planboard]);
 
 	return (
 		<PlanboardDesignerContext.Provider
@@ -31,7 +31,7 @@ export const PlanboardDesignerProvider = ({ children }) => {
 				setPlanboard,
 				selectedPlanboardComponent,
 				setSelectedPlanboardComponent,
-				actionItem
+				actionItem,
 			}}
 		>
 			{children}
