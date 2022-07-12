@@ -114,7 +114,7 @@ export default function CustomNode(props) {
 	}, [props.data.createdBy]);
 	return (
 		<>
-			<Handle type='target' position='left' style={{ background: '#555' }} />
+			<Handle type='target' position='left' style={{ background: '#555',padding:8,margin:-13 }} />
 			<Grid container>
 				<Card
 					className='node-card'
@@ -235,7 +235,7 @@ export default function CustomNode(props) {
 			<Handle
 				type='source'
 				position='right'
-				style={{ background: '#555' }}
+				style={{ background: '#555',padding:8,margin:-13 }}
 				// isConnectable={isConnectable}
 			/>
 			<IdeationFlow
