@@ -3,7 +3,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreIcon from '@mui/icons-material/RestoreFromTrash';
 import axiosRequests from '@utils/axiosRequests';
 import {
+	Alert,
+	Backdrop,
 	Button,
+	CircularProgress,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -11,6 +14,7 @@ import {
 	DialogTitle,
 	Paper,
 	Slide,
+	Snackbar,
 	Stack,
 	Table,
 	TableBody,
@@ -29,6 +33,13 @@ const Transition = forwardRef(function Transition(props, ref) {
 const RecycleBin = () => {
 	const workspaceRedux = useSelector((state) => state.workspace);
 	const [planboards, setPlanboards] = useState([]);
+	const [state, setState] = React.useState({
+		openSnackbar: false,
+		loading: false,
+		message: 'This is an alert',
+		severity: 'success',
+	});
+	const { openSnackbar, loading, message, severity } = state;
 	const [dataChange, setDataChange] = useState(1);
 	const [dialog, setDialog] = useState({
 		isOpened: false,
@@ -37,6 +48,21 @@ const RecycleBin = () => {
 		planboardID: null,
 		state: null,
 	});
+
+	const changeState = (attribute, value) => {
+		setState((prev) => ({
+			...prev,
+			[attribute]: value,
+		}));
+	};
+
+	const setLoading = (bool) => {
+		changeState('loading', bool);
+	};
+
+	const handleAlertClose = () => {
+		changeState('openSnackbar', false);
+	};
 
 	const handleClose = () => {
 		setDialog({
@@ -98,11 +124,13 @@ const RecycleBin = () => {
 		});
 	};
 	const emptyBin = async () => {
+		setLoading(true);
 		const response = await axiosRequests.deleteData('/planboard/deleteAll', {
 			data: {
 				workspace: workspaceRedux._id,
 			},
 		});
+		setLoading(false);
 		setDialog({
 			isOpened: false,
 			head: null,
@@ -121,9 +149,11 @@ const RecycleBin = () => {
 		}
 	};
 	const restoreData = async () => {
+		setLoading(true);
 		const response = await axiosRequests.putData('/planboard/update', {
 			restorePlanboardID: dialog.planboardID,
 		});
+		setLoading(false);
 		setDialog({
 			isOpened: false,
 			head: null,
@@ -140,11 +170,13 @@ const RecycleBin = () => {
 	};
 
 	const deleteData = async () => {
+		setLoading(true);
 		const response = await axiosRequests.deleteData('/planboard/delete', {
 			data: {
 				binDeletePlanboardID: dialog.planboardID,
 			},
 		});
+		setLoading(false);
 		setDialog({
 			isOpened: false,
 			head: null,
@@ -161,14 +193,22 @@ const RecycleBin = () => {
 	};
 
 	const alertMessage = (message, variant) => {
-		alert(message, variant);
+		// alert(message, variant);
+		setState((prev) => ({
+			...prev,
+			openSnackbar: true,
+			severity: variant,
+			message,
+		}));
 	};
 
 	const getPlanboards = async () => {
 		try {
+			setLoading(true);
 			const response = await axiosRequests.getData(
 				`/planboard/get/bin?workspace=${workspaceRedux._id}`
 			);
+			setLoading(false);
 			if (response.data.data === 'No-Data') {
 				alertMessage('Recycle Bin is Empty.', 'info');
 			} else {
@@ -189,6 +229,28 @@ const RecycleBin = () => {
 	}, []);
 	return (
 		<div className='h-full'>
+			<Backdrop
+				sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+				open={loading}
+			>
+				Loading...
+				<CircularProgress color='inherit' />
+			</Backdrop>
+			<Snackbar
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+				open={openSnackbar}
+				autoHideDuration={4000}
+				onClose={handleAlertClose}
+				key='top+center'
+			>
+				<Alert
+					onClose={handleAlertClose}
+					severity={severity}
+					sx={{ width: '100%' }}
+				>
+					{message}
+				</Alert>
+			</Snackbar>
 			<div className='flex flex-col flex-auto items-center justify-center p-16 sm:p-32 h-full'>
 				<div className='flex flex-col items-center w-full h-full'>
 					<div className='flex flex-row w-full' sx={{ flexGrow: 1 }}>
@@ -209,7 +271,7 @@ const RecycleBin = () => {
 							</Button>
 						)}
 					</div>
-					{planboards === [] ? (
+					{planboards.length === 0 ? (
 						<Typography
 							variant='h3'
 							className='mb-24 font-semibold text-lg italic sm:text-2xl flex text-center'
