@@ -54,6 +54,18 @@ const initialNodes = [
 		position: { x: 500, y: 100 },
 	},
 ];
+const edgeOptions = {
+	animated: true,
+	style: {
+	 padding:20,
+	 stroke:'red',
+	 width: '100%',
+	 height: '30px',
+	 marginLeft: 'auto',
+	 marginRight: 'auto',
+	 backgroundColor: '#b7d0e2'
+	},
+  };
 const initialEdges = [];
 const nodeTypes = {
 	newNode: CustomNode,
@@ -126,7 +138,11 @@ export default function Canvas() {
 		// };
 		// saveFlow();
 	}, [flowInstance]);
-
+	const nameFilter =(currentName)=>{
+		const {length}=nodes.filter(node=>node.data.label.includes(currentName));
+		if(length) return `${currentName}${length}`;
+		return currentName;
+	}
 	const addNodes = (data) => {
 		let source = clickedNode.id;
 		let count = 0;
@@ -135,7 +151,7 @@ export default function Canvas() {
 				const nodeDetails = {
 					componentID: item._id,
 					_id: getId(),
-					name: item.name,
+					name: nameFilter(item.name),
 				};
 				const componentDBdetails = await saveComponent(nodeDetails);
 				count++;
@@ -214,6 +230,12 @@ export default function Canvas() {
 	useEffect(() => {
 		// console.log(nodes);
 		deleteNodes();
+		// if([document.querySelectorAll(".react-flow__edge-path")].length){
+		// 	let selectedEdges=[...document.querySelectorAll(".react-flow__edge-path")];
+		// 	selectedEdges.map(edge=>edge.style['strokeWidth']=4);
+		// 	document.querySelectorAll(".react-flow__edge-path")[0].style['strokeWidth']=10;
+		// }
+		
 		const compare1 = initialNodes.map((node) => {
 			return node.id;
 		});
@@ -275,6 +297,7 @@ export default function Canvas() {
 						}
 					}}
 					deleteKeyCode='Backspace'
+					edgeOptions={edgeOptions}
 					onConnect={onConnect}
 					nodeTypes={nodeTypes}
 					connectionLineStyle={connectionLineStyle}

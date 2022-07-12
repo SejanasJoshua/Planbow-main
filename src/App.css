@@ -27,7 +27,10 @@
 .App-link {
   color: #61dafb;
 }
-
+.react-flow__edge-path {
+  stroke: #b1b1b7;
+  stroke-width: 8;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
