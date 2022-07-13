@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import axiosRequests from '@utils/axiosRequests';
@@ -246,6 +246,22 @@ export default function LeftPanel(props) {
 		if (ParentState?.newPlanboard) return true;
 		return editButton;
 	};
+
+	const getValidatedUsers = async (id) => {
+		const response = await axiosRequests.getData(
+			`/workspace/get?workspaceID=${id}`
+		);
+		if (response?.data?.data?.users?.length) {
+			const validUsers = await axiosRequests.getData(
+				`/user?validateUsers=${response.data.data.users}`
+			);
+			console.log(validUsers);
+		}
+	};
+
+	useEffect(() => {
+		Workspace && getValidatedUsers(Workspace._id);
+	}, []);
 
 	return (
 		<>

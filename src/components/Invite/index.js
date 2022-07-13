@@ -28,9 +28,9 @@ const Invite = () => {
 
 	const handleSubmit = async () => {
 		const response = await axiosRequests.postData('/invite/new', {
-			email: state.items,
-			from: user.id,
-			workspace: workspace._id,
+			emails: state.items,
+			from: { id: user._id, name: user.fullName, email: user.email },
+			workspace: { id: workspace._id, name: workspace.name },
 		});
 		if (response.data.message === 'success') {
 			alert('Invitation Link Sent');

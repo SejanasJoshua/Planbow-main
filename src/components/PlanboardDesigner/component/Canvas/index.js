@@ -252,14 +252,7 @@ export default function Canvas() {
 	};
 
 	useEffect(() => {
-		// console.log(nodes);
 		deleteNodes();
-		// if([document.querySelectorAll(".react-flow__edge-path")].length){
-		// 	let selectedEdges=[...document.querySelectorAll(".react-flow__edge-path")];
-		// 	selectedEdges.map(edge=>edge.style['strokeWidth']=4);
-		// 	document.querySelectorAll(".react-flow__edge-path")[0].style['strokeWidth']=10;
-		// }
-
 		const compare1 = initialNodes.map((node) => {
 			return node.id;
 		});
@@ -272,12 +265,7 @@ export default function Canvas() {
 		deleteEdges();
 		if (edges !== initialEdges && edges.length > 0) onSave();
 	}, [edges]);
-	// useEffect(() => {
-	// 	if (planboard.canvas) {
-	// 		setNodes(planboard.canvas.nodes || []);
-	// 		setEdges(planboard.canvas.edges || []);
-	// 	}
-	// }, [planboard]);
+
 	const getCanvasData = async () => {
 		const response = await axiosRequests.getData(
 			`/planboard/get?planboard=${planboard._id}`
