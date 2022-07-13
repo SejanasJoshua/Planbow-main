@@ -59,9 +59,10 @@ export default function Workspace() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		const { fullname, email } = userRedux;
 		const response = await axiosRequests.postData('/workspace/create', {
 			name: workspace,
-			createdBy: userRedux._id,
+			createdBy: { name: fullname, email },
 		});
 		if (response.data.message === 'success') {
 			updateUserDefaultWorkspace(response.data.data._id);

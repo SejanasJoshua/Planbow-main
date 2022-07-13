@@ -175,7 +175,8 @@ export default function LeftPanel(props) {
 			requestData = {
 				name: state.title,
 				workspace: Workspace._id,
-				user: User._id,
+				createdBy: { name: User.fullName, email: User.email },
+				// createdBy: User._id,
 				description: state.description,
 				users: state.users,
 				notificationTypes: [],
