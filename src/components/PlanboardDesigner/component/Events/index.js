@@ -23,7 +23,7 @@ export default function Events() {
 		return new Promise((res) => {
 			setTimeout(() => {
 				res(EVENTS);
-			}, 3000);
+			}, 1);
 		});
 	};
 
@@ -49,7 +49,7 @@ export default function Events() {
 					...event,
 					event_id: event.event_id || Math.random(),
 				});
-			}, 3000);
+			}, 1);
 		});
 	};
 
@@ -58,7 +58,7 @@ export default function Events() {
 		return new Promise((res) => {
 			setTimeout(() => {
 				res(deletedId);
-			}, 3000);
+			}, 1);
 		});
 	};
 	const week = {

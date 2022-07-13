@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
@@ -28,12 +28,13 @@ import {
 } from '@mdi/js';
 import './customNode.css';
 import { planboardComponentsModal } from '@redux/actions';
-import axiosRequests from '@utils/axiosRequests';
+// import axiosRequests from '@utils/axiosRequests';
 
 import IdeationFlow from '../IdeationFlow';
 // import AllComponentsList from './AllComponentsList';
 import { useDispatch } from 'react-redux';
-import TaskDelegation from './components/TaskDelegation.js';
+import TaskDelegation from './components/TaskDelegation';
+import Calendar from './components/Calendar';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 	height: 10,
@@ -51,11 +52,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export default function CustomNode(props) {
 	const [states, setStates] = useState({
 		lock: true,
-		createdBy: '',
+		// createdBy: '',
 	});
 	const [ideaDrawer, setideaDrawer] = useState(false);
 	const [delegateDialog, setDelegateDialog] = useState(false);
 	const [a, setA] = useState(0);
+	console.log(props.data.createdBy);
 
 	const dispatch = useDispatch();
 	// const [components, setComponents] = React.useState(false);
@@ -101,27 +103,31 @@ export default function CustomNode(props) {
 		setDelegateDialog(false);
 	};
 
-	const getUserName = async () => {
-		const response = await axiosRequests.getData(
-			`/user?id=${props.data.createdBy}`
-		);
-		if (response.data.message === 'success') {
-			setStates((prev) => ({
-				...prev,
-				createdBy: response.data.data,
-			}));
-		}
-	};
-	useEffect(() => {
-		getUserName();
-	}, [props.data.createdBy]);
+	// const getUserName = async () => {
+	// 	const response = await axiosRequests.getData(
+	// 		`/user?id=${props.data.createdBy}`
+	// 	);
+	// 	if (response.data.message === 'success') {
+	// 		setStates((prev) => ({
+	// 			...prev,
+	// 			createdBy: response.data.data,
+	// 		}));
+	// 	}
+	// };
+	// useEffect(() => {
+	// 	// getUserName();
+	// }, [props.data.createdBy]);
 	return (
 		<>
-			<Handle type='target' position='left' style={{ background: '#555',padding:8,margin:-13 }} />
+			<Handle
+				type='target'
+				position='left'
+				style={{ background: '#555', padding: 8, margin: -13 }}
+			/>
 			<Grid container>
 				<Card
 					className='node-card'
-					sx={{ background: '#f7f699', width: '230px', height: '200px' }}
+					sx={{ background: '#f7f699', width: '240px', height: '200px' }}
 				>
 					<CardHeader
 						// avatar={<img src={ICONS.customNode} alt='icon name' />}
@@ -230,7 +236,7 @@ export default function CustomNode(props) {
 
 					<CardActions sx={{ bottom: '0', position: 'absolute' }}>
 						<Grid container>
-							<Grid item>{states.createdBy}</Grid>
+							<Grid item>{props?.data?.createdBy?.name ?? 'unknown'}</Grid>
 						</Grid>
 					</CardActions>
 				</Card>
@@ -238,7 +244,7 @@ export default function CustomNode(props) {
 			<Handle
 				type='source'
 				position='right'
-				style={{ background: '#555',padding:8,margin:-13 }}
+				style={{ background: '#555', padding: 8, margin: -13 }}
 				// isConnectable={isConnectable}
 			/>
 			<IdeationFlow
@@ -251,6 +257,7 @@ export default function CustomNode(props) {
 				a={a}
 				setA={setA}
 			/>
+			<Calendar />
 			<Menu
 				id='demo-positioned-menu'
 				aria-labelledby='demo-positioned-button'

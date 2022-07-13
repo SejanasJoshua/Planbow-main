@@ -23,6 +23,7 @@ import axiosRequests from '@utils/axiosRequests';
 
 import StartNode from './StartNode';
 import CustomNode from './CustomNode';
+import CustomEdge from './CustomEdge';
 import AllComponentsList from './AllComponentsList';
 import PlanboardDesignerContext from '@contexts/planboardDesigner';
 
@@ -57,19 +58,22 @@ const initialNodes = [
 const edgeOptions = {
 	animated: true,
 	style: {
-	 padding:20,
-	 stroke:'red',
-	 width: '100%',
-	 height: '30px',
-	 marginLeft: 'auto',
-	 marginRight: 'auto',
-	 backgroundColor: '#b7d0e2'
+		padding: 20,
+		stroke: 'red',
+		width: '100%',
+		height: '30px',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		backgroundColor: '#b7d0e2',
 	},
-  };
+};
 const initialEdges = [];
 const nodeTypes = {
 	newNode: CustomNode,
 	start: StartNode,
+};
+const edgeTypes = {
+	newEdge: CustomEdge,
 };
 
 let nodeData;
@@ -80,8 +84,8 @@ export default function Canvas() {
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const [flowInstance, setFlowInstance] = useState(null);
-	const planboard = useSelector((state) => state.planboard);
-	const user = useSelector((state) => state.user._id);
+	const { planboard, user } = useSelector((state) => state);
+	// const user = useSelector((state) => state.user._id);
 
 	const { setSelectedPlanboardComponent } = useContext(
 		PlanboardDesignerContext
@@ -89,7 +93,24 @@ export default function Canvas() {
 
 	const dispatch = useDispatch();
 
-	const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
+	// const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
+
+	const onConnect = useCallback(
+		(params) =>
+			setEdges((eds) =>
+				addEdge(
+					{
+						...params,
+						animated: true,
+						type: 'newEdge',
+						style: { strokeWidth: 10 },
+						data: { delete: false },
+					},
+					eds
+				)
+			),
+		[setEdges]
+	);
 
 	const onClickNode = useCallback((event, element) => {
 		clickedNode = element;
@@ -138,11 +159,13 @@ export default function Canvas() {
 		// };
 		// saveFlow();
 	}, [flowInstance]);
-	const nameFilter =(currentName)=>{
-		const {length}=nodes.filter(node=>node.data.label.includes(currentName));
-		if(length) return `${currentName}${length}`;
+	const nameFilter = (currentName) => {
+		const { length } = nodes.filter((node) =>
+			node.data.label.includes(currentName)
+		);
+		if (length) return `${currentName}${length}`;
 		return currentName;
-	}
+	};
 	const addNodes = (data) => {
 		let source = clickedNode.id;
 		let count = 0;
@@ -168,7 +191,7 @@ export default function Canvas() {
 						icon: item.icon,
 						sourcePosition: 'right',
 						targetPosition: 'left',
-						createdBy: user,
+						createdBy: { email: user.email, name: user.fullName },
 					},
 					style: {
 						// width: '300px',
@@ -181,9 +204,10 @@ export default function Canvas() {
 					source: source,
 					target: nodeDetails._id,
 					animated: true,
-					type: 'buttonedge',
-					style: { stroke: '#1A192B' },
-					data: { delete: false },
+					// type: 'newEdge',
+					// style: { stroke: '#1A192B' },
+					style: { strokeWidth: 10 },
+					// data: { delete: false },
 				};
 				setEdges((es) => es.concat(newEdge));
 				// let d = {
@@ -205,7 +229,7 @@ export default function Canvas() {
 					name: nodeDetails.name,
 					componentID: nodeDetails.componentID,
 					planboardID: planboard._id,
-					createdBy: user,
+					createdBy: { email: user.email, name: user.fullName },
 				}
 			);
 			if (response.data.message === 'success') {
@@ -228,14 +252,7 @@ export default function Canvas() {
 	};
 
 	useEffect(() => {
-		// console.log(nodes);
 		deleteNodes();
-		// if([document.querySelectorAll(".react-flow__edge-path")].length){
-		// 	let selectedEdges=[...document.querySelectorAll(".react-flow__edge-path")];
-		// 	selectedEdges.map(edge=>edge.style['strokeWidth']=4);
-		// 	document.querySelectorAll(".react-flow__edge-path")[0].style['strokeWidth']=10;
-		// }
-		
 		const compare1 = initialNodes.map((node) => {
 			return node.id;
 		});
@@ -248,12 +265,7 @@ export default function Canvas() {
 		deleteEdges();
 		if (edges !== initialEdges && edges.length > 0) onSave();
 	}, [edges]);
-	// useEffect(() => {
-	// 	if (planboard.canvas) {
-	// 		setNodes(planboard.canvas.nodes || []);
-	// 		setEdges(planboard.canvas.edges || []);
-	// 	}
-	// }, [planboard]);
+
 	const getCanvasData = async () => {
 		const response = await axiosRequests.getData(
 			`/planboard/get?planboard=${planboard._id}`
@@ -297,9 +309,10 @@ export default function Canvas() {
 						}
 					}}
 					deleteKeyCode='Backspace'
-					edgeOptions={edgeOptions}
+					edgeoptions={edgeOptions}
 					onConnect={onConnect}
 					nodeTypes={nodeTypes}
+					edgeTypes={edgeTypes}
 					connectionLineStyle={connectionLineStyle}
 					onNodeClick={onClickNode}
 					onEdgeClick={onClickEdge}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import axiosRequests from '@utils/axiosRequests';
@@ -44,6 +44,7 @@ export default function LeftPanel(props) {
 		{ id: 9, email: '9@gmail.com', name: '9John', type: 'coCreator' },
 		{ id: 10, email: '10@gmail.com', name: '10John', type: 'coCreator' },
 	];
+	// let workspaceUsers = [];
 	const INVALID_DATE = 'Invalid Date';
 	const errorClass = {
 		width: '100%',
@@ -58,6 +59,7 @@ export default function LeftPanel(props) {
 		return new Date(date.setDate(date.getDate() + 1));
 	};
 	const [editButton, toggleSwitch] = useState(false);
+	const [workspaceUsers, setWorkspaceUsers] = useState([]);
 	const [state, setState] = useState({
 		creator: props?.creator?.fullName,
 		title: props?.location?.state
@@ -175,7 +177,8 @@ export default function LeftPanel(props) {
 			requestData = {
 				name: state.title,
 				workspace: Workspace._id,
-				user: User._id,
+				createdBy: { name: User.fullName, email: User.email },
+				// createdBy: User._id,
 				description: state.description,
 				users: state.users,
 				notificationTypes: [],
@@ -245,6 +248,28 @@ export default function LeftPanel(props) {
 		if (ParentState?.newPlanboard) return true;
 		return editButton;
 	};
+
+	const getValidatedUsers = async (users) => {
+		const response = await axiosRequests.getData(
+			`/user?validateUsers=${users}`
+		);
+		if (response?.data?.message === 'success') {
+			response?.data?.data?.length && setWorkspaceUsers(response?.data?.data);
+			console.log(response?.data?.data ?? 'no valid users');
+		}
+	};
+	const getWorkspaceUsers = async (id) => {
+		const response = await axiosRequests.getData(
+			`/workspace/get?workspaceID=${id}`
+		);
+		if (response?.data?.data?.users?.length) {
+			getValidatedUsers(response.data.data.users);
+		}
+	};
+
+	useEffect(() => {
+		Workspace && getWorkspaceUsers(Workspace._id);
+	}, []);
 
 	return (
 		<>
@@ -360,6 +385,15 @@ export default function LeftPanel(props) {
 											}
 										>
 											{[
+												...workspaceUsers
+													// .filter((user) => user.type == 'user')
+													.map((user) => (
+														<MenuItem key={user._id} value={user.email}>
+															{user.fullName}
+														</MenuItem>
+													)),
+											]}
+											{/* {[
 												...users
 													.filter((user) => user.type == 'user')
 													.map((user) => (
@@ -367,7 +401,7 @@ export default function LeftPanel(props) {
 															{user.name}
 														</MenuItem>
 													)),
-											]}
+											]} */}
 										</Select>
 									</Grid>
 								</Grid>
