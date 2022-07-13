@@ -151,7 +151,6 @@ export default function ActionItems({ actionItemData }) {
 						);
 				  })
 				: '....................Loading...'}
-			;
 		</TreeView>
 	);
 }

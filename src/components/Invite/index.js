@@ -35,8 +35,8 @@ const Invite = () => {
 		if (response.data.message === 'success') {
 			alert('Invitation Link Sent');
 			// history.push('/home');
-			navigate('/dashboard');
 		}
+		navigate('/dashboard');
 	};
 
 	const handleKeyDown = (evt) => {
