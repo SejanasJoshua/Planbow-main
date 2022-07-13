@@ -5,11 +5,6 @@ import PropTypes from 'prop-types';
 
 const foreignObjectSize = 40;
 
-const onEdgeClick = (evt, id) => {
-	evt.stopPropagation();
-	alert(`remove ${id}`);
-};
-
 export default function CustomEdge({
 	id,
 	sourceX,
@@ -19,7 +14,7 @@ export default function CustomEdge({
 	sourcePosition,
 	targetPosition,
 	style = {},
-	// data,
+	data,
 	markerEnd,
 }) {
 	const edgePath = getBezierPath({
@@ -36,6 +31,12 @@ export default function CustomEdge({
 		targetX,
 		targetY,
 	});
+	const onEdgeClick = (evt, id) => {
+		evt.stopPropagation();
+		console.log(id);
+		// alert(`remove ${id}`);
+		data.delete = true;
+	};
 
 	return (
 		<>
@@ -92,6 +93,6 @@ CustomEdge.propTypes = {
 	sourcePosition: PropTypes.any,
 	targetPosition: PropTypes.any,
 	style: PropTypes.any,
-	// data: PropTypes.any,
+	data: PropTypes.any,
 	markerEnd: PropTypes.any,
 };

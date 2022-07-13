@@ -104,7 +104,7 @@ export default function Canvas() {
 						animated: true,
 						type: 'newEdge',
 						style: { strokeWidth: 10 },
-						// data: { delete: false },
+						data: { delete: false },
 					},
 					eds
 				)
