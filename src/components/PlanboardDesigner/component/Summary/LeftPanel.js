@@ -261,7 +261,7 @@ export default function LeftPanel(props) {
 		);
 		if (response?.data?.message === 'success') {
 			response?.data?.data?.length && setWorkspaceUsers(response?.data?.data);
-			console.log(response?.data?.data ?? 'no valid users');
+			// console.log(response?.data?.data ?? 'no valid users');
 		}
 	};
 	const getWorkspaceUsers = async (id) => {

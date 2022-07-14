@@ -55,8 +55,9 @@ export default function PlanboardDesigner() {
 				sx={{
 					margin: '0 -24px',
 					px: '24px',
-					height: '40px',
+					// height: '40px',
 					backgroundColor: (theme) => theme.palette.secondary.main,
+					boxShadow: '-1px 0px 4px 1px #c0c0c0',
 				}}
 			>
 				<PlanboardDesignerTab

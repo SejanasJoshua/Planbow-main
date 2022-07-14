@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Icon from '@mdi/react';
 import {
-	mdiFileChartOutline,
+	mdiFileOutline ,
 	mdiGestureTap,
 	mdiSitemap,
 	mdiCalendarCheck,
@@ -23,7 +23,7 @@ const tabData = [
 	{
 		text: 'Summary',
 		route: 'ideasummary',
-		icon: mdiFileChartOutline,
+		icon: mdiFileOutline ,
 	},
 	{
 		text: 'Canvas',
@@ -67,15 +67,20 @@ export default function PlanboardDesignerTab({
 									mx: '20px',
 									ml: 0,
 									fontSize: '14px',
-									borderBottom: '3px solid',
+									borderBottom: '2px solid',
 									cursor: 'pointer',
 									display: 'flex',
+									p:1,
+									alignItems: 'center',
 							  }
 							: {
 									mx: '20px',
 									ml: 0,
 									fontSize: '14px',
-									pb: '3px',
+									pb: '2px',
+									p:1,
+									borderBottom: '2px solid transparent' ,
+									alignItems: 'center',
 									cursor: location?.state?.newPlanboard
 										? 'no-drop'
 										: location?.state?.editable
@@ -95,8 +100,8 @@ export default function PlanboardDesignerTab({
 					item
 					onClick={() => setselectedNav(data.route)}
 				>
-					<Icon path={data.icon} title='Summary' size={0.9} />
-					<Typography sx={{ ml: '5px' }}>{data.text}</Typography>
+					<Icon path={data.icon} title='Summary' size={0.5} />
+					<Typography sx={{ ml: '5px', fontSize:'12px' }}>{data.text}</Typography>
 				</Grid>
 			))}
 		</Grid>

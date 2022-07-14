@@ -10,6 +10,7 @@ import ReactFlow, {
 	ReactFlowProvider,
 	MiniMap,
 	addEdge,
+	Background,
 	useNodesState,
 	useEdgesState,
 } from 'react-flow-renderer';
@@ -73,7 +74,7 @@ const nodeTypes = {
 	start: StartNode,
 };
 const edgeTypes = {
-	newEdge: CustomEdge,
+	buttonEdge: CustomEdge,
 };
 
 let nodeData;
@@ -102,7 +103,7 @@ export default function Canvas() {
 					{
 						...params,
 						animated: true,
-						type: 'newEdge',
+						type: 'buttonEdge',
 						style: { strokeWidth: 10 },
 						data: { delete: false },
 					},
@@ -182,7 +183,7 @@ export default function Canvas() {
 					id: nodeDetails._id,
 					type: 'newNode',
 					position: {
-						x: clickedNode.position.x + 500 * count,
+						x: clickedNode.position.x + 400 * count,
 						y: clickedNode.position.y,
 					},
 					data: {
@@ -204,7 +205,7 @@ export default function Canvas() {
 					source: source,
 					target: nodeDetails._id,
 					animated: true,
-					// type: 'newEdge',
+					type: 'buttonEdge',
 					// style: { stroke: '#1A192B' },
 					style: { strokeWidth: 10 },
 					// data: { delete: false },
@@ -242,7 +243,36 @@ export default function Canvas() {
 		return null;
 	};
 
+	const deleteNodesFromDB = async (componentID) => {
+		try {
+			const response = await axiosRequests.deleteData(
+				'/planboardComponent/delete',
+				{
+					data: {
+						componentID,
+						planboardID: planboard._id,
+					},
+				}
+			);
+			if (response.data.message === 'success') {
+				// onSave();
+				console.log(response.data.data);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const deleteNodes = () => {
+		const toDelete = nodes.filter((item) => item.data.delete === true);
+		try {
+			toDelete.map((item) => {
+				deleteNodesFromDB(item.data.componentID);
+			});
+		} catch (error) {
+			console.log(error.message);
+		}
+
 		const deletennn = nodes.filter((item) => item.data.delete !== true);
 		if (nodes.length !== deletennn.length) setNodes(deletennn);
 	};
@@ -252,6 +282,7 @@ export default function Canvas() {
 	};
 
 	useEffect(() => {
+		console.log('node change');
 		deleteNodes();
 		const compare1 = initialNodes.map((node) => {
 			return node.id;
@@ -262,6 +293,7 @@ export default function Canvas() {
 		if (compare1 !== compare && nodes.length > 1) onSave();
 	}, [nodes]);
 	useEffect(() => {
+		console.log('edge change');
 		deleteEdges();
 		if (edges !== initialEdges && edges.length > 0) onSave();
 	}, [edges]);
@@ -355,6 +387,7 @@ export default function Canvas() {
 				// componentsClickOpen={componentsClickOpen}
 				// componentsClose={componentsClose}
 			/>
+			<Background color='#aaa' gap={16} style={{ zIndex: -1 }} />
 		</ReactFlowProvider>
 	);
 }
