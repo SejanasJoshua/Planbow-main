@@ -32,18 +32,18 @@ export default function LeftPanel(props) {
 	const dispatch = useDispatch();
 	// const navigate = useNavigate();
 	const ParentState = props?.location?.state;
-	const users = [
-		{ id: 1, email: '1@gmail.com', name: '1John', type: 'user' },
-		{ id: 2, email: '2@gmail.com', name: '2John', type: 'user' },
-		{ id: 3, email: '3@gmail.com', name: '3John', type: 'user' },
-		{ id: 4, email: '4@gmail.com', name: '4John', type: 'user' },
-		{ id: 5, email: '5@gmail.com', name: '5John', type: 'user' },
-		{ id: 6, email: '1@gmail.com', name: '6John', type: 'coCreator' },
-		{ id: 7, email: '7@gmail.com', name: '7John', type: 'coCreator' },
-		{ id: 8, email: '8@gmail.com', name: '8John', type: 'coCreator' },
-		{ id: 9, email: '9@gmail.com', name: '9John', type: 'coCreator' },
-		{ id: 10, email: '10@gmail.com', name: '10John', type: 'coCreator' },
-	];
+	// const users = [
+	// 	{ id: 1, email: '1@gmail.com', name: '1John', type: 'user' },
+	// 	{ id: 2, email: '2@gmail.com', name: '2John', type: 'user' },
+	// 	{ id: 3, email: '3@gmail.com', name: '3John', type: 'user' },
+	// 	{ id: 4, email: '4@gmail.com', name: '4John', type: 'user' },
+	// 	{ id: 5, email: '5@gmail.com', name: '5John', type: 'user' },
+	// 	{ id: 6, email: '1@gmail.com', name: '6John', type: 'coCreator' },
+	// 	{ id: 7, email: '7@gmail.com', name: '7John', type: 'coCreator' },
+	// 	{ id: 8, email: '8@gmail.com', name: '8John', type: 'coCreator' },
+	// 	{ id: 9, email: '9@gmail.com', name: '9John', type: 'coCreator' },
+	// 	{ id: 10, email: '10@gmail.com', name: '10John', type: 'coCreator' },
+	// ];
 	// let workspaceUsers = [];
 	const INVALID_DATE = 'Invalid Date';
 	const errorClass = {
@@ -93,13 +93,18 @@ export default function LeftPanel(props) {
 		return !userExist;
 	};
 	const addUser = (selected, { props: { value } }) => {
-		if (state.coCreators.length == 0 || checkIfUserExists(value, 'users')) {
-			let userData;
-			users.map((user) => {
-				if (user.email === value) return (userData = user);
-				return null;
-			});
-			setState({ ...state, users: [...state.users, { userData }] });
+		if (state.users.length == 0 || checkIfUserExists(value, 'users')) {
+			// let userData;
+			// workspaceUsers.map((user) => {
+			// 	if (user.email === value) return (userData = user);
+			// 	return null;
+			// });
+			setWorkspaceUsers([
+				...workspaceUsers
+					.filter((user) => user.fullName == value)
+					.map((user) => (user['type'] = 'user')),
+			]);
+			setState({ ...state, users: [...state.users, value] });
 		}
 	};
 	const addCoCreator = (selected, { props: { value } }) => {
@@ -386,22 +391,16 @@ export default function LeftPanel(props) {
 										>
 											{[
 												...workspaceUsers
-													// .filter((user) => user.type == 'user')
+													.filter(
+														(user) =>
+															user.type == 'user' || user.type == undefined
+													)
 													.map((user) => (
 														<MenuItem key={user._id} value={user.email}>
 															{user.fullName}
 														</MenuItem>
 													)),
 											]}
-											{/* {[
-												...users
-													.filter((user) => user.type == 'user')
-													.map((user) => (
-														<MenuItem key={user.id} value={user.email}>
-															{user.name}
-														</MenuItem>
-													)),
-											]} */}
 										</Select>
 									</Grid>
 								</Grid>
@@ -436,11 +435,14 @@ export default function LeftPanel(props) {
 											}
 										>
 											{[
-												...users
-													.filter((user) => user.type == 'coCreator')
+												...workspaceUsers
+													.filter(
+														(user) =>
+															user.type == 'coCreator' || user.type == undefined
+													)
 													.map((user) => (
-														<MenuItem key={user.id} value={user.email}>
-															{user.name}
+														<MenuItem key={user._id} value={user.email}>
+															{user.fullName}
 														</MenuItem>
 													)),
 											]}
