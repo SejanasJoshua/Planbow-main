@@ -82,9 +82,13 @@ export default function CustomNode(props) {
 		handleClose();
 		setNodeName(`${nodeName}s`);
 		props.data.delete = true;
-		setTimeout(()=>document.getElementsByClassName('react-flow__pane react-flow__container')?.[0].click(),0);
-		// kk
-		
+		setTimeout(
+			() =>
+				document
+					.getElementsByClassName('react-flow__pane react-flow__container')?.[0]
+					.click(),
+			0
+		);
 	};
 
 	const toggleDrawerOpen = () => {
