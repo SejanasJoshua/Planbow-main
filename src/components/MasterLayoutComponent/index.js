@@ -28,9 +28,9 @@ import { mdiBellOutline, mdiAccountCircle } from '@mdi/js';
 import NotificationPopup from '@components/Notification/NotificationPopup';
 import SidePanel from './SidePanel';
 
-import { ICONS } from '@shared/assets';
+// import { ICONS } from '@shared/assets';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const AppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== 'open',
@@ -70,7 +70,7 @@ const Drawer = styled(MuiDrawer, {
 			}),
 			width: theme.spacing(7),
 			[theme.breakpoints.up('sm')]: {
-				width: theme.spacing(9),
+				width: theme.spacing(7),
 			},
 		}),
 	},
@@ -180,12 +180,13 @@ export default function MasterLayoutComponent(props) {
 						justifyContent: 'flex-end',
 						px: [1],
 					}}
+					variant='dense'
 				>
-					<img
+					{/* <img
 						style={{ width: '120px', marginRight: 'auto', marginTop: '10px' }}
 						src={ICONS.logoBrand}
 						alt='planbow'
-					/>
+					/>  */}
 					<IconButton onClick={toggleDrawer}>
 						<ChevronLeftIcon />
 					</IconButton>

@@ -153,7 +153,7 @@ export default function PlanboardListView(props) {
 				/>
 			</ListItem> */}
 			</List>
-			{assignedTasks.assignedTasks ? (
+			{/* {assignedTasks.assignedTasks ? (
 				<>
 					<Typography variant='h3'>Assigned Tasks</Typography>
 					<List sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -209,7 +209,7 @@ export default function PlanboardListView(props) {
 						))}
 					</List>
 				</>
-			) : null}
+			) : null} */}
 		</>
 	);
 }

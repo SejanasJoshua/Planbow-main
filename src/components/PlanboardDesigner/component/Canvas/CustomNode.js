@@ -3,7 +3,15 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Grid';
+import {
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Typography,
+} from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -52,12 +60,11 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export default function CustomNode(props) {
 	const [states, setStates] = useState({
 		lock: true,
-		// createdBy: '',
+		confirmDialog: false,
 	});
 	const [ideaDrawer, setideaDrawer] = useState(false);
 	const [delegateDialog, setDelegateDialog] = useState(false);
 	const [a, setA] = useState(0);
-	console.log(props.data.createdBy);
 
 	const dispatch = useDispatch();
 	// const [components, setComponents] = React.useState(false);
@@ -65,22 +72,36 @@ export default function CustomNode(props) {
 		// setComponents(true);
 		dispatch(planboardComponentsModal(true));
 	};
-	// const componentsClose = () => {
-	// 	// setComponents(false);
-	// 	dispatch(planboardComponentsModal(false));
-	// };
-	const [nodeName, setNodeName] = useState(props.data.label);
+
+	const confirmDialogOpen = () => {
+		handleNodeMenuClose();
+		setStates((prev) => ({
+			...prev,
+			confirmDialog: true,
+		}));
+	};
+	const confirmDialogClose = () => {
+		setStates((prev) => ({
+			...prev,
+			confirmDialog: false,
+		}));
+	};
+
+	const handleDeleteConfirm = () => {
+		confirmDialogClose();
+		deleteNode();
+	};
+
 	const [anchorEl, setAnchorEl] = useState(null);
 	const menuOpen = Boolean(anchorEl);
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
-	const handleClose = () => {
+	const handleNodeMenuClose = () => {
 		setAnchorEl(null);
 	};
 	const deleteNode = () => {
-		handleClose();
-		setNodeName(`${nodeName}s`);
+		// setNodeName(`${nodeName}s`);
 		props.data.delete = true;
 		setTimeout(
 			() =>
@@ -91,19 +112,20 @@ export default function CustomNode(props) {
 		);
 	};
 
-	const toggleDrawerOpen = () => {
+	const toggleRightDrawerOpen = () => {
+		handleNodeMenuClose();
 		setideaDrawer(true);
 		setA(0);
 	};
 
-	const toggleDrawerClose = () => {
+	const toggleRightDrawerClose = () => {
 		setideaDrawer(false);
 	};
 
-	const toggleDialogOpen = () => {
+	const toggleDelegateDialogOpen = () => {
 		setDelegateDialog(true);
 	};
-	const toggleDialogClose = () => {
+	const toggleDelegateDialogClose = () => {
 		setDelegateDialog(false);
 	};
 
@@ -165,7 +187,7 @@ export default function CustomNode(props) {
 									<img
 										style={{ paddingLeft: '10px' }}
 										src={props.data.icon}
-										alt={nodeName}
+										alt={props.data.label}
 									/>
 								</Box>
 							</>
@@ -229,10 +251,10 @@ export default function CustomNode(props) {
 									size={1}
 								/>
 							</IconButton>
-							<IconButton aria-label='lock' onClick={toggleDrawerOpen}>
+							<IconButton aria-label='lock'>
 								<Icon path={mdiEyeOutline} title='lock close' size={1} />
 							</IconButton>
-							<IconButton aria-label='chat' onClick={toggleDialogOpen}>
+							<IconButton aria-label='chat' onClick={toggleDelegateDialogOpen}>
 								<Icon path={mdiAccountMultiplePlus} title='Account' size={1} />
 							</IconButton>
 						</Box>
@@ -253,21 +275,39 @@ export default function CustomNode(props) {
 			/>
 			<IdeationFlow
 				ideaDrawer={ideaDrawer}
-				toggleDrawerClose={toggleDrawerClose}
+				toggleDrawerClose={toggleRightDrawerClose}
 			/>
 			<TaskDelegation
 				delegateDialog={delegateDialog}
-				toggleDialogClose={toggleDialogClose}
+				toggleDialogClose={toggleDelegateDialogClose}
 				a={a}
 				setA={setA}
 			/>
+			<Dialog
+				open={states.confirmDialog}
+				keepMounted
+				onClose={confirmDialogClose}
+				aria-describedby='alert-dialog-slide-description'
+			>
+				<DialogTitle>Delete {props.data.label}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id='alert-dialog-slide-description'>
+						Are You sure you want to delete {props.data.label} component? All
+						its data will be lost!
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={confirmDialogClose}>Cancel</Button>
+					<Button onClick={handleDeleteConfirm}>Confirm</Button>
+				</DialogActions>
+			</Dialog>
 			<Calendar />
 			<Menu
 				id='demo-positioned-menu'
 				aria-labelledby='demo-positioned-button'
 				anchorEl={anchorEl}
 				open={menuOpen}
-				onClose={handleClose}
+				onClose={handleNodeMenuClose}
 				anchorOrigin={{
 					vertical: 'top',
 					horizontal: 'left',
@@ -277,9 +317,8 @@ export default function CustomNode(props) {
 					horizontal: 'left',
 				}}
 			>
-				<MenuItem>Edit</MenuItem>
-				<MenuItem onClick={deleteNode}>Delete</MenuItem>
-				{/* <MenuItem onClick={data.nodeDelete}>Delete</MenuItem> */}
+				<MenuItem onClick={toggleRightDrawerOpen}>Edit</MenuItem>
+				<MenuItem onClick={confirmDialogOpen}>Delete</MenuItem>
 			</Menu>
 		</>
 	);
