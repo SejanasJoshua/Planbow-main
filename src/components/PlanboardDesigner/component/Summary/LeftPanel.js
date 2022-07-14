@@ -82,10 +82,13 @@ export default function LeftPanel(props) {
 		type: '',
 	});
 	const removeUserFromCoCreators = (newUser, type) => {
+		let updatedUsers=workspaceUsers;
 		setState({
 			...state,
 			[type]: [...state[type].filter((user) => user != newUser)],
 		});
+		updatedUsers.filter((user) => user.email == newUser).map((user) => (user['type'] = undefined));
+			setWorkspaceUsers([...updatedUsers]);
 	};
 	const checkIfUserExists = (newUser, type) => {
 		const userExist = state[type].filter((user) => user == newUser).length;
@@ -93,17 +96,15 @@ export default function LeftPanel(props) {
 		return !userExist;
 	};
 	const addUser = (selected, { props: { value } }) => {
+		let updatedUsers=workspaceUsers;
 		if (state.users.length == 0 || checkIfUserExists(value, 'users')) {
 			// let userData;
 			// workspaceUsers.map((user) => {
 			// 	if (user.email === value) return (userData = user);
 			// 	return null;
 			// });
-			setWorkspaceUsers([
-				...workspaceUsers
-					.filter((user) => user.fullName == value)
-					.map((user) => (user['type'] = 'user')),
-			]);
+			updatedUsers.filter((user) => user.email == value).map((user) => (user['type'] = 'user'));
+			setWorkspaceUsers([...updatedUsers]);
 			setState({ ...state, users: [...state.users, value] });
 		}
 	};
