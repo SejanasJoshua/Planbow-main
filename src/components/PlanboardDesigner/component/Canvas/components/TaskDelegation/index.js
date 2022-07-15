@@ -107,12 +107,12 @@ export default function TaskDelegation({
 		if (a !== 10)
 			selectedPlanboardComponent?.data?.componentID && getAssignedUsers();
 	}, [selectedPlanboardComponent, a]);
-	useEffect(() => {
-		planboard && console.log(planboard.users, 'users');
-	}, [planboard]);
-	useEffect(() => {
-		console.log(a);
-	}, [a]);
+	// useEffect(() => {
+	// 	// planboard && console.log(planboard.users, 'users');
+	// }, [planboard]);
+	// useEffect(() => {
+	// 	console.log(a);
+	// }, [a]);
 	return (
 		<div>
 			<Dialog onClose={closeDialog} open={delegateDialog}>

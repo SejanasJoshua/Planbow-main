@@ -64,6 +64,7 @@ export default function CustomNode(props) {
 	});
 	const [ideaDrawer, setideaDrawer] = useState(false);
 	const [delegateDialog, setDelegateDialog] = useState(false);
+	const [calendarDialog, setCalendarDialog] = useState(false);
 	const [a, setA] = useState(0);
 
 	const dispatch = useDispatch();
@@ -85,6 +86,13 @@ export default function CustomNode(props) {
 			...prev,
 			confirmDialog: false,
 		}));
+	};
+
+	const calendarDialogOpen = () => {
+		setCalendarDialog(true);
+	};
+	const calendarDialogClose = () => {
+		setCalendarDialog(false);
 	};
 
 	const handleDeleteConfirm = () => {
@@ -112,20 +120,20 @@ export default function CustomNode(props) {
 		);
 	};
 
-	const toggleRightDrawerOpen = () => {
+	const rightDrawerOpen = () => {
 		handleNodeMenuClose();
 		setideaDrawer(true);
 		setA(0);
 	};
 
-	const toggleRightDrawerClose = () => {
+	const rightDrawerClose = () => {
 		setideaDrawer(false);
 	};
 
-	const toggleDelegateDialogOpen = () => {
+	const delegateDialogOpen = () => {
 		setDelegateDialog(true);
 	};
-	const toggleDelegateDialogClose = () => {
+	const delegateDialogClose = () => {
 		setDelegateDialog(false);
 	};
 
@@ -236,26 +244,30 @@ export default function CustomNode(props) {
 								onClick={() => setStates({ ...states, lock: !states.lock })}
 							>
 								{states.lock ? (
-									<Icon path={mdiLockOpenOutline} title='lock open' size={1} />
+									<Icon path={mdiLockOpenOutline} title='Lock open' size={1} />
 								) : (
-									<Icon path={mdiLockOutline} title='lock close' size={1} />
+									<Icon path={mdiLockOutline} title='Lock close' size={1} />
 								)}
 							</IconButton>
 							<IconButton aria-label='chat'>
-								<Icon path={mdiMessageOutline} title='lock close' size={1} />
+								<Icon path={mdiMessageOutline} title='Comments' size={1} />
 							</IconButton>
-							<IconButton aria-label='chat'>
+							<IconButton aria-label='date' onClick={calendarDialogOpen}>
 								<Icon
 									path={mdiCalendarMonthOutline}
-									title='lock close'
+									title='Start/End Date'
 									size={1}
 								/>
 							</IconButton>
-							<IconButton aria-label='lock'>
-								<Icon path={mdiEyeOutline} title='lock close' size={1} />
+							<IconButton aria-label='eye'>
+								<Icon path={mdiEyeOutline} title='Eye' size={1} />
 							</IconButton>
-							<IconButton aria-label='chat' onClick={toggleDelegateDialogOpen}>
-								<Icon path={mdiAccountMultiplePlus} title='Account' size={1} />
+							<IconButton aria-label='users' onClick={delegateDialogOpen}>
+								<Icon
+									path={mdiAccountMultiplePlus}
+									title='Add Users'
+									size={1}
+								/>
 							</IconButton>
 						</Box>
 					</CardContent>
@@ -275,14 +287,20 @@ export default function CustomNode(props) {
 			/>
 			<IdeationFlow
 				ideaDrawer={ideaDrawer}
-				toggleDrawerClose={toggleRightDrawerClose}
+				toggleDrawerClose={rightDrawerClose}
 			/>
 			<TaskDelegation
 				delegateDialog={delegateDialog}
-				toggleDialogClose={toggleDelegateDialogClose}
+				toggleDialogClose={delegateDialogClose}
 				a={a}
 				setA={setA}
 			/>
+			<Calendar
+				calendarDialog={calendarDialog}
+				toggleDialogClose={calendarDialogClose}
+				data={props.data}
+			/>
+
 			<Dialog
 				open={states.confirmDialog}
 				keepMounted
@@ -301,7 +319,6 @@ export default function CustomNode(props) {
 					<Button onClick={handleDeleteConfirm}>Confirm</Button>
 				</DialogActions>
 			</Dialog>
-			<Calendar />
 			<Menu
 				id='demo-positioned-menu'
 				aria-labelledby='demo-positioned-button'
@@ -317,7 +334,7 @@ export default function CustomNode(props) {
 					horizontal: 'left',
 				}}
 			>
-				<MenuItem onClick={toggleRightDrawerOpen}>Edit</MenuItem>
+				<MenuItem onClick={rightDrawerOpen}>Edit</MenuItem>
 				<MenuItem onClick={confirmDialogOpen}>Delete</MenuItem>
 			</Menu>
 		</>

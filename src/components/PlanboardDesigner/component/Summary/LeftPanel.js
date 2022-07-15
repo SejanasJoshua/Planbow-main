@@ -63,18 +63,21 @@ export default function LeftPanel(props) {
 			description: false,
 		},
 	});
+
 	const [popup, setPopUp] = useState({
 		message: '',
 		type: '',
 	});
 	const removeUserFromCoCreators = (newUser, type) => {
-		let updatedUsers=workspaceUsers;
+		let updatedUsers = workspaceUsers;
 		setState({
 			...state,
 			[type]: [...state[type].filter((user) => user != newUser)],
 		});
-		updatedUsers.filter((user) => user.email == newUser).map((user) => (user['type'] = undefined));
-			setWorkspaceUsers([...updatedUsers]);
+		updatedUsers
+			.filter((user) => user.email == newUser)
+			.map((user) => (user['type'] = undefined));
+		setWorkspaceUsers([...updatedUsers]);
 	};
 	const checkIfUserExists = (newUser, type) => {
 		const userExist = state[type].filter((user) => user == newUser).length;
@@ -82,17 +85,24 @@ export default function LeftPanel(props) {
 		return !userExist;
 	};
 	const addUser = (selected, { props: { value } }) => {
-		let updatedUsers=workspaceUsers;
+		let updatedUsers = workspaceUsers;
 		if (state.users.length == 0 || checkIfUserExists(value, 'users')) {
-			updatedUsers.filter((user) => user.email == value).map((user) => (user['type'] = 'user'));
+			updatedUsers
+				.filter((user) => user.email == value)
+				.map((user) => (user['type'] = 'user'));
 			setWorkspaceUsers([...updatedUsers]);
 			setState({ ...state, users: [...state.users, value] });
 		}
 	};
 	const addCoCreator = (selected, { props: { value } }) => {
-		let updatedUsers=workspaceUsers;
-		if (state.coCreators.length == 0 || checkIfUserExists(value, 'coCreators')) {
-			updatedUsers.filter((user) => user.email == value).map((user) => (user['type'] = 'coCreator'));
+		let updatedUsers = workspaceUsers;
+		if (
+			state.coCreators.length == 0 ||
+			checkIfUserExists(value, 'coCreators')
+		) {
+			updatedUsers
+				.filter((user) => user.email == value)
+				.map((user) => (user['type'] = 'coCreator'));
 			setWorkspaceUsers([...updatedUsers]);
 			setState({ ...state, coCreators: [...state.coCreators, value] });
 		}
