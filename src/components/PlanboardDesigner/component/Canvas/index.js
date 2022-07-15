@@ -123,8 +123,14 @@ export default function Canvas() {
 		// clickedEdge = element;
 		console.log(event, element);
 	}, []);
-
+	const connectNodeWithStart =(deletedNode)=>{
+		let length=edges.filter(edge=>edge.source==deletedNode.id).length;
+		if(length){
+			edges.filter(edge=>edge.source==deletedNode.id)[0]['source']='99';
+		}
+	}
 	const checkNodeDelete = (deletedNode) => {
+		connectNodeWithStart(deletedNode[0]);
 		if (deletedNode?.[0]?.type === 'start') {
 			return setTimeout(() => setNodes([...nodes, ...deletedNode]), 0);
 		}
