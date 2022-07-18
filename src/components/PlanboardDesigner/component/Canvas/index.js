@@ -124,10 +124,10 @@ export default function Canvas() {
 		console.log(event, element);
 	}, []);
 	const connectNodeWithStart =(deletedNode)=>{
-		let length=edges.filter(edge=>edge.source==deletedNode.id).length;
-		if(length){
-			edges.filter(edge=>edge.source==deletedNode.id)[0]['source']='99';
-		}
+		let currentSource=edges.filter(edge=>edge.target==deletedNode.id)?.[0]?.source;
+		let {length}=edges.filter(edge=>edge.source==deletedNode.id);
+		if(length)
+			edges.filter(edge=>edge.source==deletedNode.id).map(edge=>edge.source=currentSource);
 	}
 	const checkNodeDelete = (deletedNode) => {
 		connectNodeWithStart(deletedNode[0]);
