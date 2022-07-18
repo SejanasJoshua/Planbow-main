@@ -18,18 +18,28 @@ import axiosRequests from '@utils/axiosRequests';
 import { useSelector } from 'react-redux';
 let fetchedAssignedValues;
 
-export default function TaskDelegation({
-	delegateDialog,
-	toggleDialogClose,
-	a,
-	setA,
-}) {
-	const { planboard, selectedPlanboardComponent } = useContext(
-		PlanboardDesignerContext
-	);
+export default function TaskDelegation() {
+	const {
+		planboard,
+		selectedPlanboardComponent,
+		contextState,
+		setContextState,
+	} = useContext(PlanboardDesignerContext);
+
+	const [state, setState] = useState({
+		fetchedUsers: false,
+	});
+
 	const user = useSelector((state) => state.user);
 
 	const [assignedUsers, setAssignedUsers] = useState([]);
+
+	const toggleDialogClose = () => {
+		setContextState((prev) => ({
+			...prev,
+			delegateDialog: false,
+		}));
+	};
 
 	const updateAssignedUser = async () => {
 		console.log('updated');
@@ -47,7 +57,10 @@ export default function TaskDelegation({
 		console.log('fetched');
 		fetchedAssignedValues = response.data.data?.tasksAssigned ?? [];
 		setAssignedUsers(response.data.data?.tasksAssigned ?? []);
-		setA(10);
+		// setA(10);
+		setState({
+			fetchedUsers: true,
+		});
 	};
 	const handleCancel = () => {
 		setAssignedUsers(fetchedAssignedValues);
@@ -104,9 +117,9 @@ export default function TaskDelegation({
 	};
 
 	useEffect(() => {
-		if (a !== 10)
+		if (!state.fetchedUsers)
 			selectedPlanboardComponent?.data?.componentID && getAssignedUsers();
-	}, [selectedPlanboardComponent, a]);
+	}, [selectedPlanboardComponent, state.fetchedUsers]);
 	// useEffect(() => {
 	// 	// planboard && console.log(planboard.users, 'users');
 	// }, [planboard]);
@@ -115,7 +128,7 @@ export default function TaskDelegation({
 	// }, [a]);
 	return (
 		<div>
-			<Dialog onClose={closeDialog} open={delegateDialog}>
+			<Dialog onClose={closeDialog} open={contextState.delegateDialog}>
 				<DialogTitle>
 					Delegate Users
 					<IconButton onClick={closeDialog}>
@@ -174,8 +187,8 @@ export default function TaskDelegation({
 }
 
 TaskDelegation.propTypes = {
-	toggleDialogClose: PropTypes.func,
-	delegateDialog: PropTypes.bool,
+	// toggleDialogClose: PropTypes.func,
+	// delegateDialog: PropTypes.bool,
 	a: PropTypes.number,
 	setA: PropTypes.func,
 };

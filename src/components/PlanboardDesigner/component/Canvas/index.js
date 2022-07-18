@@ -25,8 +25,11 @@ import axiosRequests from '@utils/axiosRequests';
 import StartNode from './StartNode';
 import CustomNode from './CustomNode';
 import CustomEdge from './CustomEdge';
-import AllComponentsList from './AllComponentsList';
+import ComponentPicker from './components/ComponentPicker';
 import PlanboardDesignerContext from '@contexts/planboardDesigner';
+import IdeationFlow from './components/IdeationFlow';
+import TaskDelegation from './components/TaskDelegation';
+import Calendar from './components/Calendar';
 
 // const bg = {
 // 	backgroundSize: '8px 8px',
@@ -88,7 +91,7 @@ export default function Canvas() {
 	const { planboard, user } = useSelector((state) => state);
 	// const user = useSelector((state) => state.user._id);
 
-	const { setSelectedPlanboardComponent } = useContext(
+	const { setSelectedPlanboardComponent, setPlanboard } = useContext(
 		PlanboardDesignerContext
 	);
 
@@ -115,7 +118,6 @@ export default function Canvas() {
 
 	const onClickNode = useCallback((event, element) => {
 		clickedNode = element;
-		// console.log(flowInstance);
 		dispatch(updatePlanboardComponent(element));
 		setSelectedPlanboardComponent(element);
 	}, []);
@@ -123,12 +125,12 @@ export default function Canvas() {
 		// clickedEdge = element;
 		console.log(event, element);
 	}, []);
-	const connectNodeWithStart =(deletedNode)=>{
-		let length=edges.filter(edge=>edge.source==deletedNode.id).length;
-		if(length){
-			edges.filter(edge=>edge.source==deletedNode.id)[0]['source']='99';
+	const connectNodeWithStart = (deletedNode) => {
+		let length = edges.filter((edge) => edge.source == deletedNode.id).length;
+		if (length) {
+			edges.filter((edge) => edge.source == deletedNode.id)[0]['source'] = '99';
 		}
-	}
+	};
 	const checkNodeDelete = (deletedNode) => {
 		connectNodeWithStart(deletedNode[0]);
 		if (deletedNode?.[0]?.type === 'start') {
@@ -166,6 +168,7 @@ export default function Canvas() {
 		// };
 		// saveFlow();
 	}, [flowInstance]);
+
 	const nameFilter = (currentName) => {
 		const { length } = nodes.filter((node) =>
 			node.data.label.includes(currentName)
@@ -297,11 +300,20 @@ export default function Canvas() {
 			return node.id;
 		});
 		if (compare1 !== compare && nodes.length > 1) onSave();
+
+		setPlanboard((prev) => ({
+			...prev,
+			canvas: { nodes, edges },
+		}));
 	}, [nodes]);
 	useEffect(() => {
 		console.log('edge change');
 		deleteEdges();
 		if (edges !== initialEdges && edges.length > 0) onSave();
+		setPlanboard((prev) => ({
+			...prev,
+			canvas: { nodes, edges },
+		}));
 	}, [edges]);
 
 	const getCanvasData = async () => {
@@ -325,75 +337,77 @@ export default function Canvas() {
 
 	nodeData = { nodes: nodes, edges: edges };
 	return (
-		<ReactFlowProvider>
-			<Grid
-				container
-				sx={{
-					flexGrow: 1,
-					height: '100vh',
-					width: '100%',
-					// ...bg,
-				}}
-			>
-				<ReactFlow
-					id='reactFlow'
-					nodes={nodes}
-					edges={edges}
-					onNodesChange={onNodesChange}
-					onEdgesChange={onEdgesChange}
-					onKeyDown={function (e) {
-						if (true) {
-							console.log(e, 'reactflow');
-						}
+		<>
+			<ComponentPicker addNodes={addNodes} />
+			<IdeationFlow />
+			<TaskDelegation />
+			{clickedNode && (
+				<Calendar data={{ currentNode: clickedNode, setNodes }} />
+			)}
+			<ReactFlowProvider>
+				<Grid
+					container
+					sx={{
+						flexGrow: 1,
+						height: '100vh',
+						width: '100%',
+						// ...bg,
 					}}
-					deleteKeyCode='Backspace'
-					edgeoptions={edgeOptions}
-					onConnect={onConnect}
-					nodeTypes={nodeTypes}
-					edgeTypes={edgeTypes}
-					connectionLineStyle={connectionLineStyle}
-					onNodeClick={onClickNode}
-					onEdgeClick={onClickEdge}
-					// onNodeDoubleClick={(n) => loadComponentonDoubleClick(n)}
-					minZoom={0.35}
-					onInit={setFlowInstance}
-					onNodesDelete={checkNodeDelete}
-					onEdgesDelete={checkEdgeDelete}
-					// -----------------new Attributes------------------------------------------------
-					// elementsSelectable={true}
-					// nodesConnectable={true}
-					// nodesDraggable={true}
-					// zoomOnScroll={true}
-					panOnScroll={true}
-					panOnScrollMode={'free'}
-					// zoomOnDoubleClick={false}
-					// panOnDrag={true}
-					fitView
-					maxZoom={1}
 				>
-					<MiniMap
-						nodeColor={(node_) => {
-							switch (node_.type) {
-								case 'input':
-									return 'red';
-								case 'default':
-									return '#00ff00';
-								case 'output':
-									return 'rgb(0,0,255)';
-								default:
-									return '#eee';
+					<ReactFlow
+						id='reactFlow'
+						nodes={nodes}
+						edges={edges}
+						onNodesChange={onNodesChange}
+						onEdgesChange={onEdgesChange}
+						onKeyDown={function (e) {
+							if (true) {
+								console.log(e, 'reactflow');
 							}
 						}}
-					/>
-				</ReactFlow>
-			</Grid>
-			<AllComponentsList
-				addNodes={addNodes}
-				// components={components}
-				// componentsClickOpen={componentsClickOpen}
-				// componentsClose={componentsClose}
-			/>
-			<Background color='#aaa' gap={16} style={{ zIndex: -1 }} />
-		</ReactFlowProvider>
+						deleteKeyCode='Backspace'
+						edgeoptions={edgeOptions}
+						onConnect={onConnect}
+						nodeTypes={nodeTypes}
+						edgeTypes={edgeTypes}
+						connectionLineStyle={connectionLineStyle}
+						onNodeClick={onClickNode}
+						onEdgeClick={onClickEdge}
+						// onNodeDoubleClick={(n) => loadComponentonDoubleClick(n)}
+						minZoom={0.35}
+						onInit={setFlowInstance}
+						onNodesDelete={checkNodeDelete}
+						onEdgesDelete={checkEdgeDelete}
+						// -----------------new Attributes------------------------------------------------
+						// elementsSelectable={true}
+						// nodesConnectable={true}
+						// nodesDraggable={true}
+						// zoomOnScroll={true}
+						panOnScroll={true}
+						panOnScrollMode={'free'}
+						// zoomOnDoubleClick={false}
+						// panOnDrag={true}
+						fitView
+						maxZoom={1}
+					>
+						<MiniMap
+							nodeColor={(node_) => {
+								switch (node_.type) {
+									case 'input':
+										return 'red';
+									case 'default':
+										return '#00ff00';
+									case 'output':
+										return 'rgb(0,0,255)';
+									default:
+										return '#eee';
+								}
+							}}
+						/>
+					</ReactFlow>
+				</Grid>
+				<Background color='#aaa' gap={16} style={{ zIndex: -1 }} />
+			</ReactFlowProvider>
+		</>
 	);
 }
