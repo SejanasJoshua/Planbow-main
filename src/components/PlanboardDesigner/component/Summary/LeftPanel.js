@@ -177,7 +177,7 @@ export default function LeftPanel(props) {
 				createdBy: { name: User.fullName, email: User.email },
 				// createdBy: User._id,
 				description: state.description,
-				users: state.users,
+				users: workspaceUsers.filter(user=>user.type),
 				notificationTypes: [],
 				endDate: state.endDate,
 				startDate: state.startDate,
@@ -193,7 +193,7 @@ export default function LeftPanel(props) {
 		}
 		requestData = {
 			name: state.title,
-			users: state.users,
+			users: workspaceUsers.filter(user=>user.type),
 			endDate: state.endDate,
 			description: state.description,
 			planboardID: ParentState?.planboard?._id,
