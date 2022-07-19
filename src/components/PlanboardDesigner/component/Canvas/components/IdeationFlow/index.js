@@ -1,23 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
+// import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import { Grid } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-// import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-// import { ICONS } from '@shared/assets';
 import Icon from '@mdi/react';
 import { mdiFullscreen } from '@mdi/js';
 import YourIdea from './YourIdea';
 import IdeaFlowPlaceholder from './IdeaFlowPlaceholder';
 import { useSelector } from 'react-redux';
-// import axios from 'axios';
 import axiosRequests from '@utils/axiosRequests';
+import PlanboardDesignerContext from '@contexts/planboardDesigner';
 
 const drawerWidth = {
 	'& .MuiDrawer-paper': {
@@ -25,15 +23,25 @@ const drawerWidth = {
 	},
 };
 
-export default function IdeationFlow(props) {
+export default function IdeationFlow() {
 	const selectedComponent = useSelector(
 		(state) => state.settings.planboardComponent
 	);
 	const [ideaNav, SetideaNav] = React.useState('youridea');
 	const [currentselect, Setcurrentselect] = React.useState();
 	const [selectedIdea, setSelectedIdea] = React.useState();
-	let { ideaDrawer, toggleDrawerClose } = props;
 	const [ideas, setIdeas] = React.useState([]);
+
+	const { contextState, setContextState } = useContext(
+		PlanboardDesignerContext
+	);
+
+	const toggleDrawerClose = () => {
+		setContextState((prev) => ({
+			...prev,
+			rightDrawer: false,
+		}));
+	};
 
 	const deleteIdea = async () => {
 		try {
@@ -69,7 +77,7 @@ export default function IdeationFlow(props) {
 			<Drawer
 				anchor='right'
 				sx={{ ...drawerWidth }}
-				open={ideaDrawer}
+				open={contextState.rightDrawer}
 				onClose={toggleDrawerClose}
 			>
 				<Box sx={{ flexGrow: 1 }}>
@@ -143,8 +151,8 @@ export default function IdeationFlow(props) {
 	);
 }
 
-IdeationFlow.propTypes = {
-	// toggleDrawerOpen: PropTypes.func,
-	toggleDrawerClose: PropTypes.func,
-	ideaDrawer: PropTypes.bool,
-};
+// IdeationFlow.propTypes = {
+// 	// toggleDrawerOpen: PropTypes.func,
+// 	toggleDrawerClose: PropTypes.func,
+// 	ideaDrawer: PropTypes.bool,
+// };

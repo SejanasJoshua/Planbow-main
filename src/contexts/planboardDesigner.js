@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 const PlanboardDesignerContext = createContext();
 
 export const PlanboardDesignerProvider = ({ children }) => {
+	const [contextState, setContextState] = useState({
+		rightDrawer: false,
+		calendarDialog: false,
+		delegateDialog: false,
+	});
 	// const {workspace:Workspace}=useSelector(state=>state);
 	const [selectedNav, setselectedNav] = useState('ideasummary');
 	const [planboard, setPlanboard] = useState(null);
@@ -32,6 +37,8 @@ export const PlanboardDesignerProvider = ({ children }) => {
 				selectedPlanboardComponent,
 				setSelectedPlanboardComponent,
 				actionItem,
+				contextState,
+				setContextState,
 			}}
 		>
 			{children}

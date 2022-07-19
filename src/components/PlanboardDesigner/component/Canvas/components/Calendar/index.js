@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
 	Box,
 	Button,
@@ -15,22 +15,50 @@ import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import PlanboardDesignerContext from '@contexts/planboardDesigner';
 
-const Calendar = ({ calendarDialog, toggleDialogClose, data }) => {
+const Calendar = ({ data }) => {
+	const { contextState, setContextState } = useContext(
+		PlanboardDesignerContext
+	);
+
+	const { currentNode, setNodes } = data;
+
 	const [state, setState] = useState({
-		startDate: data.startDate || new Date(),
-		endDate: data.endDate || new Date(),
+		startDate: new Date(),
+		endDate: new Date(),
 	});
+	console.log(currentNode?.startDate ?? 'newDate');
+
 	const { startDate, endDate } = state;
-	const handleConfirm = () => {
-		data.startDate = startDate;
-		data.endDate = endDate;
-		toggleDialogClose();
+
+	const toggleDialogClose = () => {
+		setContextState((prev) => ({
+			...prev,
+			calendarDialog: false,
+		}));
 	};
+
+	const handleConfirm = () => {
+		toggleDialogClose();
+		setNodes((prev) => {
+			const remaining = prev.filter((item) => item.id != currentNode.id);
+			const newNodes = [...remaining, { ...currentNode, startDate, endDate }];
+			return newNodes;
+		});
+	};
+
+	useEffect(() => {
+		currentNode?.startNode &&
+			setState({
+				startDate: currentNode.startDate,
+				endDate: currentNode.endDate,
+			});
+	}, [currentNode]);
 
 	return (
 		<div>
-			<Dialog onClose={toggleDialogClose} open={calendarDialog}>
+			<Dialog onClose={toggleDialogClose} open={contextState.calendarDialog}>
 				<DialogTitle>
 					Add Start/End Date
 					<IconButton onClick={toggleDialogClose}>
@@ -39,6 +67,8 @@ const Calendar = ({ calendarDialog, toggleDialogClose, data }) => {
 				</DialogTitle>
 				<DialogContent sx={{ width: '500px' }}>
 					<Grid container>
+						<Grid item>Start Date:{currentNode?.startDate ?? 'no date'}</Grid>
+						<Grid item>End Date:{currentNode?.endDate ?? 'no date'}</Grid>
 						<Grid item>Start Date:</Grid>
 						<Grid item xs={12}>
 							<LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -98,7 +128,5 @@ const Calendar = ({ calendarDialog, toggleDialogClose, data }) => {
 export default Calendar;
 
 Calendar.propTypes = {
-	toggleDialogClose: PropTypes.func,
-	calendarDialog: PropTypes.bool,
 	data: PropTypes.object,
 };

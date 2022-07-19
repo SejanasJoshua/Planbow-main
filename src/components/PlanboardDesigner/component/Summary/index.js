@@ -1,5 +1,5 @@
 import React from 'react';
-import IdeationFlow from '../IdeationFlow';
+// import IdeationFlow from '../IdeationFlow';
 import PropTypes from 'prop-types';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
@@ -7,7 +7,7 @@ import { Box, Grid, Paper } from '@mui/material';
 export default function IdeationSummary(props) {
 	return (
 		<>
-			<IdeationFlow />
+			{/* <IdeationFlow /> */}
 
 			<Box sx={{ flexGrow: 1, mt: 2 }}>
 				<Grid

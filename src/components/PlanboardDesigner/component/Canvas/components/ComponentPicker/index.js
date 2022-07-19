@@ -10,13 +10,13 @@ import DialogContent from '@mui/material/DialogContent';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
-import SearchComponents from './SearchComponents';
-import CardComponentsList from './CardComponentsList';
-import ComponentDetails from './ComponentDetails';
+import SearchComponents from '../../SearchComponents';
+import CardComponentsList from '../../CardComponentsList';
+import ComponentDetails from '../../ComponentDetails';
 import { useSelector, useDispatch } from 'react-redux';
 import { planboardComponentsModal } from '@redux/actions';
 
-export default function AllComponentsList(props) {
+export default function ComponentPicker(props) {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 	const dispatch = useDispatch();
@@ -101,7 +101,7 @@ export default function AllComponentsList(props) {
 	);
 }
 
-AllComponentsList.propTypes = {
+ComponentPicker.propTypes = {
 	// componentsClickOpen: PropTypes.func,
 	// componentsClose: PropTypes.func,
 	// components: PropTypes.bool,

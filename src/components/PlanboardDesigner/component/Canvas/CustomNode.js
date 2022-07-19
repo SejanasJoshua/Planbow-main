@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
@@ -38,11 +38,12 @@ import './customNode.css';
 import { planboardComponentsModal } from '@redux/actions';
 // import axiosRequests from '@utils/axiosRequests';
 
-import IdeationFlow from '../IdeationFlow';
+// import IdeationFlow from './components/IdeationFlow';
 // import AllComponentsList from './AllComponentsList';
 import { useDispatch } from 'react-redux';
-import TaskDelegation from './components/TaskDelegation';
-import Calendar from './components/Calendar';
+// import TaskDelegation from './components/TaskDelegation';
+// import Calendar from './components/Calendar';
+import PlanboardDesignerContext from '@contexts/planboardDesigner';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 	height: 10,
@@ -62,15 +63,12 @@ export default function CustomNode(props) {
 		lock: true,
 		confirmDialog: false,
 	});
-	const [ideaDrawer, setideaDrawer] = useState(false);
-	const [delegateDialog, setDelegateDialog] = useState(false);
-	const [calendarDialog, setCalendarDialog] = useState(false);
-	const [a, setA] = useState(0);
 
 	const dispatch = useDispatch();
-	// const [components, setComponents] = React.useState(false);
+
+	const { setContextState } = useContext(PlanboardDesignerContext);
+
 	const componentsClickOpen = () => {
-		// setComponents(true);
 		dispatch(planboardComponentsModal(true));
 	};
 
@@ -88,13 +86,6 @@ export default function CustomNode(props) {
 		}));
 	};
 
-	const calendarDialogOpen = () => {
-		setCalendarDialog(true);
-	};
-	const calendarDialogClose = () => {
-		setCalendarDialog(false);
-	};
-
 	const handleDeleteConfirm = () => {
 		confirmDialogClose();
 		deleteNode();
@@ -109,7 +100,6 @@ export default function CustomNode(props) {
 		setAnchorEl(null);
 	};
 	const deleteNode = () => {
-		// setNodeName(`${nodeName}s`);
 		props.data.delete = true;
 		setTimeout(
 			() =>
@@ -122,19 +112,24 @@ export default function CustomNode(props) {
 
 	const rightDrawerOpen = () => {
 		handleNodeMenuClose();
-		setideaDrawer(true);
-		setA(0);
-	};
-
-	const rightDrawerClose = () => {
-		setideaDrawer(false);
+		setContextState((prev) => ({
+			...prev,
+			rightDrawer: true,
+		}));
 	};
 
 	const delegateDialogOpen = () => {
-		setDelegateDialog(true);
+		setContextState((prev) => ({
+			...prev,
+			delegateDialog: true,
+		}));
 	};
-	const delegateDialogClose = () => {
-		setDelegateDialog(false);
+
+	const calendarDialogOpen = () => {
+		setContextState((prev) => ({
+			...prev,
+			calendarDialog: true,
+		}));
 	};
 
 	// const getUserName = async () => {
@@ -285,21 +280,21 @@ export default function CustomNode(props) {
 				style={{ background: '#555', padding: 8, margin: -13 }}
 				// isConnectable={isConnectable}
 			/>
-			<IdeationFlow
+			{/* <IdeationFlow
 				ideaDrawer={ideaDrawer}
 				toggleDrawerClose={rightDrawerClose}
-			/>
-			<TaskDelegation
+			/> */}
+			{/* <TaskDelegation
 				delegateDialog={delegateDialog}
 				toggleDialogClose={delegateDialogClose}
 				a={a}
 				setA={setA}
-			/>
-			<Calendar
+			/> */}
+			{/* <Calendar
 				calendarDialog={calendarDialog}
 				toggleDialogClose={calendarDialogClose}
 				data={props.data}
-			/>
+			/> */}
 
 			<Dialog
 				open={states.confirmDialog}
