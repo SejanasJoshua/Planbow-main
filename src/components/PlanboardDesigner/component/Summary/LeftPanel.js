@@ -26,6 +26,7 @@ import {
 	planboardComponentsModal,
 	updateTotalPlanboard,
 } from '@redux/actions';
+
 export default function LeftPanel(props) {
 	const { user: User, workspace: Workspace } = useSelector((state) => state);
 	const [visible, setVisible] = useState(true);
@@ -56,8 +57,8 @@ export default function LeftPanel(props) {
 			: props?.Planboard?.description ?? '',
 		coCreators: [],
 		users: [],
-		startDate: props?.startDate??new Date(),
-		endDate: props?.endDate??defaultEndDate(),
+		startDate: props?.startDate ?? new Date(),
+		endDate: props?.endDate ?? defaultEndDate(),
 		error: {
 			title: false,
 			description: false,
@@ -177,7 +178,7 @@ export default function LeftPanel(props) {
 				createdBy: { name: User.fullName, email: User.email },
 				// createdBy: User._id,
 				description: state.description,
-				users: workspaceUsers.filter(user=>user.type),
+				users: workspaceUsers.filter((user) => user.type),
 				notificationTypes: [],
 				endDate: state.endDate,
 				startDate: state.startDate,
@@ -193,7 +194,7 @@ export default function LeftPanel(props) {
 		}
 		requestData = {
 			name: state.title,
-			users: workspaceUsers.filter(user=>user.type),
+			users: workspaceUsers.filter((user) => user.type),
 			endDate: state.endDate,
 			description: state.description,
 			planboardID: ParentState?.planboard?._id,
@@ -250,16 +251,19 @@ export default function LeftPanel(props) {
 		const response = await axiosRequests.getData(
 			`/user?validateUsers=${users}`
 		);
-		if (response?.data?.message === 'success' &&response?.data.data?.length) {
-			if(ParentState?.newPlanboard){
+		if (response?.data?.message === 'success' && response?.data.data?.length) {
+			if (ParentState?.newPlanboard) {
 				setWorkspaceUsers(response?.data?.data);
-			}
-			else{
-				let type='';
-				response?.data?.data.filter((elem) => props?.Planboard?.users?.find(plan => {
-					type=plan.type;
-					return elem._id === plan._id;}))
-					.map(data=>data['type']=type);
+			} else {
+				let type = '';
+				response?.data?.data
+					.filter((elem) =>
+						props?.Planboard?.users?.find((plan) => {
+							type = plan.type;
+							return elem._id === plan._id;
+						})
+					)
+					.map((data) => (data['type'] = type));
 				setWorkspaceUsers(response?.data?.data);
 			}
 			// response?.data?.data?.length && setWorkspaceUsers(response?.data?.data);
@@ -277,13 +281,18 @@ export default function LeftPanel(props) {
 
 	useEffect(() => {
 		Workspace && getWorkspaceUsers(Workspace._id);
-		if(!ParentState?.newPlanboard){
-			setState({...state,
-				coCreators:props?.Planboard?.users?.filter(user=>user.type=='coCreator').map(data=>data.email),
-				users:props?.Planboard?.users?.filter(user=>user.type=='user').map(data=>data.email),
-				startDate:props?.Planboard?.startDate,
-				endDate:props?.Planboard?.endDate,
-				description:props?.Planboard?.description
+		if (!ParentState?.newPlanboard) {
+			setState({
+				...state,
+				coCreators: props?.Planboard?.users
+					?.filter((user) => user.type == 'coCreator')
+					.map((data) => data.email),
+				users: props?.Planboard?.users
+					?.filter((user) => user.type == 'user')
+					.map((data) => data.email),
+				startDate: props?.Planboard?.startDate,
+				endDate: props?.Planboard?.endDate,
+				description: props?.Planboard?.description,
 			});
 		}
 	}, []);
@@ -624,7 +633,7 @@ LeftPanel.propTypes = {
 	location: PropTypes.object,
 	setselectedNav: PropTypes.func,
 	totalPlanboards: PropTypes.array,
-	startDate:PropTypes.string,
-	endDate:PropTypes.string,
-	users: PropTypes.array
+	startDate: PropTypes.string,
+	endDate: PropTypes.string,
+	users: PropTypes.array,
 };

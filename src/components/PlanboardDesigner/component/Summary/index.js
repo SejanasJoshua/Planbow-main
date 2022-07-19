@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import { Box, Grid, Paper } from '@mui/material';
+
 export default function IdeationSummary(props) {
 	return (
 		<>

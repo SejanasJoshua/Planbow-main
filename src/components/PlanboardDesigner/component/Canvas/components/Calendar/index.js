@@ -10,6 +10,7 @@ import {
 	IconButton,
 	Stack,
 	TextField,
+	// Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
@@ -25,8 +26,8 @@ const Calendar = ({ data }) => {
 	const { currentNode, setNodes } = data;
 
 	const [state, setState] = useState({
-		startDate: currentNode.startDate || new Date(),
-		endDate: currentNode.endDate || new Date(),
+		startDate: new Date(),
+		endDate: new Date(),
 	});
 	console.log(currentNode?.startDate ?? 'newDate');
 
@@ -48,16 +49,13 @@ const Calendar = ({ data }) => {
 		});
 	};
 
-	// useEffect(() => {
-	// 	currentNode?.startNode &&
-	// 		setState({
-	// 			startDate: new Date(currentNode.startDate),
-	// 			endDate: new Date(currentNode.endDate),
-	// 		});
-	// }, [currentNode]);
 	useEffect(() => {
-		console.log({ startDate, endDate });
-	}, [state.startDate]);
+		if (currentNode?.startDate)
+			setState({
+				startDate: currentNode.startDate,
+				endDate: currentNode.endDate,
+			});
+	}, [currentNode]);
 
 	return (
 		<div>
@@ -70,25 +68,30 @@ const Calendar = ({ data }) => {
 				</DialogTitle>
 				<DialogContent sx={{ width: '500px' }}>
 					<Grid container>
-						<Grid item>Start Date:{currentNode?.startDate ?? 'no date'}</Grid>
-						<Grid item>End Date:{currentNode?.endDate ?? 'no date'}</Grid>
+						{/* <Grid item>Start Date:{currentNode?.startDate ?? 'no date'}</Grid>
+						<Grid item>End Date:{currentNode?.endDate ?? 'no date'}</Grid> */}
 						<Grid item>Start Date:</Grid>
 						<Grid item xs={12}>
-							<LocalizationProvider dateAdapter={AdapterDateFns}>
-								<DatePicker
-									disablePast
-									label='Start Date'
-									inputFormat='dd/MM/yyyy'
-									openTo='year'
-									views={['year', 'month', 'day']}
-									value={startDate}
-									onChange={(value) =>
-										//setDate(value, keyboardInputValue, 'startDate')
-										setState((prev) => ({ ...prev, startDate: value }))
-									}
-									renderInput={(params) => <TextField {...params} />}
-								/>
-							</LocalizationProvider>
+							{new Date() > new Date(startDate) ? (
+								new Date(startDate).toDateString()
+							) : (
+								<LocalizationProvider dateAdapter={AdapterDateFns}>
+									<DatePicker
+										disablePast
+										label='Start Date'
+										inputFormat='dd/MM/yyyy'
+										openTo='year'
+										views={['year', 'month', 'day']}
+										value={startDate}
+										onChange={(value) =>
+											//setDate(value, keyboardInputValue, 'startDate')
+											setState((prev) => ({ ...prev, startDate: value }))
+										}
+										renderInput={(params) => <TextField {...params} />}
+										maxDate={data.endDate}
+									/>
+								</LocalizationProvider>
+							)}
 						</Grid>
 						<Grid item>End Date:</Grid>
 						<Grid item xs={12}>
@@ -106,6 +109,7 @@ const Calendar = ({ data }) => {
 									}
 									renderInput={(params) => <TextField {...params} />}
 									minDate={startDate}
+									maxDate={data.endDate}
 								/>
 							</LocalizationProvider>
 						</Grid>

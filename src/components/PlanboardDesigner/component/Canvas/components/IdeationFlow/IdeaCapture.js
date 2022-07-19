@@ -13,6 +13,9 @@ import {
 	IconButton,
 	// Typography,
 	TextareaAutosize,
+	Dialog,
+	DialogTitle,
+	DialogContent,
 } from '@mui/material';
 // import ArrowDropDown from '@mui/icons-material/ArrowDropDownOutlined';
 // import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -20,10 +23,12 @@ import {
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MoreHorizIcon from '@mui/icons-material/MoreHorizOutlined';
 import AddIcon from '@mui/icons-material/AddOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import AddCardIcon from '@mui/icons-material/AddCardOutlined';
 import { Capture } from '@data/IdeationAttributes';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
+import Filepicker from './Filepicker';
 
 export default function IdeaCapture({ attributes, setAttributes, saveData }) {
 	const [attributesData, setAttributesData] = useState(Capture);
@@ -31,12 +36,17 @@ export default function IdeaCapture({ attributes, setAttributes, saveData }) {
 	const [attributeMenu, setAttributeMenu] = useState(null);
 	const [clickedAttribute, setClickedAttribute] = useState(null);
 	const [whenToSave, setWhenToSave] = useState(0);
+	const [filePickerDialog, setFilePickerDialog] = useState(false);
 	const openAttributeMenu = Boolean(attributeMenu);
 	const handleAttributeClick = (event) => {
 		setAttributeMenu(event.currentTarget);
 	};
 	const handleClose = () => {
 		setAttributeMenu(null);
+	};
+
+	const filePickerDialogToggle = (value) => {
+		setFilePickerDialog(value);
 	};
 
 	const handleDeleteAttribute = () => {
@@ -315,8 +325,12 @@ export default function IdeaCapture({ attributes, setAttributes, saveData }) {
 								/>
 							</CardContent>
 							<CardActions disableSpacing>
-								<Button variant='text' startIcon={<AddIcon />}>
-									Add Block
+								<Button
+									variant='text'
+									startIcon={<AddIcon />}
+									onClick={() => filePickerDialogToggle(true)}
+								>
+									Add Files
 								</Button>
 							</CardActions>
 						</Card>
@@ -336,6 +350,20 @@ export default function IdeaCapture({ attributes, setAttributes, saveData }) {
 					</Button>
 				</Grid>
 			</Grid>
+			<Dialog
+				onClose={() => filePickerDialogToggle(false)}
+				open={filePickerDialog}
+			>
+				<DialogTitle>
+					Upload Files
+					<IconButton onClick={() => filePickerDialogToggle(false)}>
+						<CloseIcon />
+					</IconButton>
+				</DialogTitle>
+				<DialogContent sx={{ width: '500px' }}>
+					<Filepicker />
+				</DialogContent>
+			</Dialog>
 		</Box>
 	);
 }

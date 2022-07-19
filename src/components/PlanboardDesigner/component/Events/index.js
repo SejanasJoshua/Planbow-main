@@ -41,13 +41,13 @@ export default function Events() {
 						...prev.events,
 						{
 							event_id: 1,
-							title: 'Start Date',
+							title: planboard.name + ' Start Date',
 							start: new Date(planboard.startDate),
 							end: new Date(planboard.startDate),
 						},
 						{
 							event_id: 2,
-							title: 'End Date',
+							title: planboard.name + ' End Date',
 							start: new Date(planboard.endDate),
 							end: new Date(planboard.endDate),
 						},
