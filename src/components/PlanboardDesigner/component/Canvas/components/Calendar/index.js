@@ -25,8 +25,8 @@ const Calendar = ({ data }) => {
 	const { currentNode, setNodes } = data;
 
 	const [state, setState] = useState({
-		startDate: new Date(),
-		endDate: new Date(),
+		startDate: currentNode.startDate || new Date(),
+		endDate: currentNode.endDate || new Date(),
 	});
 	console.log(currentNode?.startDate ?? 'newDate');
 
@@ -48,13 +48,16 @@ const Calendar = ({ data }) => {
 		});
 	};
 
+	// useEffect(() => {
+	// 	currentNode?.startNode &&
+	// 		setState({
+	// 			startDate: new Date(currentNode.startDate),
+	// 			endDate: new Date(currentNode.endDate),
+	// 		});
+	// }, [currentNode]);
 	useEffect(() => {
-		currentNode?.startNode &&
-			setState({
-				startDate: currentNode.startDate,
-				endDate: currentNode.endDate,
-			});
-	}, [currentNode]);
+		console.log({ startDate, endDate });
+	}, [state.startDate]);
 
 	return (
 		<div>
