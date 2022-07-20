@@ -29,7 +29,7 @@ const theme = createTheme({
 				'linear-gradient( to right, #e8e8e8 1px, transparent 1px ), linear-gradient(to bottom, #e8e8e8 1px, transparent 1px)',
 		},
 		primary: {
-			main: '#000000',
+			main: '#260e6d',
 		},
 		secondary: {
 			main: '#ffffff',

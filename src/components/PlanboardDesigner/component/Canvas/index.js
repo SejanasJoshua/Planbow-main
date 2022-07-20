@@ -25,11 +25,11 @@ import axiosRequests from '@utils/axiosRequests';
 import StartNode from './StartNode';
 import CustomNode from './CustomNode';
 import CustomEdge from './CustomEdge';
-import ComponentPicker from './components/ComponentPicker';
 import PlanboardDesignerContext from '@contexts/planboardDesigner';
 import IdeationFlow from './components/IdeationFlow';
 import TaskDelegation from './components/TaskDelegation';
 import Calendar from './components/Calendar';
+import ComponentPicker from './components/ComponentPicker';
 
 // const bg = {
 // 	backgroundSize: '8px 8px',

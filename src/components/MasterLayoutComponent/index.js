@@ -6,7 +6,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
+// import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -56,6 +56,9 @@ const Drawer = styled(MuiDrawer, {
 	'& .MuiDrawer-paper': {
 		position: 'relative',
 		whiteSpace: 'nowrap',
+		height:'100%',
+		display:'block',
+		// backgroundColor:theme.palette.primary.main,
 		width: drawerWidth,
 		transition: theme.transitions.create('width', {
 			easing: theme.transitions.easing.sharp,
@@ -192,12 +195,10 @@ export default function MasterLayoutComponent(props) {
 					</IconButton>
 				</Toolbar>
 				<Divider />
-				<List component='nav'>
-					<ListItems />
+				<ListItems color='inherit' />
 					{/* {mainListItems} */}
 					{/* <Divider sx={{ my: 1 }} />
 					{secondaryListItems} */}
-				</List>
 			</Drawer>
 			<Box
 				component='main'
