@@ -77,13 +77,7 @@ export default function LeftPanel(props) {
 		});
 		updatedUsers
 			.filter((user) => user.email == newUser)
-			.map(
-				(user) => (
-					(user['type'] = undefined),
-					(user['removed'] = true)
-					// (user['new'] = false)
-				)
-			);
+			.map((user) => (user['type'] = undefined));
 		setWorkspaceUsers([...updatedUsers]);
 	};
 	const checkIfUserExists = (newUser, type) => {
@@ -96,13 +90,7 @@ export default function LeftPanel(props) {
 		if (state.users.length == 0 || checkIfUserExists(value, 'users')) {
 			updatedUsers
 				.filter((user) => user.email == value)
-				.map(
-					(user) => (
-						(user['type'] = 'user'),
-						// (user['removed'] = false),
-						(user['new'] = true)
-					)
-				);
+				.map((user) => (user['type'] = 'user'));
 			setWorkspaceUsers([...updatedUsers]);
 			setState({ ...state, users: [...state.users, value] });
 		}
@@ -115,13 +103,7 @@ export default function LeftPanel(props) {
 		) {
 			updatedUsers
 				.filter((user) => user.email == value)
-				.map(
-					(user) => (
-						(user['type'] = 'coCreator'),
-						// (user['removed'] = false),
-						(user['new'] = true)
-					)
-				);
+				.map((user) => (user['type'] = 'coCreator'));
 			setWorkspaceUsers([...updatedUsers]);
 			setState({ ...state, coCreators: [...state.coCreators, value] });
 		}
@@ -212,19 +194,35 @@ export default function LeftPanel(props) {
 		}
 		requestData = {
 			name: state.title,
-			users: workspaceUsers.filter((user) => user.type),
+			users: workspaceUsers.filter((user) =>
+				props?.Planboard?.users.find((prevUser) => {
+					if (user._id == prevUser._id) {
+						if (user.type != prevUser.type) {
+							if (user.type) {
+								if (prevUser.type) {
+									return (user['removed'] = true), (user['new'] = true);
+								} else {
+									return (user['new'] = true);
+								}
+							}
+							return (user['removed'] = true);
+						}
+						return user;
+					}
+				})
+			),
 			endDate: state.endDate,
 			description: state.description,
 			planboardID: ParentState?.planboard?._id,
 			startDate: state.startDate,
 			workspace: Workspace._id,
 		};
-		const response = await axiosRequests.putData(endpoint, { ...requestData });
-		if (response?.data?.message === 'success') {
-			dispatch(updatePlanboard(requestData));
-			updateTotalPlanboards(requestData, 'update');
-		}
-		return response;
+		// const response = await axiosRequests.putData(endpoint, { ...requestData });
+		// if (response?.data?.message === 'success') {
+		// 	dispatch(updatePlanboard(requestData));
+		// 	updateTotalPlanboards(requestData, 'update');
+		// }
+		// return response;
 	};
 	const updateTotalPlanboards = (data, type) => {
 		if (type == 'create') {
