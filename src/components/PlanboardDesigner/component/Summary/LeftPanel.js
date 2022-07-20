@@ -77,7 +77,13 @@ export default function LeftPanel(props) {
 		});
 		updatedUsers
 			.filter((user) => user.email == newUser)
-			.map((user) => (user['type'] = undefined));
+			.map(
+				(user) => (
+					(user['type'] = undefined),
+					(user['removed'] = true)
+					// (user['new'] = false)
+				)
+			);
 		setWorkspaceUsers([...updatedUsers]);
 	};
 	const checkIfUserExists = (newUser, type) => {
@@ -90,7 +96,13 @@ export default function LeftPanel(props) {
 		if (state.users.length == 0 || checkIfUserExists(value, 'users')) {
 			updatedUsers
 				.filter((user) => user.email == value)
-				.map((user) => (user['type'] = 'user'));
+				.map(
+					(user) => (
+						(user['type'] = 'user'),
+						// (user['removed'] = false),
+						(user['new'] = true)
+					)
+				);
 			setWorkspaceUsers([...updatedUsers]);
 			setState({ ...state, users: [...state.users, value] });
 		}
@@ -103,7 +115,13 @@ export default function LeftPanel(props) {
 		) {
 			updatedUsers
 				.filter((user) => user.email == value)
-				.map((user) => (user['type'] = 'coCreator'));
+				.map(
+					(user) => (
+						(user['type'] = 'coCreator'),
+						// (user['removed'] = false),
+						(user['new'] = true)
+					)
+				);
 			setWorkspaceUsers([...updatedUsers]);
 			setState({ ...state, coCreators: [...state.coCreators, value] });
 		}
@@ -255,19 +273,15 @@ export default function LeftPanel(props) {
 			if (ParentState?.newPlanboard) {
 				setWorkspaceUsers(response?.data?.data);
 			} else {
-				let type = '';
 				response?.data?.data
 					.filter((elem) =>
 						props?.Planboard?.users?.find((plan) => {
-							type = plan.type;
-							return elem._id === plan._id;
+							return elem._id === plan._id ? (elem['type'] = plan?.type) : null;
 						})
 					)
-					.map((data) => (data['type'] = type));
+					.map((data) => data);
 				setWorkspaceUsers(response?.data?.data);
 			}
-			// response?.data?.data?.length && setWorkspaceUsers(response?.data?.data);
-			// console.log(response?.data?.data ?? 'no valid users');
 		}
 	};
 	const getWorkspaceUsers = async (id) => {
