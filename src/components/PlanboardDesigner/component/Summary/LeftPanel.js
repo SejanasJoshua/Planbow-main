@@ -194,7 +194,24 @@ export default function LeftPanel(props) {
 		}
 		requestData = {
 			name: state.title,
-			users: workspaceUsers.filter((user) => user.type),
+			users: workspaceUsers.filter((user) =>
+				props?.Planboard?.users.find((prevUser) => {
+					if (user._id == prevUser._id) {
+						if (user.type != prevUser.type) {
+							if (user.type) {
+								if (prevUser.type) {
+									return (user['removed'] = true), (user['new'] = true);
+								} 
+							}
+							return (user['removed'] = true);
+						}
+						return user;
+					}
+					else{
+						if(user.type && !props?.Planboard?.users.filter(plan=>plan.email==user.email).length) return  (user['new'] = true);
+					}
+				})
+			),
 			endDate: state.endDate,
 			description: state.description,
 			planboardID: ParentState?.planboard?._id,
@@ -260,19 +277,15 @@ export default function LeftPanel(props) {
 			if (ParentState?.newPlanboard) {
 				setWorkspaceUsers(response?.data?.data);
 			} else {
-				let type = '';
 				response?.data?.data
 					.filter((elem) =>
 						props?.Planboard?.users?.find((plan) => {
-							type = plan.type;
-							return elem._id === plan._id;
+							return elem._id === plan._id ? (elem['type'] = plan?.type) : null;
 						})
 					)
-					.map((data) => (data['type'] = type));
+					.map((data) => data);
 				setWorkspaceUsers(response?.data?.data);
 			}
-			// response?.data?.data?.length && setWorkspaceUsers(response?.data?.data);
-			// console.log(response?.data?.data ?? 'no valid users');
 		}
 	};
 	const getWorkspaceUsers = async (id) => {
