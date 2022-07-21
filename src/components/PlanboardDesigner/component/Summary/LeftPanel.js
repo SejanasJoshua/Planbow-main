@@ -218,12 +218,12 @@ export default function LeftPanel(props) {
 			startDate: state.startDate,
 			workspace: Workspace._id,
 		};
-		// const response = await axiosRequests.putData(endpoint, { ...requestData });
-		// if (response?.data?.message === 'success') {
-		// 	dispatch(updatePlanboard(requestData));
-		// 	updateTotalPlanboards(requestData, 'update');
-		// }
-		// return response;
+		const response = await axiosRequests.putData(endpoint, { ...requestData });
+		if (response?.data?.message === 'success') {
+			dispatch(updatePlanboard(requestData));
+			updateTotalPlanboards(requestData, 'update');
+		}
+		return response;
 	};
 	const updateTotalPlanboards = (data, type) => {
 		if (type == 'create') {
