@@ -201,13 +201,14 @@ export default function LeftPanel(props) {
 							if (user.type) {
 								if (prevUser.type) {
 									return (user['removed'] = true), (user['new'] = true);
-								} else {
-									return (user['new'] = true);
-								}
+								} 
 							}
 							return (user['removed'] = true);
 						}
 						return user;
+					}
+					else{
+						if(user.type && !props?.Planboard?.users.filter(plan=>plan.email==user.email).length) return  (user['new'] = true);
 					}
 				})
 			),
