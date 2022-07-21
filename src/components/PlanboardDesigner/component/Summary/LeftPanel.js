@@ -203,6 +203,11 @@ export default function LeftPanel(props) {
 		};
 		const response = await axiosRequests.putData(endpoint, { ...requestData });
 		if (response?.data?.message === 'success') {
+			requestData = {
+				...requestData,
+				_id: props.Planboard._id,
+				canvas: props.Planboard.canvas,
+			};
 			dispatch(updatePlanboard(requestData));
 			updateTotalPlanboards(requestData, 'update');
 		}
