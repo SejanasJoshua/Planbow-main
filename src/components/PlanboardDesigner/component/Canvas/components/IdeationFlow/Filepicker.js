@@ -244,7 +244,7 @@ const Filepicker = () => {
 				onClick={onSubmit}
 				variant='contained'
 			>
-				Submit
+				Upload
 			</LoadingButton>
 
 			{/* <div className='Upload'>
