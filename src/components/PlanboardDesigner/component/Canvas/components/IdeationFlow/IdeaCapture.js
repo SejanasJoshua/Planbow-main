@@ -360,7 +360,7 @@ export default function IdeaCapture({ attributes, setAttributes, saveData }) {
 						<CloseIcon />
 					</IconButton>
 				</DialogTitle>
-				<DialogContent sx={{ width: '500px' }}>
+				<DialogContent sx={{ width: '1000px' }}>
 					<Filepicker />
 				</DialogContent>
 			</Dialog>
